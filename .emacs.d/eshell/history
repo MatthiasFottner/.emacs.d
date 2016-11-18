@@ -1,0 +1,9 @@
+?
+help
+exit
+cd emacs25/
+de bin
+cd bin
+emacs -nw
+emacs
+emacs.exe -nw
