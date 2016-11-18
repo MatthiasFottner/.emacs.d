@@ -9,11 +9,6 @@
   (add-to-list
    'package-archives
    '("melpa" . "http://melpa.org/packages/"))
-
-  (add-to-list
-   'package-archives
-   '("marmalade" . "https://marmalade-repo.org/packages/"))
-  
   (package-initialize))
 
 
@@ -27,7 +22,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(save-place t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -45,11 +40,11 @@
  '(font-lock-builtin-face ((t (:foreground "#f47444" :weight normal))))
  '(font-lock-comment-face ((t (:foreground "#999999" :slant italic))))
  '(font-lock-constant-face ((t (:foreground "#aa9999" :weight normal))))
- '(font-lock-function-name-face ((t (:foreground "#cae682"))))
+ '(font-lock-function-name-face ((t (:foreground "aquamarine3"))))
  '(font-lock-keyword-face ((t (:foreground "#80aaff" :weight bold))))
  '(font-lock-string-face ((t (:foreground "#00dd66" :weight normal))))
  '(font-lock-type-face ((t (:foreground "#92a65e" :weight bold))))
- '(font-lock-variable-name-face ((t (:foreground "#cae682"))))
+ '(font-lock-variable-name-face ((t (:foreground "SpringGreen3"))))
  '(font-lock-warning-face ((t (:foreground "#ddcc8f"))))
  '(minibuffer-prompt ((t (:foreground "#36a5ff"))))
  '(mode-line ((t (:foreground "#ffffff" :background "#0088cc" :box nil))))
@@ -135,6 +130,18 @@
 (setq mouse-wheel-follow-mouse 't)                  ;; scroll window under mouse
 (setq scroll-step 1)                                ;; keyboard scroll one line at a time
 
+
+
+;; multiple cursors
+(require 'multiple-cursors)
+
+;; Then you have to set up your keybindings - multiple-cursors doesn't presume to
+;; know how you'd like them laid out. Here are some examples:
+
+;; When you have an active region that spans multiple lines, the following will
+;; add a cursor to each line:
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
 ;;
 ;; UI COLORS
