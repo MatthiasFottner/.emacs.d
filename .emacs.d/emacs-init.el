@@ -1,7 +1,4 @@
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
+
 (package-initialize)
 
 (when (>= emacs-major-version 24)
@@ -11,12 +8,10 @@
    '("melpa" . "http://melpa.org/packages/"))
   (package-initialize))
 
+(require 'org)
+(require 'multiple-cursors)
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (wombat)))
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
@@ -29,12 +24,7 @@
  '(tool-bar-mode nil)
  '(tooltip-mode nil))
 
-;; Fonts 
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(default ((t (:family "Inconsolata" :foundry "outline" :slant normal :weight normal :height 113 :width normal))))
  '(escape-glyph ((t (:foreground "#ddaa6f" :weight bold))))
  '(font-lock-builtin-face ((t (:foreground "#f47444" :weight normal))))
@@ -51,17 +41,17 @@
  '(mode-line-inactive ((t (:foreground "#00aaee" :background "#444444" :box nil))))
  '(set-face-attribute (quote region) nil :background))
 
-;; numbers highlighted
-(font-lock-add-keywords nil '(("[-+]?\\b[0-9]*\\.?[0-9]+\\(?:[eE][-+]?[0-9]+\\)?\\b" . font-lock-warning-face)))
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil)            ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't)                  ;; scroll window under mouse
+(setq scroll-step 1)                                ;; keyboard scroll one line at a time
 
-
-;; long lines
-(set-default 'truncate-lines t)
-
-;; No bell sound
 (setq visible-bell 1)
 
-;; Powerline (Triangles)
+(set-default 'truncate-lines t)
+
+(font-lock-add-keywords nil '(("[-+]?\\b[0-9]*\\.?[0-9]+\\(?:[eE][-+]?[0-9]+\\)?\\b" . font-lock-warning-face)))
+
 (add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
 (require 'powerline)
 (require 'cl)
@@ -70,19 +60,18 @@
 (powerline-default-theme)
 (powerline-reset)
 
-;; These two lines are just examples
 (setq powerline-default-separator-dir '(left . right))
 
-;; startup maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
-;(split-window-horizontally)
+;; (split-window-horizontally)
 
-
-;show parentheses
 (show-paren-mode t)
 
+(set-background-color "#3f3f45")
+(set-cursor-color "#00aaee")
 
-;; move lines and regions
+(set-face-attribute 'region nil :background "#0077aa" :foreground "#ffffff")
+
 (defun move-text-internal (arg)
   (cond
    ((and mark-active transient-mark-mode)
@@ -103,11 +92,9 @@
         (forward-line)
         (when (or (< arg 0) (not (eobp)))
           (transpose-lines arg))
-        (forward-line -1)
-	)
+        (forward-line -1))
       (move-to-column column t)))))
      
-
 (defun move-text-down (arg)
   "Move region (transient-mark-mode active) or current line
   arg lines down."
@@ -120,35 +107,14 @@
   (interactive "*p")
   (move-text-internal (- arg)))
 
-
-(global-set-key [M-up] 'move-text-up)
-(global-set-key [M-down] 'move-text-down)
-
-;; scroll one line at a time (less "jumpy" than defaults)    
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil)            ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't)                  ;; scroll window under mouse
-(setq scroll-step 1)                                ;; keyboard scroll one line at a time
-
-
-
-;; multiple cursors
-(require 'multiple-cursors)
-
-;; Then you have to set up your keybindings - multiple-cursors doesn't presume to
-;; know how you'd like them laid out. Here are some examples:
-
-;; When you have an active region that spans multiple lines, the following will
-;; add a cursor to each line:
+(defun find-user-init-file ()
+  "Edit the `init.org', in another window."
+  (interactive)
+  (find-file-other-window "~/.emacs.d/emacs-init.org"))
 
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
-;;
-;; UI COLORS
-;;
-(set-background-color "#3f3f45")
-(set-cursor-color "#00aaee")
-;; Highlighted text color and background
-(set-face-attribute 'region nil :background "#0077aa" :foreground "#ffffff")
-;; highlight current line
-;; (highlight-current-line-set-bg-color "#37373b")
+(global-set-key (kbd "C-c i") 'find-user-init-file)
+
+(global-set-key [M-up] 'move-text-up)
+(global-set-key [M-down] 'move-text-down)
