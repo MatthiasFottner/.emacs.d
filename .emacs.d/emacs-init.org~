@@ -34,7 +34,7 @@
 * Custom fonts 
 #+BEGIN_SRC emacs-lisp
   (custom-set-faces
-   '(default ((t (:family "monofur" :foundry "outline" :slant normal :weight normal :height 113 :width normal))))
+   '(default ((t (:family "Inconsolata" :foundry "outline" :slant normal :weight normal :height 113 :width normal))))
    '(escape-glyph ((t (:foreground "#ddaa6f" :weight bold))))
    '(font-lock-builtin-face ((t (:foreground "#f47444" :weight normal))))
    '(font-lock-comment-face ((t (:foreground "#999999" :slant italic))))
@@ -58,6 +58,11 @@
   (setq mouse-wheel-progressive-speed nil)            ;; don't accelerate scrolling
   (setq mouse-wheel-follow-mouse 't)                  ;; scroll window under mouse
   (setq scroll-step 1)                                ;; keyboard scroll one line at a time
+#+END_SRC
+
+** No bell sound
+#+BEGIN_SRC emacs-lisp
+  (setq visible-bell 1)
 #+END_SRC
 
 ** Long lines
@@ -100,27 +105,6 @@
   (set-cursor-color "#00aaee")
   
   (set-face-attribute 'region nil :background "#0077aa" :foreground "#ffffff")
-#+END_SRC
-
-** Title bar
-#+BEGIN_SRC emacs-lisp
-  (setq-default frame-title-format '("%b"))
-#+END_SRC
-
-* Custom behavior
-** No bell sound
-#+BEGIN_SRC emacs-lisp
-  (setq visible-bell 1)
-#+END_SRC
-
-** Backup files
-#+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist `(("." . "~/.emacs-saves")))
-
-  (setq delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t)
 #+END_SRC
 
 * Own functions

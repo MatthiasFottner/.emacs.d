@@ -1,4 +1,3 @@
-
 (package-initialize)
 
 (when (>= emacs-major-version 24)
@@ -25,7 +24,7 @@
  '(tooltip-mode nil))
 
 (custom-set-faces
- '(default ((t (:family "Inconsolata" :foundry "outline" :slant normal :weight normal :height 113 :width normal))))
+ '(default ((t (:family "monofur" :foundry "outline" :slant normal :weight normal :height 113 :width normal))))
  '(escape-glyph ((t (:foreground "#ddaa6f" :weight bold))))
  '(font-lock-builtin-face ((t (:foreground "#f47444" :weight normal))))
  '(font-lock-comment-face ((t (:foreground "#999999" :slant italic))))
@@ -45,8 +44,6 @@
 (setq mouse-wheel-progressive-speed nil)            ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't)                  ;; scroll window under mouse
 (setq scroll-step 1)                                ;; keyboard scroll one line at a time
-
-(setq visible-bell 1)
 
 (set-default 'truncate-lines t)
 
@@ -72,6 +69,15 @@
 
 (set-face-attribute 'region nil :background "#0077aa" :foreground "#ffffff")
 
+(setq visible-bell 1)
+
+(setq backup-directory-alist `(("." . "~/.emacs-saves")))
+
+(setq delete-old-versions t
+kept-new-versions 6
+kept-old-versions 2
+version-control t)
+
 (defun move-text-internal (arg)
   (cond
    ((and mark-active transient-mark-mode)
@@ -94,7 +100,7 @@
           (transpose-lines arg))
         (forward-line -1))
       (move-to-column column t)))))
-     
+
 (defun move-text-down (arg)
   "Move region (transient-mark-mode active) or current line
   arg lines down."
