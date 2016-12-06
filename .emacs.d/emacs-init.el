@@ -16,7 +16,10 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+   (aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+ '(elpy-rpc-python-command "python3")
+ '(python-shell-interpreter "python3")
+ '(pyvenv-virtualenvwrapper-python "/usr/bin/python3")
  '(save-place t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -68,6 +71,8 @@
 (set-cursor-color "#00aaee")
 
 (set-face-attribute 'region nil :background "#0077aa" :foreground "#ffffff")
+
+(setq-default frame-title-format '("%b"))
 
 (setq visible-bell 1)
 
@@ -124,3 +129,20 @@ version-control t)
 
 (global-set-key [M-up] 'move-text-up)
 (global-set-key [M-down] 'move-text-down)
+
+(pyvenv-activate "~/scripts/python/")
+
+(add-hook 'python-mode-hook (
+    lambda() 
+	(pyvenv-mode t)
+	(elpy-mode t)
+	(ido-mode t)
+	(flycheck-mode t)
+	(aggressive-indent-mode t)
+)t)
+
+(add-hook 'org-mode-hook (
+    lambda() 
+	(abbrev-mode t)
+	(org-bullets-mode t)
+)t)

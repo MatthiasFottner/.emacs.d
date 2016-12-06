@@ -7,3 +7,5 @@ cd bin
 emacs -nw
 emacs
 emacs.exe -nw
+python
+sudo python3 -m pip install autopep8
