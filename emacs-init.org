@@ -1,0 +1,331 @@
+* Package
+#+BEGIN_SRC emacs-lisp
+    (when (>= emacs-major-version 24)
+    (require 'package)
+    (add-to-list
+     'package-archives
+     '("melpa" . "http://melpa.org/packages/"))
+    (package-initialize))
+#+END_SRC
+
+* System dependent variables
+** Ghostscript
+  #+BEGIN_SRC emacs-lisp
+    (setq doc-view-ghostscript-program "D:/Programme/gohstscript/gs9.18/bin/gswin32.exe")
+  #+END_SRC
+** Go
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'exec-path "D:/Daten/Coding/Go/Library/bin/")
+  #+END_SRC
+* Requires
+  #+BEGIN_SRC emacs-lisp
+    (require 'org)
+    (require 'multiple-cursors)
+  #+END_SRC
+* UI customization
+** Smoother scrolling
+#+BEGIN_SRC emacs-lisp
+  (setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; one line at a time
+  (setq mouse-wheel-progressive-speed nil)            ;; don't accelerate scrolling
+  (setq mouse-wheel-follow-mouse 't)                  ;; scroll window under mouse
+  (setq scroll-step 3)                                ;; keyboard scroll one line at a time
+#+END_SRC
+
+** Long lines
+#+BEGIN_SRC emacs-lisp
+  (set-default 'truncate-lines t)
+#+END_SRC
+
+** Numbers highlighted
+#+BEGIN_SRC emacs-lisp
+  (font-lock-add-keywords nil '(("[-+]?\\b[0-9]*\\.?[0-9]+\\(?:[eE][-+]?[0-9]+\\)?\\b" . font-lock-warning-face)))
+#+END_SRC
+
+** Modeline
+#+BEGIN_SRC emacs-lisp
+  (creamsody-modeline-three)
+  (set-face-attribute 'mode-line nil :height 1.0)
+  (set-face-attribute 'mode-line-inactive nil :height 1.0)
+#+END_SRC
+
+** Start in fullscreen
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  ;; (split-window-horizontally)
+#+END_SRC
+
+** Startup text
+#+BEGIN_SRC emacs-lisp
+(setq initial-scratch-message "\
+I’m giving up on trying
+to sell your things that you ain’t buying.
+
+It's your move
+I played all of mine
+Time is running out
+Make your move
+Or we can't go on
+Till you understand
+It's all in your hands")
+(setq initial-major-mode 'fundamental-mode)
+#+END_SRC
+
+** Show matching parentheses
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode t)
+#+END_SRC
+
+** Cursorcolor
+#+BEGIN_SRC emacs-lisp
+  (set-cursor-color "#ff84a4")
+#+END_SRC
+
+** Title bar
+#+BEGIN_SRC emacs-lisp
+  (setq-default frame-title-format '("%b - Emacs"))
+#+END_SRC
+** Vertical completitions in minibuffer
+  #+BEGIN_SRC emacs-lisp
+    (setq completions-format 'vertical)
+  #+END_SRC
+
+* Custom behavior
+** ido-mode
+#+BEGIN_SRC emacs-lisp
+(ido-mode)
+#+END_SRC
+
+** No bell sound
+#+BEGIN_SRC emacs-lisp
+  (setq visible-bell nil
+      ring-bell-function #'ignore)
+#+END_SRC
+
+** Backup files
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist `(("." . "~/.emacs-saves")))
+
+  (setq delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
+#+END_SRC
+** Save hooks
+Remove trailing whitespace
+Tabs to spaces
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace-except-current-line)
+  (defun untabify-except-makefiles ()
+  "Replace tabs with spaces except in makefiles."
+  (unless (derived-mode-p 'makefile-mode)
+    (untabify (point-min) (point-max))))
+
+  (add-hook 'before-save-hook 'untabify-except-makefiles)
+#+END_SRC
+
+** Treat underscore as part of the word
+#+BEGIN_SRC emacs-lisp
+(modify-syntax-entry ?_ "w")
+#+END_SRC
+
+#+RESULTS:
+
+** Orgmode timestamp todo
+#+BEGIN_SRC emacs-lisp
+ (setq org-log-done 'time)
+#+END_SRC
+
+** Cursor blink colors
+#+BEGIN_SRC emacs-lisp
+(defvar blink-cursor-colors (list
+     "#00FFF6"
+     "#0099FF")
+  "On each blink the cursor will cycle to the next color in this list.")
+
+(setq blink-cursor-count 0)
+(defun blink-cursor-timer-function ()
+  "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'.
+Warning: overwrites original version in `frame.el'.
+
+This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
+  (when (not (internal-show-cursor-p))
+    (when (>= blink-cursor-count (length blink-cursor-colors))
+      (setq blink-cursor-count 0))
+    (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
+    (setq blink-cursor-count (+ 1 blink-cursor-count))
+    )
+  (internal-show-cursor nil (not (internal-show-cursor-p))))
+
+(blink-cursor-mode)
+#+END_SRC
+
+** Diff-Hl
+#+BEGIN_SRC emacs-lisp
+(global-diff-hl-mode t)
+;(diff-hl-flydiff-mode t)
+
+;; Workaround for displaying correctly in other window
+(use-package frame
+  :defer t
+  :config
+  (progn
+    (setq window-divider-default-places 'right-only) ;Default 'right-only
+    ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=27830#20
+    ;; Workaround on emacs 26+ to prevent fringe truncation. You need to use
+    ;; either scroll bars or window dividers to prevent that.
+    ;; I dislike the default face of `window-divider', so I customize that in my
+    ;; `smyx-theme`.
+    (setq window-divider-default-right-width 1) ;Default 6
+    (window-divider-mode 1)))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+* Own functions
+** move lines and regions
+#+BEGIN_SRC emacs-lisp
+  (defun move-text-internal (arg)
+    (cond
+     ((and mark-active transient-mark-mode)
+      (if (> (point) (mark))
+          (exchange-point-and-mark))
+      (let ((column (current-column))
+            (text (delete-and-extract-region (point) (mark))))
+        (forward-line arg)
+        (move-to-column column t)
+        (set-mark (point))
+        (insert text)
+        (exchange-point-and-mark)
+        (setq deactivate-mark nil)))
+     (t
+      (let ((column (current-column)))
+        (beginning-of-line)
+        (when (or (> arg 0) (not (bobp)))
+          (forward-line)
+          (when (or (< arg 0) (not (eobp)))
+            (transpose-lines arg))
+          (forward-line -1))
+        (move-to-column column t)))))
+
+  (defun move-text-down (arg)
+    "Move region (transient-mark-mode active) or current line
+    arg lines down."
+    (interactive "*p")
+    (move-text-internal arg))
+
+  (defun move-text-up (arg)
+    "Move region (transient-mark-mode active) or current line
+    arg lines up."
+    (interactive "*p")
+    (move-text-internal (- arg)))
+#+END_SRC
+
+** open this file
+#+BEGIN_SRC emacs-lisp
+  (defun find-user-init-file ()
+    "Edit the `init.org', in another window."
+    (interactive)
+    (find-file-other-window "~/.emacs.d/emacs-init.org"))
+#+END_SRC
+** Wolfram alpha mode
+#+BEGIN_SRC emacs-lisp
+
+    (setq wolfram-alpha-app-id "UX8T57-3WXAA24JHT")
+#+END_SRC
+
+** Delete whitepsace except current line
+#+BEGIN_SRC emacs-lisp
+(defun delete-trailing-whitespace-except-current-line ()
+  (interactive)
+  (let ((begin (line-beginning-position))
+        (end (line-end-position)))
+    (save-excursion
+      (when (< (point-min) begin)
+        (save-restriction
+          (narrow-to-region (point-min) (1- begin))
+          (delete-trailing-whitespace)))
+      (when (> (point-max) end)
+        (save-restriction
+          (narrow-to-region (1+ end) (point-max))
+          (delete-trailing-whitespace))))))
+#+END_SRC
+* Own Shortcuts
+#+BEGIN_SRC emacs-lisp
+  (global-unset-key "\C-d")
+  (global-set-key (kbd "C-j") 'join-line)
+  (global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
+
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C-c i") 'find-user-init-file)
+  (global-set-key (kbd "C-#") 'comment-line)
+
+  (global-set-key [M-up] 'move-text-up)
+  (global-set-key [M-down] 'move-text-down)
+#+END_SRC
+
+* Mode specifics
+
+** C/C++
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'c++-mode-hook (
+         lambda()
+            (c-set-style "awk")
+            (abbrev-mode -1)
+            (define-key c++-mode-map (kbd "C-d") nil)
+     )t)
+
+     (add-hook 'c-mode-hook (
+         lambda()
+            (c-set-style "awk")
+            (abbrev-mode -1)
+            (define-key c-mode-map (kbd "C-d") nil)
+     )t)
+
+   #+END_SRC
+** Go
+   #+BEGIN_SRC emacs-lisp
+    (defun auto-complete-for-go ()
+      (auto-complete-mode 1))
+     (add-hook 'go-mode-hook 'auto-complete-for-go)
+
+
+        (with-eval-after-load 'go-mode
+     (require 'go-autocomplete))
+
+    (add-hook 'go-mode-hook (
+         lambda()
+             (add-hook 'before-save-hook #'gofmt-before-save)
+     )t)
+   #+END_SRC
+** Python
+   #+BEGIN_SRC emacs-lisp
+     (pyvenv-activate "~/scripts/python/")
+
+     (add-hook 'python-mode-hook (
+         lambda()
+             (pyvenv-mode t)
+             (elpy-mode t)
+             (ido-mode t)
+             (flycheck-mode t)
+            ;; (aggressive-indent-mode t)
+     )t)
+
+   #+END_SRC
+** Org
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-mode-hook (
+         lambda()
+             (abbrev-mode t)
+             (auto-fill-mode t)
+     )t)
+     (setq org-log-done 'time)
+   #+END_SRC
+** DocViewMode (PDF)
+#+BEGIN_SRC emacs-lisp
+   (add-hook 'doc-view-mode-hook (
+      lambda()
+          ('auto-revert-mode)
+          (setq doc-view-continuous t)) t )
+#+END_SRC
