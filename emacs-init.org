@@ -324,8 +324,9 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
    #+END_SRC
 ** DocViewMode (PDF)
 #+BEGIN_SRC emacs-lisp
-   (add-hook 'doc-view-mode-hook (
-      lambda()
-          ('auto-revert-mode)
-          (setq doc-view-continuous t)) t )
+(add-hook 'doc-view-mode-hook (
+  lambda ()
+    (auto-revert-mode)
+    (setq doc-view-continuous t)
+  ))
 #+END_SRC
