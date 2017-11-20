@@ -20,8 +20,10 @@
 * Requires
   #+BEGIN_SRC emacs-lisp
     (require 'org)
+    (require 'ox)
     (require 'multiple-cursors)
   #+END_SRC
+
 * UI customization
 ** Smoother scrolling
 #+BEGIN_SRC emacs-lisp
@@ -91,8 +93,11 @@ It's all in your hands")
 
 * Custom behavior
 ** ido-mode
+(require 'ido-vertical-mode)
 #+BEGIN_SRC emacs-lisp
-(ido-mode)
+(ido-mode 1)
+(ido-vertical-mode 1)
+;(setq ido-separator "\n\t ")
 #+END_SRC
 
 ** No bell sound
@@ -110,6 +115,18 @@ It's all in your hands")
   kept-old-versions 2
   version-control t)
 #+END_SRC
+** Save on buffer focus lost
+#+BEGIN_SRC emacs-lisp
+   (add-hook 'focus-out-hook 'save-buffer)
+   (add-hook 'mouse-leave-buffer-hook 'save-buffer)
+   ;(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
+
+   (defadvice switch-to-buffer (before save-buffer-now activate)
+     (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
+   (defadvice other-window (before other-window-now activate)
+  (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
+#+END_SRC
+
 ** Save hooks
 Remove trailing whitespace
 Tabs to spaces
@@ -182,43 +199,88 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 #+RESULTS:
 : t
 
+** Global revert mode
+#+BEGIN_SRC emacs-lisp
+(global-auto-revert-mode t)
+#+END_SRC
+** Overwrtite marked texed
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode 1)
+#+END_SRC
 * Own functions
 ** move lines and regions
 #+BEGIN_SRC emacs-lisp
-  (defun move-text-internal (arg)
-    (cond
-     ((and mark-active transient-mark-mode)
-      (if (> (point) (mark))
-          (exchange-point-and-mark))
-      (let ((column (current-column))
-            (text (delete-and-extract-region (point) (mark))))
-        (forward-line arg)
-        (move-to-column column t)
-        (set-mark (point))
-        (insert text)
-        (exchange-point-and-mark)
-        (setq deactivate-mark nil)))
-     (t
-      (let ((column (current-column)))
-        (beginning-of-line)
-        (when (or (> arg 0) (not (bobp)))
-          (forward-line)
-          (when (or (< arg 0) (not (eobp)))
-            (transpose-lines arg))
-          (forward-line -1))
-        (move-to-column column t)))))
+    ;; (defun move-text-internal (arg)
+    ;;   (cond
+    ;;    ((and mark-active transient-mark-mode)
+    ;;     (if (> (point) (mark))
+    ;;         (exchange-point-and-mark))
+    ;;     (let ((column (current-column))
+    ;;           (text (delete-and-extract-region (point) (mark))))
+    ;;       (forward-line arg)
+    ;;       (move-to-column column t)
+    ;;       (set-mark (point))
+    ;;       (insert text)
+    ;;       (exchange-point-and-mark)
+    ;;       (setq deactivate-mark nil)))
+    ;;    (t
+    ;;     (let ((column (current-column)))
+    ;;       (beginning-of-line)
+    ;;       (when (or (> arg 0) (not (bobp)))
+    ;;         (forward-line)
+    ;;         (when (or (< arg 0) (not (eobp)))
+    ;;           (transpose-lines arg))
+    ;;         (forward-line -1))
+    ;;       (move-to-column column t)))))
 
-  (defun move-text-down (arg)
-    "Move region (transient-mark-mode active) or current line
-    arg lines down."
-    (interactive "*p")
-    (move-text-internal arg))
+    ;; (defun move-text-down (arg)
+    ;;   "Move region (transient-mark-mode active) or current line
+    ;;   arg lines down."
+    ;;   (interactive "*p")
+    ;;   (move-text-internal arg))
 
-  (defun move-text-up (arg)
-    "Move region (transient-mark-mode active) or current line
-    arg lines up."
+    ;; (defun move-text-up (arg)
+    ;;   "Move region (transient-mark-mode active) or current line
+    ;;   arg lines up."
+    ;;   (interactive "*p")
+    ;;   (move-text-internal (- arg)))
+
+  (defun move-lines (n)
+    (let ((beg) (end) (keep))
+      (if mark-active
+          (save-excursion
+            (setq keep t)
+            (setq beg (region-beginning)
+                  end (region-end))
+            (goto-char beg)
+            (setq beg (line-beginning-position))
+            (goto-char end)
+            (setq end (line-beginning-position 2)))
+        (setq beg (line-beginning-position)
+              end (line-beginning-position 2)))
+      (let ((offset (if (and (mark t)
+                             (and (>= (mark t) beg)
+                                  (< (mark t) end)))
+                        (- (point) (mark t))))
+            (rewind (- end (point))))
+        (goto-char (if (< n 0) beg end))
+        (forward-line n)
+        (insert (delete-and-extract-region beg end))
+        (backward-char rewind)
+        (if offset (set-mark (- (point) offset))))
+      (if keep
+          (setq mark-active t
+                deactivate-mark nil))))
+
+  (defun move-lines-up (n)
+    "move the line(s) spanned by the active region up by N lines."
     (interactive "*p")
-    (move-text-internal (- arg)))
+    (move-lines (- (or n 1))))
+
+  (defun move-lines-down (n)
+    "move the line(s) spanned by the active region down by N lines."
+    (interactive "*p")
+    (move-lines (or n 1)))
 #+END_SRC
 
 ** open this file
@@ -250,6 +312,16 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
           (narrow-to-region (1+ end) (point-max))
           (delete-trailing-whitespace))))))
 #+END_SRC
+** Save the file and org export to pdf
+#+BEGIN_SRC emacs-lisp
+  (defun save-and-export-to-pdf ()
+    "Save the buffer and then latex export to pdf."
+    (interactive)
+    (fill-paragraph 1)
+    (save-buffer)
+    (org-latex-export-to-pdf))
+#+END_SRC
+
 * Own Shortcuts
 #+BEGIN_SRC emacs-lisp
   (global-unset-key "\C-d")
@@ -260,8 +332,13 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (global-set-key (kbd "C-c i") 'find-user-init-file)
   (global-set-key (kbd "C-#") 'comment-line)
 
-  (global-set-key [M-up] 'move-text-up)
-  (global-set-key [M-down] 'move-text-down)
+  (global-set-key [M-up]   'move-lines-up)
+  (global-set-key [M-down] 'move-lines-down)
+
+  (define-key org-mode-map (kbd "C-c p") 'save-and-export-to-pdf)
+  (define-key org-mode-map (kbd "C-#") 'comment-line)
+  (define-key org-mode-map [M-up]   'move-lines-up)
+  (define-key org-mode-map [M-down] 'move-lines-down)
 #+END_SRC
 
 * Mode specifics
@@ -318,6 +395,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
      (add-hook 'org-mode-hook (
          lambda()
              (abbrev-mode t)
+             (set-fill-column 100)
              (auto-fill-mode t)
      )t)
      (setq org-log-done 'time)

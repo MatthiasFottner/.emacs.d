@@ -16,8 +16,11 @@
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(elpy-rpc-python-command "python")
+ '(flyspell-default-dictionary "deutsch8")
+ '(focus-follows-mouse nil)
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
+ '(org-export-in-background t)
  '(org-latex-classes
    (quote
     (("sig" "\\documentclass{sig-alternate}"
@@ -46,14 +49,15 @@
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
  '(package-selected-packages
    (quote
-    (use-package diff-hl focus-autosave-mode buffer-move weechat creamsody-theme sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat creamsody-theme sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(python-shell-interpreter "python")
  '(pyvenv-virtualenvwrapper-python "C:/Languages/Python35/python")
  '(save-place t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
- '(tooltip-mode nil))
+ '(tooltip-mode nil)
+ '(tramp-syntax (quote default) nil (tramp)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
