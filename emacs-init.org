@@ -11,12 +11,16 @@
 * System dependent variables
 ** Ghostscript
   #+BEGIN_SRC emacs-lisp
-    (setq doc-view-ghostscript-program "D:/Programme/gohstscript/gs9.18/bin/gswin32.exe")
+    (setq doc-view-ghostscript-program "C:/Program Files/gs/gs9.22/bin/gswin32.exe")
   #+END_SRC
 ** Go
   #+BEGIN_SRC emacs-lisp
     (add-to-list 'exec-path "D:/Daten/Coding/Go/Library/bin/")
   #+END_SRC
+** Python
+#+BEGIN_SRC emacs-lisp
+  ;; (pyvenv-activate "~/scripts/python/")
+#+END_SRC
 * Requires
   #+BEGIN_SRC emacs-lisp
     (require 'org)
@@ -117,14 +121,13 @@ It's all in your hands")
 #+END_SRC
 ** Save on buffer focus lost
 #+BEGIN_SRC emacs-lisp
-   (add-hook 'focus-out-hook 'save-buffer)
-   (add-hook 'mouse-leave-buffer-hook 'save-buffer)
-   ;(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
+   (add-hook 'focus-out-hook          (lambda () (when (and buffer-file-name (buffer-modified-p)) (save-buffer))))
+   (add-hook 'mouse-leave-buffer-hook (lambda () (when (and buffer-file-name (buffer-modified-p)) (save-buffer))))
 
-   (defadvice switch-to-buffer (before save-buffer-now activate)
-     (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
-   (defadvice other-window (before other-window-now activate)
-  (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
+    (defadvice switch-to-buffer (before save-buffer-now activate)
+      (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
+    (defadvice other-window (before other-window-now activate)
+   (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
 #+END_SRC
 
 ** Save hooks
@@ -377,7 +380,6 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
    #+END_SRC
 ** Python
    #+BEGIN_SRC emacs-lisp
-     (pyvenv-activate "~/scripts/python/")
 
      (add-hook 'python-mode-hook (
          lambda()
@@ -390,7 +392,6 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 
    #+END_SRC
 ** Org
-
    #+BEGIN_SRC emacs-lisp
      (add-hook 'org-mode-hook (
          lambda()
@@ -398,6 +399,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
              (set-fill-column 100)
              (auto-fill-mode t)
      )t)
+     (setq org-latex-to-pdf-process '("pdflatex %f && bibtex %f && pdflatex %f && pdflatex %f"))
      (setq org-log-done 'time)
    #+END_SRC
 ** DocViewMode (PDF)

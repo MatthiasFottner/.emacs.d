@@ -8,14 +8,13 @@
  '(custom-enabled-themes (quote (creamsody)))
  '(custom-safe-themes
    (quote
-    ("0ee3fc6d2e0fc8715ff59aed2432510d98f7e76fe81d183a0eb96789f4d897ca" default)))
+    ("5eeb99062a978f545705eb94a8c3af3039a298621cf152f8f81296b9e99d10fa" "0ee3fc6d2e0fc8715ff59aed2432510d98f7e76fe81d183a0eb96789f4d897ca" default)))
  '(dnd-open-file-other-window t)
  '(doc-view-continuous t)
  '(elpy-mode-hook nil)
  '(elpy-modules
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
- '(elpy-rpc-python-command "python")
  '(flyspell-default-dictionary "deutsch8")
  '(focus-follows-mouse nil)
  '(inhibit-startup-screen t)
@@ -50,10 +49,9 @@
  '(package-selected-packages
    (quote
     (move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat creamsody-theme sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
- '(python-shell-interpreter "python")
- '(pyvenv-virtualenvwrapper-python "C:/Languages/Python35/python")
  '(save-place t)
  '(scroll-bar-mode nil)
+ '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
