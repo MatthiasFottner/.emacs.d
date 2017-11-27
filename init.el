@@ -5,10 +5,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (creamsody)))
+ '(ansi-color-names-vector
+   ["#3C3836" "#FB4933" "#86C9D3" "#8DD1CA" "#419BB0" "#A59FC0" "#3FD7E5" "#EBDBB2"])
+ '(blink-cursor-mode t)
+ '(custom-enabled-themes (quote (sanityinc-solarized-dark)))
  '(custom-safe-themes
    (quote
-    ("5eeb99062a978f545705eb94a8c3af3039a298621cf152f8f81296b9e99d10fa" "0ee3fc6d2e0fc8715ff59aed2432510d98f7e76fe81d183a0eb96789f4d897ca" default)))
+    ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "5eeb99062a978f545705eb94a8c3af3039a298621cf152f8f81296b9e99d10fa" "0ee3fc6d2e0fc8715ff59aed2432510d98f7e76fe81d183a0eb96789f4d897ca" default)))
  '(dnd-open-file-other-window t)
  '(doc-view-continuous t)
  '(elpy-mode-hook nil)
@@ -17,9 +20,12 @@
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(flyspell-default-dictionary "deutsch8")
  '(focus-follows-mouse nil)
+ '(global-diff-hl-mode t)
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
  '(org-export-in-background t)
+ '(org-highlight-latex-and-related (quote (latex script entities)))
+ '(org-latex-caption-above nil)
  '(org-latex-classes
    (quote
     (("sig" "\\documentclass{sig-alternate}"
@@ -46,9 +52,17 @@
       ("\\section{%s}" . "\\section*{%s}")
       ("\\subsection{%s}" . "\\subsection*{%s}")
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
+ '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat creamsody-theme sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+ '(pos-tip-background-color "#1A3734")
+ '(pos-tip-foreground-color "#FFFFC8")
+ '(powerline-default-separator (quote wave))
+ '(powerline-display-hud t)
+ '(powerline-gui-use-vcs-glyph nil)
+ '(powerline-height 25)
+ '(powerline-text-scale-factor nil)
  '(save-place t)
  '(scroll-bar-mode nil)
  '(send-mail-function (quote mailclient-send-it))
@@ -62,9 +76,20 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Monaco" :foundry "outline" :slant normal :weight normal :height 98 :width normal))))
- '(diff-hl-change ((t (:inherit default :foreground "orange"))))
- '(diff-hl-insert ((t (:inherit diff-added :foreground "green")))))
+ '(default ((t (:family "Cousine" :foundry "outline" :slant normal :weight normal :height 113 :width normal))))
+ '(diff-hl-change ((t (:inherit fringe :background "#073642" :foreground "orange"))))
+ '(diff-hl-delete ((t (:background "#073642" :foreground "orange red"))))
+ '(diff-hl-insert ((t (:inherit diff-added :background "#073642" :foreground "green"))))
+ '(mode-line ((t (:background "#073642" :box nil :weight normal :height 1.0))))
+ '(mode-line-buffer-id-inactive ((t (:inherit mode-line-buffer-id :box nil))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "#073642" :foreground "#586e75" :box nil :weight normal :height 1.0))))
+ '(org-level-1 ((t (:inherit outline-1 :height 1.8))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.5))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.3))))
+ '(powerline-active1 ((t (:background "#14282D" :foreground "#839496" :box nil))))
+ '(powerline-active2 ((t (:background "#073642" :foreground "#839496" :box nil))))
+ '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "grey11" :box nil))))
+ '(powerline-inactive2 ((t (:inherit mode-line-inactive :background "grey20" :box nil)))))
 
  (org-babel-load-file
     (expand-file-name "emacs-init.org"

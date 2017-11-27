@@ -1,19 +1,23 @@
 (when (>= emacs-major-version 24)
-(require 'package)
-(add-to-list
- 'package-archives
- '("melpa" . "http://melpa.org/packages/"))
-(package-initialize))
+  (require 'package)
+  (add-to-list
+   'package-archives
+   '("melpa" . "http://melpa.org/packages/"))
+  (package-initialize))
 
-(setq doc-view-ghostscript-program "C:/Program Files/gs/gs9.22/bin/gswin32.exe")
+;; (setq user-full-name "Felix Brendel"
+;;       user-mail-address "felix@brendel.engineering") ;
+
+(setq doc-view-ghostscript-program "D:/Programme/gohstscript/gs9.18/bin/gswin32.exe")
 
 (add-to-list 'exec-path "D:/Daten/Coding/Go/Library/bin/")
 
 ;; (pyvenv-activate "~/scripts/python/")
 
 (require 'org)
-(require 'ox)
-(require 'multiple-cursors)
+    (require 'ox)
+    (require 'multiple-cursors)
+;;    (require 'creamsody-theme)
 
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil)            ;; don't accelerate scrolling
@@ -24,9 +28,10 @@
 
 (font-lock-add-keywords nil '(("[-+]?\\b[0-9]*\\.?[0-9]+\\(?:[eE][-+]?[0-9]+\\)?\\b" . font-lock-warning-face)))
 
-(creamsody-modeline-three)
-(set-face-attribute 'mode-line nil :height 1.0)
-(set-face-attribute 'mode-line-inactive nil :height 1.0)
+;; (creamsody-modeline-two)
+;; (set-face-attribute 'mode-line nil :height 1.0)
+;; (set-face-attribute 'mode-line-inactive nil :height 1.0)
+(powerline-default-theme)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; (split-window-horizontally)
@@ -128,40 +133,30 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 
 (delete-selection-mode 1)
 
-;; (defun move-text-internal (arg)
-  ;;   (cond
-  ;;    ((and mark-active transient-mark-mode)
-  ;;     (if (> (point) (mark))
-  ;;         (exchange-point-and-mark))
-  ;;     (let ((column (current-column))
-  ;;           (text (delete-and-extract-region (point) (mark))))
-  ;;       (forward-line arg)
-  ;;       (move-to-column column t)
-  ;;       (set-mark (point))
-  ;;       (insert text)
-  ;;       (exchange-point-and-mark)
-  ;;       (setq deactivate-mark nil)))
-  ;;    (t
-  ;;     (let ((column (current-column)))
-  ;;       (beginning-of-line)
-  ;;       (when (or (> arg 0) (not (bobp)))
-  ;;         (forward-line)
-  ;;         (when (or (< arg 0) (not (eobp)))
-  ;;           (transpose-lines arg))
-  ;;         (forward-line -1))
-  ;;       (move-to-column column t)))))
+(defalias 'yes-or-no-p 'y-or-n-p)
 
-  ;; (defun move-text-down (arg)
-  ;;   "Move region (transient-mark-mode active) or current line
-  ;;   arg lines down."
-  ;;   (interactive "*p")
-  ;;   (move-text-internal arg))
+(setq locale-coding-system 'utf-8) ; pretty
+(set-terminal-coding-system 'utf-8) ; pretty
+(set-keyboard-coding-system 'utf-8) ; pretty
+(set-selection-coding-system 'utf-8) ; please
+(prefer-coding-system 'utf-8) ; with sugar on top
 
-  ;; (defun move-text-up (arg)
-  ;;   "Move region (transient-mark-mode active) or current line
-  ;;   arg lines up."
-  ;;   (interactive "*p")
-  ;;   (move-text-internal (- arg)))
+(setq sentence-end-double-space nil)
+
+(set-frame-parameter (selected-frame) 'alpha '(100 . 96))
+ (add-to-list 'default-frame-alist '(alpha . (100 . 96)))
+ (defun transparency-toggle ()
+   (interactive)
+   (let ((alpha (frame-parameter nil 'alpha)))
+     (set-frame-parameter
+      nil 'alpha
+      (if (eql (cond ((numberp alpha) alpha)
+                     ((numberp (cdr alpha)) (cdr alpha))
+                     ;; Also handle undocumented (<active> <inactive>) form.
+                     ((numberp (cadr alpha)) (cadr alpha)))
+               100)
+          '(100 . 96) '(100 . 96)))))
+(transparency-toggle)
 
 (defun move-lines (n)
   (let ((beg) (end) (keep))
@@ -205,6 +200,11 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (interactive)
   (find-file-other-window "~/.emacs.d/emacs-init.org"))
 
+(defun find-org-capture-file ()
+  "Edit the org capture file, in another window."
+  (interactive)
+  (find-file-other-window org-default-notes-file))
+
 (setq wolfram-alpha-app-id "UX8T57-3WXAA24JHT")
 
 (defun delete-trailing-whitespace-except-current-line ()
@@ -228,12 +228,14 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (save-buffer)
   (org-latex-export-to-pdf))
 
+(global-unset-key (kbd "C-z"))
 (global-unset-key "\C-d")
 (global-set-key (kbd "C-j") 'join-line)
 (global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
 
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C-c i") 'find-user-init-file)
+(global-set-key (kbd "C-c t") 'find-org-capture-file)
 (global-set-key (kbd "C-#") 'comment-line)
 
 (global-set-key [M-up]   'move-lines-up)
@@ -243,6 +245,8 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 (define-key org-mode-map (kbd "C-#") 'comment-line)
 (define-key org-mode-map [M-up]   'move-lines-up)
 (define-key org-mode-map [M-down] 'move-lines-down)
+
+(bind-key "C-c c" 'org-capture)
 
 (add-hook 'c++-mode-hook (
     lambda()
@@ -280,14 +284,17 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
        ;; (aggressive-indent-mode t)
 )t)
 
-(add-hook 'org-mode-hook (
-    lambda()
-        (abbrev-mode t)
-        (set-fill-column 100)
-        (auto-fill-mode t)
-)t)
-(setq org-latex-to-pdf-process '("pdflatex %f && bibtex %f && pdflatex %f && pdflatex %f"))
-(setq org-log-done 'time)
+(setq org-default-notes-file "~/org/notes.org")
+
+  (add-hook 'org-mode-hook (
+      lambda()
+          (abbrev-mode t)
+          (set-fill-column 100)
+          (auto-fill-mode t)
+          (org-bullets-mode t)
+  ))
+  (setq org-latex-to-pdf-process '("pdflatex %f && bibtex %f && pdflatex %f && pdflatex %f"))
+  (setq org-log-done 'time)
 
 (add-hook 'doc-view-mode-hook (
   lambda ()

@@ -1,17 +1,24 @@
 * Package
 #+BEGIN_SRC emacs-lisp
     (when (>= emacs-major-version 24)
-    (require 'package)
-    (add-to-list
-     'package-archives
-     '("melpa" . "http://melpa.org/packages/"))
-    (package-initialize))
+      (require 'package)
+      (add-to-list
+       'package-archives
+       '("melpa" . "http://melpa.org/packages/"))
+      (package-initialize))
+#+END_SRC
+
+* Variables
+** About me
+#+BEGIN_SRC emacs-lisp
+   (setq user-full-name "Felix Brendel"
+         user-mail-address "felix@brendel.engineering") ;
 #+END_SRC
 
 * System dependent variables
 ** Ghostscript
   #+BEGIN_SRC emacs-lisp
-    (setq doc-view-ghostscript-program "C:/Program Files/gs/gs9.22/bin/gswin32.exe")
+    (setq doc-view-ghostscript-program "D:/Programme/gohstscript/gs9.18/bin/gswin32.exe")
   #+END_SRC
 ** Go
   #+BEGIN_SRC emacs-lisp
@@ -26,6 +33,7 @@
     (require 'org)
     (require 'ox)
     (require 'multiple-cursors)
+;;    (require 'creamsody-theme)
   #+END_SRC
 
 * UI customization
@@ -49,9 +57,10 @@
 
 ** Modeline
 #+BEGIN_SRC emacs-lisp
-  (creamsody-modeline-three)
-  (set-face-attribute 'mode-line nil :height 1.0)
-  (set-face-attribute 'mode-line-inactive nil :height 1.0)
+    ;; (creamsody-modeline-two)
+    ;; (set-face-attribute 'mode-line nil :height 1.0)
+    ;; (set-face-attribute 'mode-line-inactive nil :height 1.0)
+    (powerline-default-theme)
 #+END_SRC
 
 ** Start in fullscreen
@@ -210,44 +219,45 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 #+BEGIN_SRC emacs-lisp
 (delete-selection-mode 1)
 #+END_SRC
+** simpler yes no dialoge
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+** utf-8 everywhere
+#+BEGIN_SRC emacs-lisp
+(setq locale-coding-system 'utf-8) ; pretty
+(set-terminal-coding-system 'utf-8) ; pretty
+(set-keyboard-coding-system 'utf-8) ; pretty
+(set-selection-coding-system 'utf-8) ; please
+(prefer-coding-system 'utf-8) ; with sugar on top
+#+END_SRC
+** no double space after sentence needed
+#+BEGIN_SRC emacs-lisp
+(setq sentence-end-double-space nil)
+#+END_SRC
+** Transparent Background if not in focus
+#+BEGIN_SRC emacs-lisp
+ (set-frame-parameter (selected-frame) 'alpha '(100 . 96))
+ (add-to-list 'default-frame-alist '(alpha . (100 . 96)))
+ (defun transparency-toggle ()
+   (interactive)
+   (let ((alpha (frame-parameter nil 'alpha)))
+     (set-frame-parameter
+      nil 'alpha
+      (if (eql (cond ((numberp alpha) alpha)
+                     ((numberp (cdr alpha)) (cdr alpha))
+                     ;; Also handle undocumented (<active> <inactive>) form.
+                     ((numberp (cadr alpha)) (cadr alpha)))
+               100)
+          '(100 . 96) '(100 . 96)))))
+(transparency-toggle)
+#+END_SRC
+
+#+RESULTS:
+
 * Own functions
 ** move lines and regions
 #+BEGIN_SRC emacs-lisp
-    ;; (defun move-text-internal (arg)
-    ;;   (cond
-    ;;    ((and mark-active transient-mark-mode)
-    ;;     (if (> (point) (mark))
-    ;;         (exchange-point-and-mark))
-    ;;     (let ((column (current-column))
-    ;;           (text (delete-and-extract-region (point) (mark))))
-    ;;       (forward-line arg)
-    ;;       (move-to-column column t)
-    ;;       (set-mark (point))
-    ;;       (insert text)
-    ;;       (exchange-point-and-mark)
-    ;;       (setq deactivate-mark nil)))
-    ;;    (t
-    ;;     (let ((column (current-column)))
-    ;;       (beginning-of-line)
-    ;;       (when (or (> arg 0) (not (bobp)))
-    ;;         (forward-line)
-    ;;         (when (or (< arg 0) (not (eobp)))
-    ;;           (transpose-lines arg))
-    ;;         (forward-line -1))
-    ;;       (move-to-column column t)))))
-
-    ;; (defun move-text-down (arg)
-    ;;   "Move region (transient-mark-mode active) or current line
-    ;;   arg lines down."
-    ;;   (interactive "*p")
-    ;;   (move-text-internal arg))
-
-    ;; (defun move-text-up (arg)
-    ;;   "Move region (transient-mark-mode active) or current line
-    ;;   arg lines up."
-    ;;   (interactive "*p")
-    ;;   (move-text-internal (- arg)))
-
   (defun move-lines (n)
     (let ((beg) (end) (keep))
       (if mark-active
@@ -286,16 +296,22 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
     (move-lines (or n 1)))
 #+END_SRC
 
-** open this file
+** open important files
 #+BEGIN_SRC emacs-lisp
   (defun find-user-init-file ()
     "Edit the `init.org', in another window."
     (interactive)
     (find-file-other-window "~/.emacs.d/emacs-init.org"))
+
+  (defun find-org-capture-file ()
+    "Edit the org capture file, in another window."
+    (interactive)
+    (find-file-other-window org-default-notes-file))
+
 #+END_SRC
+
 ** Wolfram alpha mode
 #+BEGIN_SRC emacs-lisp
-
     (setq wolfram-alpha-app-id "UX8T57-3WXAA24JHT")
 #+END_SRC
 
@@ -327,12 +343,14 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 
 * Own Shortcuts
 #+BEGIN_SRC emacs-lisp
+  (global-unset-key (kbd "C-z"))
   (global-unset-key "\C-d")
   (global-set-key (kbd "C-j") 'join-line)
   (global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
 
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   (global-set-key (kbd "C-c i") 'find-user-init-file)
+  (global-set-key (kbd "C-c t") 'find-org-capture-file)
   (global-set-key (kbd "C-#") 'comment-line)
 
   (global-set-key [M-up]   'move-lines-up)
@@ -342,6 +360,8 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (define-key org-mode-map (kbd "C-#") 'comment-line)
   (define-key org-mode-map [M-up]   'move-lines-up)
   (define-key org-mode-map [M-down] 'move-lines-down)
+
+  (bind-key "C-c c" 'org-capture)
 #+END_SRC
 
 * Mode specifics
@@ -393,15 +413,19 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
    #+END_SRC
 ** Org
    #+BEGIN_SRC emacs-lisp
+   (setq org-default-notes-file "~/org/notes.org")
+
      (add-hook 'org-mode-hook (
          lambda()
              (abbrev-mode t)
              (set-fill-column 100)
              (auto-fill-mode t)
-     )t)
+             (org-bullets-mode t)
+     ))
      (setq org-latex-to-pdf-process '("pdflatex %f && bibtex %f && pdflatex %f && pdflatex %f"))
      (setq org-log-done 'time)
    #+END_SRC
+
 ** DocViewMode (PDF)
 #+BEGIN_SRC emacs-lisp
 (add-hook 'doc-view-mode-hook (
