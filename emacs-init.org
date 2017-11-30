@@ -1,30 +1,31 @@
 * Package
 #+BEGIN_SRC emacs-lisp
-    (when (>= emacs-major-version 24)
       (require 'package)
+
       (add-to-list
        'package-archives
        '("melpa" . "http://melpa.org/packages/"))
-      (package-initialize))
+
+      (package-initialize)
 #+END_SRC
 
 * Variables
 ** About me
 #+BEGIN_SRC emacs-lisp
-   (setq user-full-name "Felix Brendel"
-         user-mail-address "felix@brendel.engineering") ;
+   (setq user-full-name    "Felix Brendel"
+         user-mail-address "felix@brendel.engineering")
 #+END_SRC
 
-* System dependent variables
-** Ghostscript
+** System dependent
+*** Ghostscript
   #+BEGIN_SRC emacs-lisp
     (setq doc-view-ghostscript-program "D:/Programme/gohstscript/gs9.18/bin/gswin32.exe")
   #+END_SRC
-** Go
+*** Go
   #+BEGIN_SRC emacs-lisp
     (add-to-list 'exec-path "D:/Daten/Coding/Go/Library/bin/")
   #+END_SRC
-** Python
+*** Python
 #+BEGIN_SRC emacs-lisp
   ;; (pyvenv-activate "~/scripts/python/")
 #+END_SRC
@@ -33,7 +34,6 @@
     (require 'org)
     (require 'ox)
     (require 'multiple-cursors)
-;;    (require 'creamsody-theme)
   #+END_SRC
 
 * UI customization
@@ -307,7 +307,6 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
     "Edit the org capture file, in another window."
     (interactive)
     (find-file-other-window org-default-notes-file))
-
 #+END_SRC
 
 ** Wolfram alpha mode
@@ -338,7 +337,9 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
     (interactive)
     (fill-paragraph 1)
     (save-buffer)
-    (org-latex-export-to-pdf))
+    (org-latex-export-to-pdf)
+    (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
+    (compilation-mode))
 #+END_SRC
 
 * Own Shortcuts
@@ -415,14 +416,23 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
    #+BEGIN_SRC emacs-lisp
    (setq org-default-notes-file "~/org/notes.org")
 
+   (require 'compile)
+   (add-to-list 'compilation-error-regexp-alist 'latex-warning)
+   (add-to-list 'compilation-error-regexp-alist-alist
+        '(latex-warning
+        "\\(LaTeX Warning:\\(.+\n\\)*\\)" 3 1))
+
+   (add-to-list 'compilation-error-regexp-alist 'latex-error)
+   (add-to-list 'compilation-error-regexp-alist-alist '(latex-error
+        "\\(.*Error:\\(.+\n\\)*\\)" 1))
+
      (add-hook 'org-mode-hook (
          lambda()
-             (abbrev-mode t)
              (set-fill-column 100)
+             (abbrev-mode t)
              (auto-fill-mode t)
              (org-bullets-mode t)
      ))
-     (setq org-latex-to-pdf-process '("pdflatex %f && bibtex %f && pdflatex %f && pdflatex %f"))
      (setq org-log-done 'time)
    #+END_SRC
 

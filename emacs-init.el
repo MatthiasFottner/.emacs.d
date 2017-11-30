@@ -1,12 +1,13 @@
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list
-   'package-archives
-   '("melpa" . "http://melpa.org/packages/"))
-  (package-initialize))
+(require 'package)
 
-;; (setq user-full-name "Felix Brendel"
-;;       user-mail-address "felix@brendel.engineering") ;
+(add-to-list
+ 'package-archives
+ '("melpa" . "http://melpa.org/packages/"))
+
+(package-initialize)
+
+(setq user-full-name    "Felix Brendel"
+      user-mail-address "felix@brendel.engineering")
 
 (setq doc-view-ghostscript-program "D:/Programme/gohstscript/gs9.18/bin/gswin32.exe")
 
@@ -15,9 +16,8 @@
 ;; (pyvenv-activate "~/scripts/python/")
 
 (require 'org)
-    (require 'ox)
-    (require 'multiple-cursors)
-;;    (require 'creamsody-theme)
+(require 'ox)
+(require 'multiple-cursors)
 
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil)            ;; don't accelerate scrolling
@@ -226,7 +226,9 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (interactive)
   (fill-paragraph 1)
   (save-buffer)
-  (org-latex-export-to-pdf))
+  (org-latex-export-to-pdf)
+  (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
+  (compilation-mode))
 
 (global-unset-key (kbd "C-z"))
 (global-unset-key "\C-d")
@@ -286,14 +288,23 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 
 (setq org-default-notes-file "~/org/notes.org")
 
+(require 'compile)
+(add-to-list 'compilation-error-regexp-alist 'latex-warning)
+(add-to-list 'compilation-error-regexp-alist-alist
+     '(latex-warning
+     "\\(LaTeX Warning:\\(.+\n\\)*\\)" 3 1))
+
+(add-to-list 'compilation-error-regexp-alist 'latex-error)
+(add-to-list 'compilation-error-regexp-alist-alist '(latex-error
+     "\\(.*Error:\\(.+\n\\)*\\)" 1))
+
   (add-hook 'org-mode-hook (
       lambda()
-          (abbrev-mode t)
           (set-fill-column 100)
+          (abbrev-mode t)
           (auto-fill-mode t)
           (org-bullets-mode t)
   ))
-  (setq org-latex-to-pdf-process '("pdflatex %f && bibtex %f && pdflatex %f && pdflatex %f"))
   (setq org-log-done 'time)
 
 (add-hook 'doc-view-mode-hook (

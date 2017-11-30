@@ -1,3 +1,8 @@
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
 (package-initialize)
 
 (custom-set-variables
@@ -23,6 +28,11 @@
  '(global-diff-hl-mode t)
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
+ '(org-capture-templates
+   (quote
+    (("s" "Schedule entry" entry
+      (file "~/org/notes.org")
+      ""))))
  '(org-export-in-background t)
  '(org-highlight-latex-and-related (quote (latex script entities)))
  '(org-latex-caption-above nil)
@@ -52,10 +62,13 @@
       ("\\section{%s}" . "\\section*{%s}")
       ("\\subsection{%s}" . "\\subsection*{%s}")
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
+ '(org-latex-pdf-process
+   (quote
+    ("pdflatex -interaction=batchmode -output-directory %o %f" "bibtex %b" "pdflatex -interaction=batchmode -output-directory %o %f" "pdflatex -interaction=batchmode -output-directory %o %f")))
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -86,11 +99,12 @@
  '(org-level-1 ((t (:inherit outline-1 :height 1.8))))
  '(org-level-2 ((t (:inherit outline-2 :height 1.5))))
  '(org-level-3 ((t (:inherit outline-3 :height 1.3))))
+ '(package-name ((t (:foreground "SpringGreen3" :underline t))))
  '(powerline-active1 ((t (:background "#14282D" :foreground "#839496" :box nil))))
  '(powerline-active2 ((t (:background "#073642" :foreground "#839496" :box nil))))
  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "grey11" :box nil))))
  '(powerline-inactive2 ((t (:inherit mode-line-inactive :background "grey20" :box nil)))))
 
- (org-babel-load-file
-    (expand-file-name "emacs-init.org"
-                     user-emacs-directory))
+  (org-babel-load-file
+     (expand-file-name "emacs-init.org"
+                      user-emacs-directory))
