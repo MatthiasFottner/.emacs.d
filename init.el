@@ -10,6 +10,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(TeX-show-compilation t)
  '(ansi-color-names-vector
    ["#3C3836" "#FB4933" "#86C9D3" "#8DD1CA" "#419BB0" "#A59FC0" "#3FD7E5" "#EBDBB2"])
  '(blink-cursor-mode t)
@@ -17,7 +18,6 @@
  '(custom-safe-themes
    (quote
     ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "5eeb99062a978f545705eb94a8c3af3039a298621cf152f8f81296b9e99d10fa" "0ee3fc6d2e0fc8715ff59aed2432510d98f7e76fe81d183a0eb96789f4d897ca" default)))
- '(dnd-open-file-other-window t)
  '(doc-view-continuous t)
  '(elpy-mode-hook nil)
  '(elpy-modules
@@ -26,13 +26,26 @@
  '(flyspell-default-dictionary "deutsch8")
  '(focus-follows-mouse nil)
  '(global-diff-hl-mode t)
+ '(grab-and-drag-button 2)
+ '(ido-vertical-define-keys (quote C-n-C-p-up-and-down))
+ '(ido-vertical-mode t)
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
+ '(nyan-animate-nyancat t)
+ '(nyan-animation-frame-interval 0.1)
+ '(nyan-mode t)
+ '(nyan-wavy-trail t)
  '(org-capture-templates
    (quote
-    (("s" "Schedule entry" entry
-      (file "~/org/notes.org")
+    (("t" "Task" entry
+      (file+headline "~/org/notes.org" "Tasks")
+      "* TODO %?
+  %i
+  %a")
+     ("s" "Schedule entry" entry
+      (file+headline "~/org/notes.org" "Schedule")
       ""))))
+ '(org-export-dispatch-use-expert-ui nil)
  '(org-export-in-background t)
  '(org-highlight-latex-and-related (quote (latex script entities)))
  '(org-latex-caption-above nil)
@@ -62,13 +75,25 @@
       ("\\section{%s}" . "\\section*{%s}")
       ("\\subsection{%s}" . "\\subsection*{%s}")
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
- '(org-latex-pdf-process
+ '(org-latex-default-packages-alist
    (quote
-    ("pdflatex -interaction=batchmode -output-directory %o %f" "bibtex %b" "pdflatex -interaction=batchmode -output-directory %o %f" "pdflatex -interaction=batchmode -output-directory %o %f")))
+    (("AUTO" "inputenc" t)
+     ("T1" "fontenc" t)
+     ("" "fixltx2e" nil)
+     ("" "graphicx" t)
+     ("" "grffile" t)
+     ("" "longtable" nil)
+     ("" "wrapfig" nil)
+     ("" "rotating" nil)
+     ("normalem" "ulem" t)
+     ("" "amsmath" t)
+     ("" "textcomp" t)
+     ("" "amssymb" t)
+     ("" "capt-of" nil))))
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))

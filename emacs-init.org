@@ -29,6 +29,11 @@
 #+BEGIN_SRC emacs-lisp
   ;; (pyvenv-activate "~/scripts/python/")
 #+END_SRC
+*** Korean font
+#+BEGIN_SRC elisp
+(set-fontset-font "fontset-default" 'hangul
+                      '("Gulim"))
+#+END_SRC
 * Requires
   #+BEGIN_SRC emacs-lisp
     (require 'org)
@@ -61,6 +66,7 @@
     ;; (set-face-attribute 'mode-line nil :height 1.0)
     ;; (set-face-attribute 'mode-line-inactive nil :height 1.0)
     (powerline-default-theme)
+    (nyan-mode)
 #+END_SRC
 
 ** Start in fullscreen
@@ -105,9 +111,19 @@ It's all in your hands")
   #+END_SRC
 
 * Custom behavior
-** ido-mode
-(require 'ido-vertical-mode)
+** winner mode
 #+BEGIN_SRC emacs-lisp
+(require 'winner)
+(winner-mode 1)
+#+END_SRC
+
+** drag and drop file
+#+BEGIN_SRC emacs-lisp
+;;(dnd-open-file-other-window t)
+#+END_SRC
+** ido-mode
+#+BEGIN_SRC emacs-lisp
+(require 'ido-vertical-mode)
 (ido-mode 1)
 (ido-vertical-mode 1)
 ;(setq ido-separator "\n\t ")
@@ -344,7 +360,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 
 * Own Shortcuts
 #+BEGIN_SRC emacs-lisp
-  (global-unset-key (kbd "C-z"))
+  (global-set-key (kbd "C-z") 'winner-undo)
   (global-unset-key "\C-d")
   (global-set-key (kbd "C-j") 'join-line)
   (global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
@@ -357,13 +373,16 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (global-set-key [M-up]   'move-lines-up)
   (global-set-key [M-down] 'move-lines-down)
 
-  (define-key org-mode-map (kbd "C-c p") 'save-and-export-to-pdf)
+  (define-key org-mode-map (kbd "C-c e") 'save-and-export-to-pdf)
   (define-key org-mode-map (kbd "C-#") 'comment-line)
   (define-key org-mode-map [M-up]   'move-lines-up)
   (define-key org-mode-map [M-down] 'move-lines-down)
 
   (bind-key "C-c c" 'org-capture)
 #+END_SRC
+
+#+RESULTS:
+: org-capture
 
 * Mode specifics
 
@@ -414,26 +433,40 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
    #+END_SRC
 ** Org
    #+BEGIN_SRC emacs-lisp
-   (setq org-default-notes-file "~/org/notes.org")
+     (require 'compile)
+     (add-to-list 'compilation-error-regexp-alist 'latex-warning)
+     (add-to-list 'compilation-error-regexp-alist-alist
+          '(latex-warning
+          "\\(LaTeX Warning:\\(.+\n\\)*\\)" 3 1))
 
-   (require 'compile)
-   (add-to-list 'compilation-error-regexp-alist 'latex-warning)
-   (add-to-list 'compilation-error-regexp-alist-alist
-        '(latex-warning
-        "\\(LaTeX Warning:\\(.+\n\\)*\\)" 3 1))
+     (add-to-list 'compilation-error-regexp-alist 'latex-error)
+     (add-to-list 'compilation-error-regexp-alist-alist '(latex-error
+          "\\(.*Error:\\(.+\n\\)*\\)" 1))
 
-   (add-to-list 'compilation-error-regexp-alist 'latex-error)
-   (add-to-list 'compilation-error-regexp-alist-alist '(latex-error
-        "\\(.*Error:\\(.+\n\\)*\\)" 1))
 
-     (add-hook 'org-mode-hook (
-         lambda()
-             (set-fill-column 100)
-             (abbrev-mode t)
-             (auto-fill-mode t)
-             (org-bullets-mode t)
-     ))
-     (setq org-log-done 'time)
+     (add-to-list 'compilation-error-regexp-alist 'latex-error2)
+     (add-to-list 'compilation-error-regexp-alist-alist '(latex-error2
+          "\\(!.*\n\\)" 1))
+
+
+     (setq
+          org-latex-listings 'minted
+          org-default-notes-file "~/org/notes.org"
+          org-latex-pdf-process
+          '("pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
+            "bibtex %b"
+            "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
+            "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"))
+
+
+       (add-hook 'org-mode-hook (
+           lambda()
+               (set-fill-column 100)
+               (abbrev-mode t)
+               (auto-fill-mode t)
+               (org-bullets-mode t)
+       ))
+       (setq org-log-done 'time)
    #+END_SRC
 
 ** DocViewMode (PDF)

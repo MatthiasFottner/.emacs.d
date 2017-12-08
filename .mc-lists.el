@@ -3,10 +3,16 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	handle-switch-frame
 	org-beginning-of-line
+	org-cycle
+	org-end-of-line
 	org-self-insert-command
+	org-shiftright
+	org-yank
 	))
 
 (setq mc/cmds-to-run-once
       '(
+	save-and-export-to-pdf
 	))

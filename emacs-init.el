@@ -32,6 +32,7 @@
 ;; (set-face-attribute 'mode-line nil :height 1.0)
 ;; (set-face-attribute 'mode-line-inactive nil :height 1.0)
 (powerline-default-theme)
+(nyan-mode)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; (split-window-horizontally)
@@ -57,6 +58,12 @@ It's all in your hands")
 
 (setq completions-format 'vertical)
 
+(require 'winner)
+(winner-mode 1)
+
+;;(dnd-open-file-other-window t)
+
+(require 'ido-vertical-mode)
 (ido-mode 1)
 (ido-vertical-mode 1)
 ;(setq ido-separator "\n\t ")
@@ -230,7 +237,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
   (compilation-mode))
 
-(global-unset-key (kbd "C-z"))
+(global-set-key (kbd "C-z") 'winner-undo)
 (global-unset-key "\C-d")
 (global-set-key (kbd "C-j") 'join-line)
 (global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
@@ -243,7 +250,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 (global-set-key [M-up]   'move-lines-up)
 (global-set-key [M-down] 'move-lines-down)
 
-(define-key org-mode-map (kbd "C-c p") 'save-and-export-to-pdf)
+(define-key org-mode-map (kbd "C-c e") 'save-and-export-to-pdf)
 (define-key org-mode-map (kbd "C-#") 'comment-line)
 (define-key org-mode-map [M-up]   'move-lines-up)
 (define-key org-mode-map [M-down] 'move-lines-down)
@@ -286,8 +293,6 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
        ;; (aggressive-indent-mode t)
 )t)
 
-(setq org-default-notes-file "~/org/notes.org")
-
 (require 'compile)
 (add-to-list 'compilation-error-regexp-alist 'latex-warning)
 (add-to-list 'compilation-error-regexp-alist-alist
@@ -297,6 +302,22 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 (add-to-list 'compilation-error-regexp-alist 'latex-error)
 (add-to-list 'compilation-error-regexp-alist-alist '(latex-error
      "\\(.*Error:\\(.+\n\\)*\\)" 1))
+
+
+(add-to-list 'compilation-error-regexp-alist 'latex-error2)
+(add-to-list 'compilation-error-regexp-alist-alist '(latex-error2
+     "\\(!.*\n\\)" 1))
+
+
+(setq
+     org-latex-listings 'minted
+     org-default-notes-file "~/org/notes.org"
+     org-latex-pdf-process
+     '("pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
+       "bibtex %b"
+       "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
+       "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"))
+
 
   (add-hook 'org-mode-hook (
       lambda()
