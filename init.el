@@ -23,10 +23,40 @@
  '(elpy-modules
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(flycheck-clang-args (quote ("-Wno-pragma-once-outside-header")))
+ '(flycheck-clang-include-path
+   (quote
+    ("D:\\Daten\\LaTeX\\__Bachelor\\C++\\irrlicht\\include\\" "D:\\Programme\\vs2017\\VC\\Tools\\MSVC\\14.11.25503\\include\\")))
+ '(flycheck-clang-language-standard "c++17")
+ '(flycheck-clang-ms-extensions t)
+ '(flycheck-clang-warnings nil)
+ '(flycheck-gcc-language-standard "c++11")
  '(flyspell-default-dictionary "deutsch8")
  '(focus-follows-mouse nil)
  '(global-diff-hl-mode t)
+ '(global-hl-todo-mode t)
  '(grab-and-drag-button 2)
+ '(hl-todo-activate-in-modes (quote (emacs-lisp-mode c++-mode)))
+ '(hl-todo-keyword-faces
+   (quote
+    (("HOLD" . "#d0bf8f")
+     ("TODO" . "#cc9393")
+     ("NEXT" . "#dca3a3")
+     ("THEM" . "#dc8cc3")
+     ("PROG" . "#7cb8bb")
+     ("OKAY" . "#7cb8bb")
+     ("DONT" . "#5f7f5f")
+     ("FAIL" . "#8c5353")
+     ("DONE" . "#afd8af")
+     ("NOTE" . "#d0bf8f")
+     ("KLUDGE" . "#d0bf8f")
+     ("HACK" . "#d0bf8f")
+     ("FIXME" . "#cc9393")
+     ("XXX" . "#cc9393")
+     ("XXXX" . "#cc9393")
+     ("???" . "#cc9393")
+     ("BUG" . "#8c5353")
+     ("QUESTION" . "#d0bf8f"))))
  '(ido-vertical-define-keys (quote C-n-C-p-up-and-down))
  '(ido-vertical-mode t)
  '(inhibit-startup-screen t)
@@ -93,7 +123,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -101,6 +131,7 @@
  '(powerline-gui-use-vcs-glyph nil)
  '(powerline-height 25)
  '(powerline-text-scale-factor nil)
+ '(ripgrep-arguments nil)
  '(save-place t)
  '(scroll-bar-mode nil)
  '(send-mail-function (quote mailclient-send-it))
@@ -115,6 +146,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Cousine" :foundry "outline" :slant normal :weight normal :height 113 :width normal))))
+ '(company-preview ((t (:background "#657b83" :foreground "#eee8d5"))))
+ '(company-scrollbar-fg ((t (:background "#002B36"))))
  '(diff-hl-change ((t (:inherit fringe :background "#073642" :foreground "orange"))))
  '(diff-hl-delete ((t (:background "#073642" :foreground "orange red"))))
  '(diff-hl-insert ((t (:inherit diff-added :background "#073642" :foreground "green"))))

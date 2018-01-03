@@ -16,7 +16,7 @@
          user-mail-address "felix@brendel.engineering")
 #+END_SRC
 
-** System dependent
+** System dependente
 *** Ghostscript
   #+BEGIN_SRC emacs-lisp
     (setq doc-view-ghostscript-program "D:/Programme/gohstscript/gs9.18/bin/gswin32.exe")
@@ -34,6 +34,11 @@
 (set-fontset-font "fontset-default" 'hangul
                       '("Gulim"))
 #+END_SRC
+** regex searching todos
+#+BEGIN_SRC emacs-lisp
+    (setq find-todo-regex "(TODO)|(NOTE)|(QUESTION)|(HACK)|(BUG)")
+#+END_SRC
+
 * Requires
   #+BEGIN_SRC emacs-lisp
     (require 'org)
@@ -111,6 +116,63 @@ It's all in your hands")
   #+END_SRC
 
 * Custom behavior
+** Projectile
+#+BEGIN_SRC emacs-lisp
+(projectile-global-mode)
+(diminish 'projectile-mode)
+#+END_SRC
+** Org agneda files
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files '("~/org"))
+#+END_SRC
+** Highlight todos
+#+BEGIN_SRC emacs-lisp
+(global-hl-todo-mode)
+#+END_SRC
+
+** compiling
+#+BEGIN_SRC emacs-lisp
+ (setq compilation-ask-about-save nil)
+ (setq compilation-auto-jump-to-first-error nil)
+ (setq compile-command "..\\build.bat")
+ (setq compilation-read-command nil)
+
+;; compilation in new frame
+ (setq special-display-buffer-names
+      `(("*compilation*" . ((name . "*compilation*")
+                            ,@default-frame-alist
+                            (left . (- 1))
+                            (top . 0)))))
+#+END_SRC
+
+** auto overwrap i-search
+#+BEGIN_SRC emacs-lisp
+;; Prevents issue where you have to press backspace twice when
+;; trying to remove the first character that fails a search
+(define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
+
+(defadvice isearch-search (after isearch-no-fail activate)
+  (unless isearch-success
+    (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
+    (ad-activate 'isearch-search)
+    (isearch-repeat (if isearch-forward 'forward))
+    (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
+    (ad-activate 'isearch-search)))
+#+end_src
+
+** company-mode
+#+BEGIN_SRC emacs-lisp
+(use-package company :ensure t
+  :config
+  (setq-default company-lighter-base "(C)")
+  (setq-default company-show-numbers          1)
+  (setq-default company-idle-delay            0) ; start completion immediately
+  (setq-default company-minimum-prefix-length 1) ; start completion after 1 character.
+  (setq-default company-tooltip-align-annotations t)
+  (global-company-mode 1))
+(setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
+#+END_SRC
+
 ** winner mode
 #+BEGIN_SRC emacs-lisp
 (require 'winner)
@@ -272,6 +334,15 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 #+RESULTS:
 
 * Own functions
+** Find TODOs in projectile
+#+BEGIN_SRC emacs-lisp
+ (defun projectile-find-todos ()
+    "find TODOS in the project."
+    (interactive)
+
+    (projectile-ripgrep find-todo-regex))
+#+END_SRC
+
 ** move lines and regions
 #+BEGIN_SRC emacs-lisp
   (defun move-lines (n)
@@ -360,31 +431,49 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 
 * Own Shortcuts
 #+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c e") 'compile)
+
   (global-set-key (kbd "C-z") 'winner-undo)
   (global-unset-key "\C-d")
   (global-set-key (kbd "C-j") 'join-line)
-  (global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
 
+  ;; Multi cursor
+  (global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+
   (global-set-key (kbd "C-c i") 'find-user-init-file)
+
+  ;; Open specific files / buffers
   (global-set-key (kbd "C-c t") 'find-org-capture-file)
+  (global-set-key (kbd "C-c T") 'projectile-find-todos)
   (global-set-key (kbd "C-#") 'comment-line)
 
+  ;; Move lines
   (global-set-key [M-up]   'move-lines-up)
   (global-set-key [M-down] 'move-lines-down)
 
+  ;; projectile
+  (global-set-key (kbd "C-c p s r") 'projectile-ripgrep)
+
+  ;; org
   (define-key org-mode-map (kbd "C-c e") 'save-and-export-to-pdf)
   (define-key org-mode-map (kbd "C-#") 'comment-line)
   (define-key org-mode-map [M-up]   'move-lines-up)
   (define-key org-mode-map [M-down] 'move-lines-down)
 
-  (bind-key "C-c c" 'org-capture)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c c") 'org-capture)
 #+END_SRC
 
-#+RESULTS:
-: org-capture
-
 * Mode specifics
+** JavaScript
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '(".*\.js\'" . rjsx-mode))
+(add-hook 'rjsx-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode nil) ;;Use space instead of tab
+            (setq js2-strict-missing-semi-warning nil))) ;;disable the semicolon warning
+#+END_SRC
 
 ** C/C++
    #+BEGIN_SRC emacs-lisp
@@ -393,6 +482,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
             (c-set-style "awk")
             (abbrev-mode -1)
             (define-key c++-mode-map (kbd "C-d") nil)
+            (flycheck-mode 1)
      )t)
 
      (add-hook 'c-mode-hook (
@@ -400,6 +490,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
             (c-set-style "awk")
             (abbrev-mode -1)
             (define-key c-mode-map (kbd "C-d") nil)
+            (flycheck-mode 1)
      )t)
 
    #+END_SRC

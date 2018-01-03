@@ -15,6 +15,8 @@
 
 ;; (pyvenv-activate "~/scripts/python/")
 
+(setq find-todo-regex "(TODO)|(NOTE)")
+
 (require 'org)
 (require 'ox)
 (require 'multiple-cursors)
@@ -57,6 +59,47 @@ It's all in your hands")
 (setq-default frame-title-format '("%b - Emacs"))
 
 (setq completions-format 'vertical)
+
+(projectile-global-mode)
+(diminish 'projectile-mode)
+
+(setq org-agenda-files '("~/org"))
+
+(global-hl-todo-mode)
+
+(setq compilation-ask-about-save nil)
+ (setq compilation-auto-jump-to-first-error t)
+ (setq compile-command "..\\build.bat")
+ (setq compilation-read-command nil)
+
+;; compilation in new frame
+ (setq special-display-buffer-names
+      `(("*compilation*" . ((name . "*compilation*")
+                            ,@default-frame-alist
+                            (left . (- 1))
+                            (top . 0)))))
+
+;; Prevents issue where you have to press backspace twice when
+;; trying to remove the first character that fails a search
+(define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
+
+(defadvice isearch-search (after isearch-no-fail activate)
+  (unless isearch-success
+    (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
+    (ad-activate 'isearch-search)
+    (isearch-repeat (if isearch-forward 'forward))
+    (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
+    (ad-activate 'isearch-search)))
+
+(use-package company :ensure t
+  :config
+  (setq-default company-lighter-base "(C)")
+  (setq-default company-show-numbers          1)
+  (setq-default company-idle-delay            0) ; start completion immediately
+  (setq-default company-minimum-prefix-length 1) ; start completion after 1 character.
+  (setq-default company-tooltip-align-annotations t)
+  (global-company-mode 1))
+(setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
 
 (require 'winner)
 (winner-mode 1)
@@ -165,6 +208,12 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
           '(100 . 96) '(100 . 96)))))
 (transparency-toggle)
 
+(defun projectile-find-todos ()
+   "find TODOS in the project."
+   (interactive)
+
+   (projectile-ripgrep find-todo-regex))
+
 (defun move-lines (n)
   (let ((beg) (end) (keep))
     (if mark-active
@@ -237,14 +286,19 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
   (compilation-mode))
 
+(global-set-key (kbd "C-c e") 'compile)
+
 (global-set-key (kbd "C-z") 'winner-undo)
 (global-unset-key "\C-d")
 (global-set-key (kbd "C-j") 'join-line)
-(global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
 
+(global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+
 (global-set-key (kbd "C-c i") 'find-user-init-file)
+
 (global-set-key (kbd "C-c t") 'find-org-capture-file)
+(global-set-key (kbd "C-c T") 'projectile-find-todos)
 (global-set-key (kbd "C-#") 'comment-line)
 
 (global-set-key [M-up]   'move-lines-up)
@@ -255,13 +309,21 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 (define-key org-mode-map [M-up]   'move-lines-up)
 (define-key org-mode-map [M-down] 'move-lines-down)
 
-(bind-key "C-c c" 'org-capture)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+
+(add-to-list 'auto-mode-alist '(".*\.js\'" . rjsx-mode))
+(add-hook 'rjsx-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode nil) ;;Use space instead of tab
+            (setq js2-strict-missing-semi-warning nil))) ;;disable the semicolon warning
 
 (add-hook 'c++-mode-hook (
     lambda()
        (c-set-style "awk")
        (abbrev-mode -1)
        (define-key c++-mode-map (kbd "C-d") nil)
+       (flycheck-mode 1)
 )t)
 
 (add-hook 'c-mode-hook (
@@ -269,6 +331,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
        (c-set-style "awk")
        (abbrev-mode -1)
        (define-key c-mode-map (kbd "C-d") nil)
+       (flycheck-mode 1)
 )t)
 
 (defun auto-complete-for-go ()

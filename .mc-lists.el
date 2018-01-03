@@ -3,7 +3,16 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	c-electric-brace
+	c-electric-colon
+	c-electric-lt-gt
+	c-electric-paren
+	c-electric-semi&comma
+	c-electric-slash
+	c-electric-star
+	c-indent-line-or-region
 	handle-switch-frame
+	move-lines-up
 	org-beginning-of-line
 	org-cycle
 	org-end-of-line
@@ -14,5 +23,10 @@
 
 (setq mc/cmds-to-run-once
       '(
+	compile
+	ido-find-file-other-window
+	ido-switch-buffer
+	mouse-set-region
 	save-and-export-to-pdf
+	w32-drag-n-drop
 	))
