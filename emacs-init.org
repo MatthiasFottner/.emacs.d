@@ -1,13 +1,18 @@
 * Package
 #+BEGIN_SRC emacs-lisp
       (require 'package)
+      (load-library "url-handlers")
 
       (add-to-list
        'package-archives
        '("melpa" . "http://melpa.org/packages/"))
 
+      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
       (package-initialize)
 #+END_SRC
+
+#+RESULTS:
 
 * Variables
 ** About me
@@ -422,7 +427,6 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (defun save-and-export-to-pdf ()
     "Save the buffer and then latex export to pdf."
     (interactive)
-    (fill-paragraph 1)
     (save-buffer)
     (org-latex-export-to-pdf)
     (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
@@ -524,6 +528,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
    #+END_SRC
 ** Org
    #+BEGIN_SRC emacs-lisp
+     (require 'ox-twbs)
      (require 'compile)
      (add-to-list 'compilation-error-regexp-alist 'latex-warning)
      (add-to-list 'compilation-error-regexp-alist-alist
@@ -538,7 +543,6 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
      (add-to-list 'compilation-error-regexp-alist 'latex-error2)
      (add-to-list 'compilation-error-regexp-alist-alist '(latex-error2
           "\\(!.*\n\\)" 1))
-
 
      (setq
           org-latex-listings 'minted

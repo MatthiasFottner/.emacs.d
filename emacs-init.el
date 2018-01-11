@@ -1,8 +1,11 @@
 (require 'package)
+(load-library "url-handlers")
 
 (add-to-list
  'package-archives
  '("melpa" . "http://melpa.org/packages/"))
+
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 (package-initialize)
 
@@ -15,7 +18,7 @@
 
 ;; (pyvenv-activate "~/scripts/python/")
 
-(setq find-todo-regex "(TODO)|(NOTE)")
+(setq find-todo-regex "(TODO)|(NOTE)|(QUESTION)|(HACK)|(BUG)")
 
 (require 'org)
 (require 'ox)
@@ -68,7 +71,7 @@ It's all in your hands")
 (global-hl-todo-mode)
 
 (setq compilation-ask-about-save nil)
- (setq compilation-auto-jump-to-first-error t)
+ (setq compilation-auto-jump-to-first-error nil)
  (setq compile-command "..\\build.bat")
  (setq compilation-read-command nil)
 
@@ -280,7 +283,6 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 (defun save-and-export-to-pdf ()
   "Save the buffer and then latex export to pdf."
   (interactive)
-  (fill-paragraph 1)
   (save-buffer)
   (org-latex-export-to-pdf)
   (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
@@ -292,18 +294,25 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 (global-unset-key "\C-d")
 (global-set-key (kbd "C-j") 'join-line)
 
+;; Multi cursor
 (global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
 (global-set-key (kbd "C-c i") 'find-user-init-file)
 
+;; Open specific files / buffers
 (global-set-key (kbd "C-c t") 'find-org-capture-file)
 (global-set-key (kbd "C-c T") 'projectile-find-todos)
 (global-set-key (kbd "C-#") 'comment-line)
 
+;; Move lines
 (global-set-key [M-up]   'move-lines-up)
 (global-set-key [M-down] 'move-lines-down)
 
+;; projectile
+(global-set-key (kbd "C-c p s r") 'projectile-ripgrep)
+
+;; org
 (define-key org-mode-map (kbd "C-c e") 'save-and-export-to-pdf)
 (define-key org-mode-map (kbd "C-#") 'comment-line)
 (define-key org-mode-map [M-up]   'move-lines-up)
@@ -356,6 +365,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
        ;; (aggressive-indent-mode t)
 )t)
 
+(require 'ox-twbs)
 (require 'compile)
 (add-to-list 'compilation-error-regexp-alist 'latex-warning)
 (add-to-list 'compilation-error-regexp-alist-alist
@@ -370,7 +380,6 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 (add-to-list 'compilation-error-regexp-alist 'latex-error2)
 (add-to-list 'compilation-error-regexp-alist-alist '(latex-error2
      "\\(!.*\n\\)" 1))
-
 
 (setq
      org-latex-listings 'minted

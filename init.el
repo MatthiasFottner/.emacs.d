@@ -81,7 +81,14 @@
  '(org-latex-caption-above nil)
  '(org-latex-classes
    (quote
-    (("sig" "\\documentclass{sig-alternate}"
+    (("scrreprt" "\\documentclass{scrreprt}"
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("sig" "\\documentclass{sig-alternate}"
       ("\\section{%s}" . "\\section*{%s}")
       ("\\subsection{%s}" . "\\subsection*{%s}")
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -123,7 +130,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
