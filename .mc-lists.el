@@ -12,6 +12,7 @@
 	c-electric-star
 	c-indent-line-or-region
 	handle-switch-frame
+	indent-for-tab-command
 	move-lines-up
 	org-beginning-of-line
 	org-cycle
@@ -19,14 +20,22 @@
 	org-self-insert-command
 	org-shiftright
 	org-yank
+	rjsx-electric-gt
+	rjsx-electric-lt
 	))
 
 (setq mc/cmds-to-run-once
       '(
 	compile
+	eval-expression
 	ido-find-file-other-window
 	ido-switch-buffer
+	mark-word-or-next-word-like-this
+	mouse-save-then-kill
 	mouse-set-region
+	projectile-ripgrep
+	projectile-switch-project
 	save-and-export-to-pdf
 	w32-drag-n-drop
+	winner-undo
 	))

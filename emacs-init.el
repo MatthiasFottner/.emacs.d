@@ -18,11 +18,12 @@
 
 ;; (pyvenv-activate "~/scripts/python/")
 
-(setq find-todo-regex "(TODO)|(NOTE)|(QUESTION)|(HACK)|(BUG)")
+(setq find-todo-regex "\\b((TODO)|(NOTE)|(QUESTION)|(HACK)|(BUG))")
 
 (require 'org)
 (require 'ox)
 (require 'multiple-cursors)
+(require 'rjsx-mode)
 
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil)            ;; don't accelerate scrolling
@@ -33,35 +34,45 @@
 
 (font-lock-add-keywords nil '(("[-+]?\\b[0-9]*\\.?[0-9]+\\(?:[eE][-+]?[0-9]+\\)?\\b" . font-lock-warning-face)))
 
-;; (creamsody-modeline-two)
-;; (set-face-attribute 'mode-line nil :height 1.0)
-;; (set-face-attribute 'mode-line-inactive nil :height 1.0)
 (powerline-default-theme)
-(nyan-mode)
 
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-;; (split-window-horizontally)
-
+(setq initial-major-mode 'text-mode)
 (setq initial-scratch-message "\
-I’m giving up on trying
-to sell your things that you ain’t buying.
+Unfortunately there is a radio connected to my brain.")
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+(setq frame-title-format "%b - Emacs ")
 
-It's your move
-I played all of mine
-Time is running out
-Make your move
-Or we can't go on
-Till you understand
-It's all in your hands")
-(setq initial-major-mode 'fundamental-mode)
+;; auto overwrap i-search
+;; Prevents issue where you have to press backspace twice when
+;; trying to remove the first character that fails a search
+(define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
 
-(show-paren-mode t)
+(defadvice isearch-search (after isearch-no-fail activate)
+  (unless isearch-success
+    (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
+    (ad-activate 'isearch-search)
+    (isearch-repeat (if isearch-forward 'forward))
+    (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
+    (ad-activate 'isearch-search)))
 
-(set-cursor-color "#ff84a4")
 
-(setq-default frame-title-format '("%b - Emacs"))
+;; search for highlighted if exist
+(defun jrh-isearch-with-region ()
+  "Use region as the isearch text."
+  (when mark-active
+    (let ((region (funcall region-extract-function nil)))
+      (deactivate-mark)
+      (isearch-push-state)
+      (isearch-yank-string region))))
+(add-hook 'isearch-mode-hook #'jrh-isearch-with-region)
 
-(setq completions-format 'vertical)
+(defadvice yank (around html-yank-indent)
+  "Indents after yanking."
+  (let ((point-before (point)))
+    ad-do-it
+    (when (eq major-mode 'html-mode) ;; check what mode we're in
+      (indent-region point-before (point)))))
+(ad-activate 'yank)
 
 (projectile-global-mode)
 (diminish 'projectile-mode)
@@ -82,18 +93,6 @@ It's all in your hands")
                             (left . (- 1))
                             (top . 0)))))
 
-;; Prevents issue where you have to press backspace twice when
-;; trying to remove the first character that fails a search
-(define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
-
-(defadvice isearch-search (after isearch-no-fail activate)
-  (unless isearch-success
-    (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
-    (ad-activate 'isearch-search)
-    (isearch-repeat (if isearch-forward 'forward))
-    (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
-    (ad-activate 'isearch-search)))
-
 (use-package company :ensure t
   :config
   (setq-default company-lighter-base "(C)")
@@ -102,7 +101,11 @@ It's all in your hands")
   (setq-default company-minimum-prefix-length 1) ; start completion after 1 character.
   (setq-default company-tooltip-align-annotations t)
   (global-company-mode 1))
-(setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
+  ;; (setq company-backends '((company-yasnippet :with company-dabbrev-code)))
+  (setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
+
+(require 'yasnippet)
+(yas-global-mode 1)
 
 (require 'winner)
 (winner-mode 1)
@@ -211,6 +214,48 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
           '(100 . 96) '(100 . 96)))))
 (transparency-toggle)
 
+(global-unset-key (kbd "C-<down-mouse-1>"))
+(global-set-key (kbd "C-<mouse-1>") 'mc/add-cursor-on-click)
+(define-key mc/keymap (kbd "<return>") nil)
+
+(global-set-key (kbd "C-c e") 'compile)
+
+(global-set-key (kbd "C-z") 'winner-undo)
+(global-unset-key "\C-d")
+(global-set-key (kbd "C-j") 'join-line)
+
+;; Multi cursor
+(define-key rjsx-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this) ;; rjsx-mode
+(define-key java-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this) ;; rjsx-mode
+
+(global-set-key (kbd "C-d") 'mark-word-or-next-word-like-this)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+
+(global-set-key (kbd "C-c i") 'find-user-init-file)
+
+;; Open specific files / buffers
+(global-set-key (kbd "C-c t") 'find-org-capture-file)
+(global-set-key (kbd "C-c T") 'projectile-find-todos)
+(global-set-key (kbd "C-#") 'comment-line)
+
+;; Move lines
+(global-set-key [M-up]   'move-lines-up)
+(global-set-key [M-down] 'move-lines-down)
+
+;; projectile
+(global-set-key (kbd "C-c p s r") 'projectile-ripgrep)
+
+
+
+;; org
+(define-key org-mode-map (kbd "C-c e") 'save-and-export-to-pdf)
+(define-key org-mode-map (kbd "C-#") 'comment-line)
+(define-key org-mode-map [M-up]   'move-lines-up)
+(define-key org-mode-map [M-down] 'move-lines-down)
+
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+
 (defun projectile-find-todos ()
    "find TODOS in the project."
    (interactive)
@@ -288,40 +333,45 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
   (compilation-mode))
 
-(global-set-key (kbd "C-c e") 'compile)
+(defun mark-current-word (&optional arg allow-extend)
+  "Put point at beginning of current word, set mark at end."
+  (interactive "p\np")
+  (setq arg (if arg arg 1))
+  (if (and allow-extend
+           (or (and (eq last-command this-command) (mark t))
+               (region-active-p)))
+      (set-mark
+       (save-excursion
+         (when (< (mark) (point))
+           (setq arg (- arg)))
+         (goto-char (mark))
+         (forward-word arg)
+         (point)))
+    (let ((wbounds (bounds-of-thing-at-point 'word)))
+      (unless (consp wbounds)
+        (error "No word at point"))
+      (if (>= arg 0)
+          (goto-char (car wbounds))
+        (goto-char (cdr wbounds)))
+      (push-mark (save-excursion
+                   (forward-word arg)
+                   (point)))
+      (activate-mark))))
 
-(global-set-key (kbd "C-z") 'winner-undo)
-(global-unset-key "\C-d")
-(global-set-key (kbd "C-j") 'join-line)
+(defun mark-word-or-next-word-like-this ()
+  "if there is no active region the word under
+   the point will be marked, otherwise the next word is selected."
+  (interactive)
+  (if (region-active-p)
+  ;; then
+    (progn
+      (mc/mark-more-like-this nil 'forwards)
+      (mc/maybe-multiple-cursors-mode)
+      (mc/cycle-forward))
+  ;; else
+    (mc--select-thing-at-point 'word)))
 
-;; Multi cursor
-(global-set-key (kbd "C-d") 'mc/mark-next-like-this-word)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-
-(global-set-key (kbd "C-c i") 'find-user-init-file)
-
-;; Open specific files / buffers
-(global-set-key (kbd "C-c t") 'find-org-capture-file)
-(global-set-key (kbd "C-c T") 'projectile-find-todos)
-(global-set-key (kbd "C-#") 'comment-line)
-
-;; Move lines
-(global-set-key [M-up]   'move-lines-up)
-(global-set-key [M-down] 'move-lines-down)
-
-;; projectile
-(global-set-key (kbd "C-c p s r") 'projectile-ripgrep)
-
-;; org
-(define-key org-mode-map (kbd "C-c e") 'save-and-export-to-pdf)
-(define-key org-mode-map (kbd "C-#") 'comment-line)
-(define-key org-mode-map [M-up]   'move-lines-up)
-(define-key org-mode-map [M-down] 'move-lines-down)
-
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
-
-(add-to-list 'auto-mode-alist '(".*\.js\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode))
 (add-hook 'rjsx-mode-hook
           (lambda ()
             (setq indent-tabs-mode nil) ;;Use space instead of tab
@@ -377,9 +427,9 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
      "\\(.*Error:\\(.+\n\\)*\\)" 1))
 
 
-(add-to-list 'compilation-error-regexp-alist 'latex-error2)
-(add-to-list 'compilation-error-regexp-alist-alist '(latex-error2
-     "\\(!.*\n\\)" 1))
+;; (add-to-list 'compilation-error-regexp-alist 'latex-error2)
+;; (add-to-list 'compilation-error-regexp-alist-alist '(latex-error2
+;;      "\\(!.*\n\\)" 1))
 
 (setq
      org-latex-listings 'minted

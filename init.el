@@ -60,6 +60,7 @@
  '(ido-vertical-define-keys (quote C-n-C-p-up-and-down))
  '(ido-vertical-mode t)
  '(inhibit-startup-screen t)
+ '(jdee-server-dir "~/.emacs.d/jdee-server")
  '(menu-bar-mode nil)
  '(nyan-animate-nyancat t)
  '(nyan-animation-frame-interval 0.1)
@@ -130,7 +131,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (company-jedi cmake-mode pretty-mode gitignore-mode org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
