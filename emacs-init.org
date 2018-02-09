@@ -77,11 +77,24 @@
 #+END_SRC
 ** startup
 #+BEGIN_SRC emacs-lisp
-(setq initial-major-mode 'text-mode)
-(setq initial-scratch-message "\
-Unfortunately there is a radio connected to my brain.")
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-(setq frame-title-format "%b - Emacs ")
+  (setq initial-major-mode 'text-mode)
+  (setq initial-scratch-message "\
+  Unfortunately there is a radio connected to my brain.")
+
+  ;; (add-hook 'after-init-hook (lambda ()
+  ;;  (org-agenda-list)
+  ;;  (org-agenda-month-view)
+  ;;  (get-buffer "*Org Agenda*")))
+
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (setq frame-title-format "%b - Emacs ")
+
+#+END_SRC
+
+** weather language
+#+BEGIN_SRC emacs-lisp
+(require 'wttrin)
+(setq wttrin-default-accept-language '("Accept-Language" . "de-DE"))
 #+END_SRC
 
 * Custom behavior

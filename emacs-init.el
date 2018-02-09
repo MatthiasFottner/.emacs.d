@@ -39,8 +39,17 @@
 (setq initial-major-mode 'text-mode)
 (setq initial-scratch-message "\
 Unfortunately there is a radio connected to my brain.")
+
+;; (add-hook 'after-init-hook (lambda ()
+;;  (org-agenda-list)
+;;  (org-agenda-month-view)
+;;  (get-buffer "*Org Agenda*")))
+
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (setq frame-title-format "%b - Emacs ")
+
+(require 'wttrin)
+(setq wttrin-default-accept-language '("Accept-Language" . "de-DE"))
 
 ;; auto overwrap i-search
 ;; Prevents issue where you have to press backspace twice when

@@ -23,7 +23,8 @@
  '(elpy-modules
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
- '(flycheck-clang-args (quote ("-Wno-pragma-once-outside-header")))
+ '(flycheck-clang-analyzer-executable "")
+ '(flycheck-clang-args (quote ("-Wno-pragma-once-outside-header -analyze")))
  '(flycheck-clang-include-path
    (quote
     ("D:\\Daten\\LaTeX\\__Bachelor\\C++\\irrlicht\\include\\" "D:\\Programme\\vs2017\\VC\\Tools\\MSVC\\14.11.25503\\include\\")))
@@ -131,7 +132,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (company-jedi cmake-mode pretty-mode gitignore-mode org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (xterm-color wttrin company-jedi cmake-mode pretty-mode gitignore-mode org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -146,7 +147,8 @@
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
- '(tramp-syntax (quote default) nil (tramp)))
+ '(tramp-syntax (quote default) nil (tramp))
+ '(wttrin-default-cities (quote ("Munich" "Seoul" "구리시"))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

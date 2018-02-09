@@ -13,6 +13,7 @@
 	c-indent-line-or-region
 	handle-switch-frame
 	indent-for-tab-command
+	kill-region
 	move-lines-up
 	org-beginning-of-line
 	org-cycle
@@ -33,6 +34,7 @@
 	mark-word-or-next-word-like-this
 	mouse-save-then-kill
 	mouse-set-region
+	org-edit-src-save
 	projectile-ripgrep
 	projectile-switch-project
 	save-and-export-to-pdf
