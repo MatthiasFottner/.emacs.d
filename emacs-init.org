@@ -39,6 +39,11 @@
 (set-fontset-font "fontset-default" 'hangul
                       '("Gulim"))
 #+END_SRC
+*** Reveal js
+#+BEGIN_SRC emacs-lisp
+(setq org-reveal-root "file:///d:/Programme/revealjs/reveal.js-3.6.0/")
+#+END_SRC
+
 ** regex searching todos
 #+BEGIN_SRC emacs-lisp
     (setq find-todo-regex "\\b((TODO)|(NOTE)|(QUESTION)|(HACK)|(BUG))")
@@ -48,11 +53,17 @@
   #+BEGIN_SRC emacs-lisp
     (require 'org)
     (require 'ox)
+    (require 'ox-reveal)
     (require 'multiple-cursors)
     (require 'rjsx-mode)
   #+END_SRC
 
 * UI customization
+** Company child frame
+#+begin_src emacs-lisp
+(company-childframe-mode 1)
+#+end_src
+
 ** Smoother scrolling
 #+BEGIN_SRC emacs-lisp
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; one line at a time
@@ -66,9 +77,9 @@
   (set-default 'truncate-lines t)
 #+END_SRC
 
-** Numbers highlighted
+** Numbershighlighted
 #+BEGIN_SRC emacs-lisp
-  (font-lock-add-keywords nil '(("[-+]?\\b[0-9]*\\.?[0-9]+\\(?:[eE][-+]?[0-9]+\\)?\\b" . font-lock-warning-face)))
+  ;; (font-lock-add-keywords nil '(("[-+]?\\b[0-9]*\\.?[0-9]+\\(?:[eE][-+]?[0-9]+\\)?\\b" . font-lock-warning-face)))
 #+END_SRC
 
 ** powerline
@@ -98,6 +109,60 @@
 #+END_SRC
 
 * Custom behavior
+** ivy
+#+begin_src emacs-lisp
+(ivy-mode 1)
+#+end_src
+
+** treemacs
+#+begin_src emacs-lisp
+(use-package treemacs
+  :ensure t
+  :defer nil
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (setq treemacs-change-root-without-asking nil
+  treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+  treemacs-file-event-delay           100
+  treemacs-follow-after-init          t
+  treemacs-follow-recenter-distance   0.1
+  treemacs-goto-tag-strategy          'refetch-index
+  treemacs-indentation                2
+  treemacs-indentation-string         " "
+  treemacs-is-never-other-window      t
+  treemacs-never-persist              nil
+  treemacs-no-png-images              nil
+  treemacs-recenter-after-file-follow nil
+  treemacs-recenter-after-tag-follow  nil
+  treemacs-show-hidden-files          t
+  treemacs-silent-filewatch           nil
+  treemacs-silent-refresh             t
+  treemacs-sorting                    'alphabetic-desc
+  treemacs-tag-follow-cleanup         t
+  treemacs-tag-follow-delay           1.5
+  treemacs-width                      35)
+
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-git-mode 'simple)
+
+  :bind
+  (:map global-map
+        ([f8]         . treemacs-toggle)
+        ("M-0"        . treemacs-select-window)
+        ("C-x 1"      . treemacs-delete-other-windows)))
+
+(use-package treemacs-projectile
+  :defer t
+  :ensure t
+  :config
+  (setq treemacs-header-function #'treemacs-projectile-create-header))
+#+end_src
+
+#+RESULTS:
+
 ** isearch
 #+BEGIN_SRC emacs-lisp
 ;; auto overwrap i-search
@@ -169,7 +234,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package company :ensure t
     :config
-    (setq-default company-lighter-base "(C)")
+    (setq-default company-lighter-base "©")
     (setq-default company-show-numbers          1)
     (setq-default company-idle-delay            0) ; start completion immediately
     (setq-default company-minimum-prefix-length 1) ; start completion after 1 character.
@@ -178,9 +243,6 @@
     ;; (setq company-backends '((company-yasnippet :with company-dabbrev-code)))
     (setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
 #+END_SRC
-
-#+RESULTS:
-: c:/Languages/LLVM/bin/clang.exe
 
 ** yasnippet
 #+BEGIN_SRC emacs-lisp
@@ -346,8 +408,12 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 #+END_SRC
 
 #+RESULTS:
+
 * Own Shortcuts
 #+BEGIN_SRC emacs-lisp
+
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+
   (global-unset-key (kbd "C-<down-mouse-1>"))
   (global-set-key (kbd "C-<mouse-1>") 'mc/add-cursor-on-click)
   (define-key mc/keymap (kbd "<return>") nil)
@@ -380,9 +446,9 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
   (global-set-key (kbd "C-c p s r") 'projectile-ripgrep)
 
 
-
   ;; org
   (define-key org-mode-map (kbd "C-c e") 'save-and-export-to-pdf)
+  (define-key org-mode-map (kbd "C-c r") 'save-and-export-to-reavealjs)
   (define-key org-mode-map (kbd "C-#") 'comment-line)
   (define-key org-mode-map [M-up]   'move-lines-up)
   (define-key org-mode-map [M-down] 'move-lines-down)
@@ -478,7 +544,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
           (narrow-to-region (1+ end) (point-max))
           (delete-trailing-whitespace))))))
 #+END_SRC
-** Save the file and org export to pdf
+** Save the file and org export
 #+BEGIN_SRC emacs-lisp
   (defun save-and-export-to-pdf ()
     "Save the buffer and then latex export to pdf."
@@ -487,6 +553,13 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
     (org-latex-export-to-pdf)
     (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
     (compilation-mode))
+
+  (defun save-and-export-to-reavealjs ()
+    "Save the buffer and then latex export to reavealjs slides."
+    (interactive)
+    (save-buffer)
+    (org-reveal-export-to-html-and-browse))
+
 #+END_SRC
 
 ** Mark cuirrent word
@@ -639,3 +712,14 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
     (setq doc-view-continuous t)
   ))
 #+END_SRC
+
+
+* Delayed execution
+** modeline cleanup
+#+begin_src emacs-lisp
+  (setcar (cdr (assq 'ivy-mode minor-mode-alist)) "")
+  (setcar (cdr (assq 'company-childframe-mode minor-mode-alist)) "")
+  ;; (setcar (cdr (assq 'abbrev-mode minor-mode-alist)) "")
+  (setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) "")
+  (setcar (cdr (assq 'auto-fill-function minor-mode-alist)) "")
+#+end_src

@@ -23,6 +23,7 @@
 	org-yank
 	rjsx-electric-gt
 	rjsx-electric-lt
+	yas-expand
 	))
 
 (setq mc/cmds-to-run-once
@@ -38,6 +39,7 @@
 	projectile-ripgrep
 	projectile-switch-project
 	save-and-export-to-pdf
+	save-and-export-to-reavealjs
 	w32-drag-n-drop
 	winner-undo
 	))

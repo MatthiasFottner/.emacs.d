@@ -129,10 +129,55 @@
      ("" "textcomp" t)
      ("" "amssymb" t)
      ("" "capt-of" nil))))
+ '(org-latex-hyperref-template nil)
+ '(org-latex-listings (quote minted))
+ '(org-latex-pdf-process
+   (quote
+    ("pdflatex -shell-escape -interaction=batchmode -output-directory %o %f" "bibtex %b" "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f" "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f")))
  '(org-src-fontify-natively t)
+ '(org-structure-template-alist
+   (quote
+    (("n" "#+begin_notes
+?
+#+end_notes")
+     ("s" "#+begin_src ?
+
+#+end_src")
+     ("e" "#+begin_example
+?
+#+end_example")
+     ("q" "#+begin_quote
+?
+#+end_quote")
+     ("v" "#+begin_verse
+?
+#+end_verse")
+     ("V" "#+begin_verbatim
+?
+#+end_verbatim")
+     ("c" "#+begin_center
+?
+#+end_center")
+     ("C" "#+begin_comment
+?
+#+end_comment")
+     ("l" "#+begin_export latex
+?
+#+end_export")
+     ("L" "#+latex: ")
+     ("h" "#+begin_export html
+?
+#+end_export")
+     ("H" "#+html: ")
+     ("a" "#+begin_export ascii
+?
+#+end_export")
+     ("A" "#+ascii: ")
+     ("i" "#+index: ?")
+     ("I" "#+include: %file ?"))))
  '(package-selected-packages
    (quote
-    (xterm-color wttrin company-jedi cmake-mode pretty-mode gitignore-mode org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (treemacs-evil company-childframe treemacs-projectile treemacs show-marks avy xterm-color wttrin company-jedi cmake-mode pretty-mode gitignore-mode org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -148,6 +193,7 @@
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(tramp-syntax (quote default) nil (tramp))
+ '(undo-tree-mode-lighter "")
  '(wttrin-default-cities (quote ("Munich" "Seoul" "구리시"))))
 
 (custom-set-faces
@@ -158,9 +204,11 @@
  '(default ((t (:family "Cousine" :foundry "outline" :slant normal :weight normal :height 113 :width normal))))
  '(company-preview ((t (:background "#657b83" :foreground "#eee8d5"))))
  '(company-scrollbar-fg ((t (:background "#002B36"))))
- '(diff-hl-change ((t (:inherit fringe :background "#073642" :foreground "orange"))))
+ '(diff-hl-change ((t (:background "#073642" :foreground "orange"))))
  '(diff-hl-delete ((t (:background "#073642" :foreground "orange red"))))
  '(diff-hl-insert ((t (:inherit diff-added :background "#073642" :foreground "green"))))
+ '(font-lock-comment-delimiter-face ((t (:foreground "#d33682" :slant italic))))
+ '(font-lock-comment-face ((t (:foreground "#d33682" :slant italic))))
  '(mode-line ((t (:background "#073642" :box nil :weight normal :height 1.0))))
  '(mode-line-buffer-id-inactive ((t (:inherit mode-line-buffer-id :box nil))))
  '(mode-line-inactive ((t (:inherit mode-line :background "#073642" :foreground "#586e75" :box nil :weight normal :height 1.0))))
@@ -171,8 +219,15 @@
  '(powerline-active1 ((t (:background "#14282D" :foreground "#839496" :box nil))))
  '(powerline-active2 ((t (:background "#073642" :foreground "#839496" :box nil))))
  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "grey11" :box nil))))
- '(powerline-inactive2 ((t (:inherit mode-line-inactive :background "grey20" :box nil)))))
+ '(powerline-inactive2 ((t (:inherit mode-line-inactive :background "grey20" :box nil))))
+ '(treemacs-directory-collapsed-face ((t (:inherit default))))
+ '(treemacs-directory-face ((t (:inherit default))))
+ '(treemacs-git-added-face ((t (:inherit diff-hl-insert :background "#002B36"))))
+ '(treemacs-git-ignored-face ((t (:inherit file-name-shadow))))
+ '(treemacs-git-modified-face ((t (:inherit diff-hl-change :background "#002B36"))))
+ '(treemacs-git-untracked-face ((t (:inherit diff-hl-insert :background "#002B36"))))
+ '(treemacs-tags-face ((t (:inherit file-name-shadow)))))
 
-  (org-babel-load-file
-     (expand-file-name "emacs-init.org"
-                      user-emacs-directory))
+(org-babel-load-file
+ (expand-file-name "emacs-init.org"
+                   user-emacs-directory))
