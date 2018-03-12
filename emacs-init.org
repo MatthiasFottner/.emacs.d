@@ -1,19 +1,3 @@
-* Package
-#+BEGIN_SRC emacs-lisp
-      (require 'package)
-      (load-library "url-handlers")
-
-      (add-to-list
-       'package-archives
-       '("melpa" . "http://melpa.org/packages/"))
-
-      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-
-      (package-initialize)
-#+END_SRC
-
-#+RESULTS:
-
 * Variables
 ** About me
 #+BEGIN_SRC emacs-lisp
@@ -30,10 +14,6 @@
   #+BEGIN_SRC emacs-lisp
     (add-to-list 'exec-path "D:/Daten/Coding/Go/Library/bin/")
   #+END_SRC
-*** Python
-#+BEGIN_SRC emacs-lisp
-  ;; (pyvenv-activate "~/scripts/python/")
-#+END_SRC
 *** Korean font
 #+BEGIN_SRC elisp
 (set-fontset-font "fontset-default" 'hangul
@@ -49,21 +29,265 @@
     (setq find-todo-regex "\\b((TODO)|(NOTE)|(QUESTION)|(HACK)|(BUG))")
 #+END_SRC
 
-* Requires
-  #+BEGIN_SRC emacs-lisp
-    (require 'org)
-    (require 'ox)
-    (require 'ox-reveal)
-    (require 'multiple-cursors)
-    (require 'rjsx-mode)
-  #+END_SRC
+* Utf-8 everywhere
+#+BEGIN_SRC emacs-lisp
+(setq locale-coding-system 'utf-8) ; pretty
+(set-terminal-coding-system 'utf-8) ; pretty
+(set-keyboard-coding-system 'utf-8) ; pretty
+(set-selection-coding-system 'utf-8) ; please
+(prefer-coding-system 'utf-8) ; with sugar on top
+#+END_SRC
 
-* UI customization
-** Company child frame
+* Packages
+** Package config
+  #+begin_src emacs-lisp
+    (require 'package)
+    (load-library "url-handlers")
+
+    (add-to-list
+     'package-archives
+     '("melpa" . "http://melpa.org/packages/"))
+
+    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
+    (package-initialize)
+
+    (unless (package-installed-p 'use-package)
+      (package-refresh-contents)
+      (package-install 'use-package))
+  #+end_src
+** dumb jump
 #+begin_src emacs-lisp
-(company-childframe-mode 1)
+    (use-package dumb-jump
+      :ensure t)
 #+end_src
 
+#+RESULTS:
+
+** Org
+  #+begin_src emacs-lisp
+    (use-package org
+      :ensure t
+      :init
+      :config
+      (use-package org-bullets
+        :ensure t)
+      (require 'compile)
+      (add-to-list 'compilation-error-regexp-alist 'latex-warning)
+      (add-to-list 'compilation-error-regexp-alist-alist
+                   '(latex-warning
+                     "\\(LaTeX Warning:\\(.+\n\\)*\\)" 3 1))
+
+      (add-to-list 'compilation-error-regexp-alist 'latex-error)
+      (add-to-list 'compilation-error-regexp-alist-alist '(latex-error
+                                                           "\\(.*Error:\\(.+\n\\)*\\)" 1))
+
+      (add-hook 'org-mode-hook (lambda () (set-fill-column 100)))
+
+      ;; (add-to-list 'compilation-error-regexp-alist 'latex-error2)
+      ;; (add-to-list 'compilation-error-regexp-alist-alist '(latex-error2
+      ;;      "\\(!.*\n\\)" 1))
+
+      :custom
+      (org-latex-listings 'minted)
+      (org-default-notes-file "~/org/notes.org")
+      (org-latex-pdf-process "latexmk -pdf %f")
+      (org-log-done 'time)
+
+      ;; '("pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
+      ;;   "bibtex %b"
+      ;;   "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
+      ;;   "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"))
+
+
+      :hook
+      ((org-mode . org-bullets-mode)
+      (org-mode . abbrev-mode)
+      (org-mode . auto-fill-mode))
+)
+
+    ;;(use-package ox
+    ;;  :ensure t)
+
+    ;;(use-package ox-reveal
+    ;;  :ensure t)
+
+    (use-package ox-twbs
+      :ensure t)
+
+    (use-package color-theme-sanityinc-solarized
+      :ensure t)
+#+end_src
+** Multiple cursors
+#+begin_src emacs-lisp
+    (use-package multiple-cursors
+      :ensure t)
+#+end_src
+** rjsx
+#+begin_src emacs-lisp
+
+    (use-package rjsx-mode
+      :ensure t
+      :config
+        (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode))
+        ;; Use space instead of tab
+        (setq indent-tabs-mode nil)
+        ;; disable the semicolon warning
+        (setq js2-strict-missing-semi-warning nil))
+#+end_src
+** flycheck
+#+begin_src emacs-lisp
+
+    (use-package flycheck
+      :ensure t)
+#+end_src
+** wolfram
+#+begin_src emacs-lisp
+    (use-package wolfram
+      :ensure t
+      :config
+        (setq wolfram-alpha-app-id "UX8T57-3WXAA24JHT"))
+#+end_src
+** company-childframe
+#+begin_src emacs-lisp
+    (use-package company-childframe
+      :ensure t
+      :config
+        (setcar (cdr (assq 'company-childframe-mode minor-mode-alist)) "")
+        (company-childframe-mode 1))
+#+end_src
+** powerline
+#+begin_src emacs-lisp
+    (use-package powerline
+      :ensure t
+      :config
+        (powerline-default-theme))
+#+end_src
+** wttrin
+#+begin_src emacs-lisp
+    (use-package wttrin
+      :ensure t
+      :config
+      (setq wttrin-default-accept-language '("Accept-Language" . "de-DE")))
+#+end_src
+** projectile
+#+begin_src emacs-lisp
+    (use-package projectile
+      :ensure t)
+
+    (use-package projectile-ripgrep
+      :ensure t)
+#+end_src
+
+** diff-hl
+#+begin_src emacs-lisp
+    (use-package diff-hl
+      :ensure t
+      :config
+      (global-diff-hl-mode t)
+      (diff-hl-flydiff-mode t)
+
+      ;; Workaround for displaying correctly in other window
+      (use-package frame
+        :defer t
+        :config
+          (progn
+           (setq window-divider-default-places 'right-only) ;Default 'right-only
+             ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=27830#20
+             ;; Workaround on emacs 26+ to prevent fringe truncation. You need to use
+             ;; either scroll bars or window dividers to prevent that.
+             ;; I dislike the default face of `window-divider', so I customize that in my
+             ;; `smyx-theme`.
+             (setq window-divider-default-right-width 1) ;Default 6
+             (window-divider-mode 1))))
+
+#+end_src
+** hl-todo
+#+begin_src emacs-lisp
+    (use-package hl-todo
+      :ensure t
+      :config
+      (global-hl-todo-mode))
+#+end_src
+** ido-vertical-mode
+#+begin_src emacs-lisp
+    (use-package ido-vertical-mode
+      :ensure t
+      :config
+        (ido-mode 1)
+        (ido-vertical-mode 1))
+#+end_src
+** ivy
+#+begin_src emacs-lisp
+    (use-package ivy
+      :ensure t
+      :config (ivy-mode 1))
+#+end_src
+** diminish
+#+begin_src emacs-lisp
+    (use-package diminish
+      :ensure t)
+#+end_src
+** treemacs
+#+begin_src emacs-lisp
+    (use-package treemacs
+      :ensure t
+      :defer nil
+      :init
+      (with-eval-after-load 'winum
+        (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+      :config
+      (setq treemacs-change-root-without-asking nil
+            treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+            treemacs-file-event-delay           100
+            treemacs-follow-after-init          t
+            treemacs-follow-recenter-distance   0.1
+            treemacs-goto-tag-strategy          'refetch-index
+            treemacs-indentation                2
+            treemacs-indentation-string         " "
+            treemacs-is-never-other-window      t
+            treemacs-never-persist              nil
+            treemacs-no-png-images              nil
+            treemacs-recenter-after-file-follow nil
+            treemacs-recenter-after-tag-follow  nil
+            treemacs-show-hidden-files          t
+            treemacs-silent-filewatch           nil
+            treemacs-silent-refresh             t
+            treemacs-sorting                    'alphabetic-desc
+            treemacs-tag-follow-cleanup         t
+            treemacs-tag-follow-delay           1.5
+            treemacs-width                      35)
+
+      ;; (treemacs-follow-mode t)
+      ;; (treemacs-filewatch-mode t)
+      ;; (treemacs-git-mode 'simple)
+
+      :bind
+      (:map global-map
+            ([f8]         . treemacs-toggle)
+            ("M-0"        . treemacs-select-window)
+            ("C-x 1"      . treemacs-delete-other-windows)))
+
+    (use-package treemacs-projectile
+      :defer t
+      :ensure t
+      :config
+      (setq treemacs-header-function #'treemacs-projectile-create-header))
+  #+end_src
+** company-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package company :ensure t
+    :config
+    (setq-default company-lighter-base "(C)")
+    (setq-default company-show-numbers          1)
+    (setq-default company-idle-delay            0) ; start completion immediately
+    (setq-default company-minimum-prefix-length 1) ; start completion after 1 character.
+    (setq-default company-tooltip-align-annotations t)
+    (global-company-mode 1))
+    (setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
+#+END_SRC
+
+* UI customization
 ** Smoother scrolling
 #+BEGIN_SRC emacs-lisp
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; one line at a time
@@ -77,16 +301,7 @@
   (set-default 'truncate-lines t)
 #+END_SRC
 
-** Numbershighlighted
-#+BEGIN_SRC emacs-lisp
-  ;; (font-lock-add-keywords nil '(("[-+]?\\b[0-9]*\\.?[0-9]+\\(?:[eE][-+]?[0-9]+\\)?\\b" . font-lock-warning-face)))
-#+END_SRC
-
-** powerline
-#+BEGIN_SRC emacs-lisp
-(powerline-default-theme)
-#+END_SRC
-** startup
+** Startup text
 #+BEGIN_SRC emacs-lisp
   (setq initial-major-mode 'text-mode)
   (setq initial-scratch-message "\
@@ -102,67 +317,98 @@
 
 #+END_SRC
 
-** weather language
+** Cursor blink colors
 #+BEGIN_SRC emacs-lisp
-(require 'wttrin)
-(setq wttrin-default-accept-language '("Accept-Language" . "de-DE"))
+  (defvar blink-cursor-colors
+     (list  "#92c48f" "#6785c5" "#be369c" "#d9ca65")
+   ;; (list
+   ;;     "#00FFF6"
+   ;;     "#0099FF")
+    "On each blink the cursor will cycle to the next color in this list.")
+
+  (setq blink-cursor-count 0)
+  (defun blink-cursor-timer-function ()
+    "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'.
+  Warning: overwrites original version in `frame.el'.
+
+  This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
+    (when (not (internal-show-cursor-p))
+      (when (>= blink-cursor-count (length blink-cursor-colors))
+        (setq blink-cursor-count 0))
+      (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
+      (setq blink-cursor-count (+ 1 blink-cursor-count))
+      )
+    (internal-show-cursor nil (not (internal-show-cursor-p))))
+
+  (blink-cursor-mode)
 #+END_SRC
 
-* Custom behavior
-** ivy
-#+begin_src emacs-lisp
-(ivy-mode 1)
-#+end_src
-
-** treemacs
-#+begin_src emacs-lisp
-(use-package treemacs
-  :ensure t
-  :defer nil
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (setq treemacs-change-root-without-asking nil
-  treemacs-collapse-dirs              (if (executable-find "python") 3 0)
-  treemacs-file-event-delay           100
-  treemacs-follow-after-init          t
-  treemacs-follow-recenter-distance   0.1
-  treemacs-goto-tag-strategy          'refetch-index
-  treemacs-indentation                2
-  treemacs-indentation-string         " "
-  treemacs-is-never-other-window      t
-  treemacs-never-persist              nil
-  treemacs-no-png-images              nil
-  treemacs-recenter-after-file-follow nil
-  treemacs-recenter-after-tag-follow  nil
-  treemacs-show-hidden-files          t
-  treemacs-silent-filewatch           nil
-  treemacs-silent-refresh             t
-  treemacs-sorting                    'alphabetic-desc
-  treemacs-tag-follow-cleanup         t
-  treemacs-tag-follow-delay           1.5
-  treemacs-width                      35)
-
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-git-mode 'simple)
-
-  :bind
-  (:map global-map
-        ([f8]         . treemacs-toggle)
-        ("M-0"        . treemacs-select-window)
-        ("C-x 1"      . treemacs-delete-other-windows)))
-
-(use-package treemacs-projectile
-  :defer t
-  :ensure t
-  :config
-  (setq treemacs-header-function #'treemacs-projectile-create-header))
-#+end_src
-
 #+RESULTS:
+: t
 
+** Transparient Background if not in focus
+#+BEGIN_SRC emacs-lisp
+ (set-frame-parameter (selected-frame) 'alpha '(100 . 96))
+ (add-to-list 'default-frame-alist '(alpha . (100 . 96)))
+ (defun transparency-toggle ()
+   (interactive)
+   (let ((alpha (frame-parameter nil 'alpha)))
+     (set-frame-parameter
+      nil 'alpha
+      (if (eql (cond ((numberp alpha) alpha)
+                     ((numberp (cdr alpha)) (cdr alpha))
+                     ;; Also handle undocumented (<active> <inactive>) form.
+                     ((numberp (cadr alpha)) (cadr alpha)))
+               100)
+          '(100 . 96) '(100 . 96)))))
+(transparency-toggle)
+#+END_SRC
+* Custom behavior
+** Backup files
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist `(("." . "~/.emacs-saves")))
+
+  (setq delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
+#+END_SRC
+** compiling
+#+BEGIN_SRC emacs-lisp
+ (setq compilation-ask-about-save nil)
+ (setq compilation-auto-jump-to-first-error nil)
+ (setq compile-command "find_and_run.py build.bat")
+ (setq compilation-read-command nil)
+ (setq compilation-scroll-output t)
+;; compilation in new frame
+ (setq special-display-buffer-names
+      `(("*compilation*" . ((name . "*compilation*")
+                            ,@default-frame-alist
+                            (left . (- 1))
+                            (top . 0)))))
+
+  (setq special-display-buffer-names
+      `(("*Org PDF LaTeX Output*" . ((name . "*Org PDF LaTeX Output*")
+                            ,@default-frame-alist
+                            (left . (- 1))
+                            (top . 0)))))
+#+END_SRC
+
+** format after yank
+#+BEGIN_SRC emacs-lisp
+(defadvice yank (around html-yank-indent)
+  "Indents after yanking."
+  (let ((point-before (point)))
+    ad-do-it
+    (when (eq major-mode 'html-mode) ;; check what mode we're in
+      (indent-region point-before (point)))))
+(ad-activate 'yank)
+#+END_SRC
+
+** Global revert mode
+#+BEGIN_SRC emacs-lisp
+(global-auto-revert-mode t)
+#+END_SRC
 ** isearch
 #+BEGIN_SRC emacs-lisp
 ;; auto overwrap i-search
@@ -190,109 +436,34 @@
 (add-hook 'isearch-mode-hook #'jrh-isearch-with-region)
 #+END_SRC
 
-** format after yank
-#+BEGIN_SRC emacs-lisp
-(defadvice yank (around html-yank-indent)
-  "Indents after yanking."
-  (let ((point-before (point)))
-    ad-do-it
-    (when (eq major-mode 'html-mode) ;; check what mode we're in
-      (indent-region point-before (point)))))
-(ad-activate 'yank)
-#+END_SRC
-
-** Projectile
-#+BEGIN_SRC emacs-lisp
-(projectile-global-mode)
-(diminish 'projectile-mode)
-#+END_SRC
-** Org agneda files
-#+BEGIN_SRC emacs-lisp
-(setq org-agenda-files '("~/org"))
-#+END_SRC
-** Highlight todos
-#+BEGIN_SRC emacs-lisp
-(global-hl-todo-mode)
-#+END_SRC
-
-** compiling
-#+BEGIN_SRC emacs-lisp
- (setq compilation-ask-about-save nil)
- (setq compilation-auto-jump-to-first-error nil)
- (setq compile-command "..\\build.bat")
- (setq compilation-read-command nil)
-
-;; compilation in new frame
- (setq special-display-buffer-names
-      `(("*compilation*" . ((name . "*compilation*")
-                            ,@default-frame-alist
-                            (left . (- 1))
-                            (top . 0)))))
-#+END_SRC
-
-** company-mode
-#+BEGIN_SRC emacs-lisp
-  (use-package company :ensure t
-    :config
-    (setq-default company-lighter-base "©")
-    (setq-default company-show-numbers          1)
-    (setq-default company-idle-delay            0) ; start completion immediately
-    (setq-default company-minimum-prefix-length 1) ; start completion after 1 character.
-    (setq-default company-tooltip-align-annotations t)
-    (global-company-mode 1))
-    ;; (setq company-backends '((company-yasnippet :with company-dabbrev-code)))
-    (setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
-#+END_SRC
-
-** yasnippet
-#+BEGIN_SRC emacs-lisp
-(require 'yasnippet)
-(yas-global-mode 1)
-#+END_SRC
-** winner mode
-#+BEGIN_SRC emacs-lisp
-(require 'winner)
-(winner-mode 1)
-#+END_SRC
-
-** drag and drop file
-#+BEGIN_SRC emacs-lisp
-;;(dnd-open-file-other-window t)
-#+END_SRC
-** ido-mode
-#+BEGIN_SRC emacs-lisp
-(require 'ido-vertical-mode)
-(ido-mode 1)
-(ido-vertical-mode 1)
-;(setq ido-separator "\n\t ")
-#+END_SRC
-
 ** No bell sound
 #+BEGIN_SRC emacs-lisp
   (setq visible-bell nil
       ring-bell-function #'ignore)
 #+END_SRC
 
-** Backup files
+** no double space after sentence needed
 #+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist `(("." . "~/.emacs-saves")))
-
-  (setq delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t)
+(setq sentence-end-double-space nil)
 #+END_SRC
-** Save on buffer focus lost
+** Org agneda files
 #+BEGIN_SRC emacs-lisp
-   (add-hook 'focus-out-hook          (lambda () (when (and buffer-file-name (buffer-modified-p)) (save-buffer))))
-   (add-hook 'mouse-leave-buffer-hook (lambda () (when (and buffer-file-name (buffer-modified-p)) (save-buffer))))
-
-    (defadvice switch-to-buffer (before save-buffer-now activate)
-      (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
-    (defadvice other-window (before other-window-now activate)
-   (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
+(setq org-agenda-files '("~/org"))
+#+END_SRC
+** Orgmode timestamp todo
+#+BEGIN_SRC emacs-lisp
+ (setq org-log-done 'time)
 #+END_SRC
 
+** Overwrtite marked texed
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode 1)
+#+END_SRC
+** Projectile
+#+BEGIN_SRC emacs-lisp
+(projectile-global-mode)
+(diminish 'projectile-mode)
+#+END_SRC
 ** Save hooks
 Remove trailing whitespace
 Tabs to spaces
@@ -306,6 +477,21 @@ Tabs to spaces
   (add-hook 'before-save-hook 'untabify-except-makefiles)
 #+END_SRC
 
+** Save on buffer focus lost
+#+BEGIN_SRC emacs-lisp
+   (add-hook 'focus-out-hook          (lambda () (when (and buffer-file-name (buffer-modified-p)) (save-buffer))))
+   (add-hook 'mouse-leave-buffer-hook (lambda () (when (and buffer-file-name (buffer-modified-p)) (save-buffer))))
+
+    (defadvice switch-to-buffer (before save-buffer-now activate)
+      (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
+    (defadvice other-window (before other-window-now activate)
+   (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
+#+END_SRC
+
+** simpler yes no dialoge
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
 ** Treat underscore as part of the word
 #+BEGIN_SRC emacs-lisp
 (modify-syntax-entry ?_ "w")
@@ -313,105 +499,18 @@ Tabs to spaces
 
 #+RESULTS:
 
-** Orgmode timestamp todo
+** winner mode
 #+BEGIN_SRC emacs-lisp
- (setq org-log-done 'time)
+(require 'winner)
+(winner-mode 1)
 #+END_SRC
-
-** Cursor blink colors
-#+BEGIN_SRC emacs-lisp
-(defvar blink-cursor-colors (list
-     "#00FFF6"
-     "#0099FF")
-  "On each blink the cursor will cycle to the next color in this list.")
-
-(setq blink-cursor-count 0)
-(defun blink-cursor-timer-function ()
-  "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'.
-Warning: overwrites original version in `frame.el'.
-
-This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
-  (when (not (internal-show-cursor-p))
-    (when (>= blink-cursor-count (length blink-cursor-colors))
-      (setq blink-cursor-count 0))
-    (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
-    (setq blink-cursor-count (+ 1 blink-cursor-count))
-    )
-  (internal-show-cursor nil (not (internal-show-cursor-p))))
-
-(blink-cursor-mode)
-#+END_SRC
-
-** Diff-Hl
-#+BEGIN_SRC emacs-lisp
-(global-diff-hl-mode t)
-;(diff-hl-flydiff-mode t)
-
-;; Workaround for displaying correctly in other window
-(use-package frame
-  :defer t
-  :config
-  (progn
-    (setq window-divider-default-places 'right-only) ;Default 'right-only
-    ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=27830#20
-    ;; Workaround on emacs 26+ to prevent fringe truncation. You need to use
-    ;; either scroll bars or window dividers to prevent that.
-    ;; I dislike the default face of `window-divider', so I customize that in my
-    ;; `smyx-theme`.
-    (setq window-divider-default-right-width 1) ;Default 6
-    (window-divider-mode 1)))
-#+END_SRC
-
-#+RESULTS:
-: t
-
-** Global revert mode
-#+BEGIN_SRC emacs-lisp
-(global-auto-revert-mode t)
-#+END_SRC
-** Overwrtite marked texed
-#+BEGIN_SRC emacs-lisp
-(delete-selection-mode 1)
-#+END_SRC
-** simpler yes no dialoge
-#+BEGIN_SRC emacs-lisp
-(defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-** utf-8 everywhere
-#+BEGIN_SRC emacs-lisp
-(setq locale-coding-system 'utf-8) ; pretty
-(set-terminal-coding-system 'utf-8) ; pretty
-(set-keyboard-coding-system 'utf-8) ; pretty
-(set-selection-coding-system 'utf-8) ; please
-(prefer-coding-system 'utf-8) ; with sugar on top
-#+END_SRC
-** no double space after sentence needed
-#+BEGIN_SRC emacs-lisp
-(setq sentence-end-double-space nil)
-#+END_SRC
-** Transparent Background if not in focus
-#+BEGIN_SRC emacs-lisp
- (set-frame-parameter (selected-frame) 'alpha '(100 . 96))
- (add-to-list 'default-frame-alist '(alpha . (100 . 96)))
- (defun transparency-toggle ()
-   (interactive)
-   (let ((alpha (frame-parameter nil 'alpha)))
-     (set-frame-parameter
-      nil 'alpha
-      (if (eql (cond ((numberp alpha) alpha)
-                     ((numberp (cdr alpha)) (cdr alpha))
-                     ;; Also handle undocumented (<active> <inactive>) form.
-                     ((numberp (cadr alpha)) (cadr alpha)))
-               100)
-          '(100 . 96) '(100 . 96)))))
-(transparency-toggle)
-#+END_SRC
-
-#+RESULTS:
 
 * Own Shortcuts
 #+BEGIN_SRC emacs-lisp
 
+  (global-set-key (kbd "C-S-d") 'duplicate-line)
+
+  (global-set-key (kbd "M-.") 'dumb-jump-go-set-mark)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 
   (global-unset-key (kbd "C-<down-mouse-1>"))
@@ -461,6 +560,33 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 : org-capture
 
 * Own functions
+** duplicate lines
+#+begin_src emacs-lisp
+  (defun duplicate-line()
+    (interactive)
+    (move-beginning-of-line 1)
+    (kill-line 1)
+    (yank)
+    (yank)
+    (forward-line -1)
+  )
+#+end_src
+
+#+RESULTS:
+: duplicate-line
+
+** set Mark and dumb jump go
+#+begin_src emacs-lisp
+  (defun dumb-jump-go-set-mark ()
+     "Sets a mark and dumb jumps."
+     (interactive)
+     (kbd "C-SPC C-SPC")
+     (dumb-jump-go nil))
+#+end_src
+
+#+RESULTS:
+: dumb-jump-go-set-mark
+
 ** Find TODOs in projectile
 #+BEGIN_SRC emacs-lisp
  (defun projectile-find-todos ()
@@ -523,11 +649,15 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
     (find-file-other-window org-default-notes-file))
 #+END_SRC
 
-** Wolfram alpha mode
-#+BEGIN_SRC emacs-lisp
-    (setq wolfram-alpha-app-id "UX8T57-3WXAA24JHT")
-#+END_SRC
-
+** open explorer here
+#+begin_src emacs-lisp
+(defun browse-file-directory ()
+  "Open the current file's directory however the OS would."
+  (interactive)
+  (if default-directory
+      (browse-url-of-file (expand-file-name default-directory))
+    (error "No `default-directory' to open")))
+#+end_src
 ** Delete whitepsace except current line
 #+BEGIN_SRC emacs-lisp
 (defun delete-trailing-whitespace-except-current-line ()
@@ -561,6 +691,9 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
     (org-reveal-export-to-html-and-browse))
 
 #+END_SRC
+
+#+RESULTS:
+: save-and-export-to-reavealjs
 
 ** Mark cuirrent word
 #+BEGIN_SRC emacs-lisp
@@ -610,99 +743,28 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 : mark-word-or-next-word-like-this
 
 * Mode specifics
-** JavaScript
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode))
-(add-hook 'rjsx-mode-hook
-          (lambda ()
-            (setq indent-tabs-mode nil) ;;Use space instead of tab
-            (setq js2-strict-missing-semi-warning nil))) ;;disable the semicolon warning
-#+END_SRC
-
 ** C/C++
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'c++-mode-hook (
-         lambda()
-            (c-set-style "awk")
-            (abbrev-mode -1)
-            (define-key c++-mode-map (kbd "C-d") nil)
-            (flycheck-mode 1)
-     )t)
+   #+begin_src emacs-lisp
 
-     (add-hook 'c-mode-hook (
-         lambda()
-            (c-set-style "awk")
-            (abbrev-mode -1)
-            (define-key c-mode-map (kbd "C-d") nil)
-            (flycheck-mode 1)
-     )t)
+      (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
-   #+END_SRC
-** Go
-   #+BEGIN_SRC emacs-lisp
-    (defun auto-complete-for-go ()
-      (auto-complete-mode 1))
-     (add-hook 'go-mode-hook 'auto-complete-for-go)
+        (add-hook 'c++-mode-hook (
+            lambda()
+               (c-set-style "awk")
+               (abbrev-mode -1)
+               (define-key c++-mode-map (kbd "C-d") nil)
+               (flycheck-mode 1)
+        ))
 
+        (add-hook 'c-mode-hook (
+            lambda()
+               (c-set-style "awk")
+               (abbrev-mode -1)
+               (define-key c-mode-map (kbd "C-d") nil)
+               (flycheck-mode 1)
+        ))
 
-        (with-eval-after-load 'go-mode
-     (require 'go-autocomplete))
-
-    (add-hook 'go-mode-hook (
-         lambda()
-             (add-hook 'before-save-hook #'gofmt-before-save)
-     )t)
-   #+END_SRC
-** Python
-   #+BEGIN_SRC emacs-lisp
-
-     (add-hook 'python-mode-hook (
-         lambda()
-             (pyvenv-mode t)
-             (elpy-mode t)
-             (ido-mode t)
-             (flycheck-mode t)
-            ;; (aggressive-indent-mode t)
-     )t)
-
-   #+END_SRC
-** Org
-   #+BEGIN_SRC emacs-lisp
-     (require 'ox-twbs)
-     (require 'compile)
-     (add-to-list 'compilation-error-regexp-alist 'latex-warning)
-     (add-to-list 'compilation-error-regexp-alist-alist
-          '(latex-warning
-          "\\(LaTeX Warning:\\(.+\n\\)*\\)" 3 1))
-
-     (add-to-list 'compilation-error-regexp-alist 'latex-error)
-     (add-to-list 'compilation-error-regexp-alist-alist '(latex-error
-          "\\(.*Error:\\(.+\n\\)*\\)" 1))
-
-
-     ;; (add-to-list 'compilation-error-regexp-alist 'latex-error2)
-     ;; (add-to-list 'compilation-error-regexp-alist-alist '(latex-error2
-     ;;      "\\(!.*\n\\)" 1))
-
-     (setq
-          org-latex-listings 'minted
-          org-default-notes-file "~/org/notes.org"
-          org-latex-pdf-process
-          '("pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
-            "bibtex %b"
-            "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
-            "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"))
-
-
-       (add-hook 'org-mode-hook (
-           lambda()
-               (set-fill-column 100)
-               (abbrev-mode t)
-               (auto-fill-mode t)
-               (org-bullets-mode t)
-       ))
-       (setq org-log-done 'time)
-   #+END_SRC
+   #+end_src
 
 ** DocViewMode (PDF)
 #+BEGIN_SRC emacs-lisp
@@ -718,8 +780,7 @@ This one changes the cursor color on each blink. Define colors in `blink-cursor-
 ** modeline cleanup
 #+begin_src emacs-lisp
   (setcar (cdr (assq 'ivy-mode minor-mode-alist)) "")
-  (setcar (cdr (assq 'company-childframe-mode minor-mode-alist)) "")
-  ;; (setcar (cdr (assq 'abbrev-mode minor-mode-alist)) "")
-  (setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) "")
+  (setcar (cdr (assq 'abbrev-mode minor-mode-alist)) "")
+  ;; (setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) "")
   (setcar (cdr (assq 'auto-fill-function minor-mode-alist)) "")
 #+end_src

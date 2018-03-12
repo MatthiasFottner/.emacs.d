@@ -24,7 +24,7 @@
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(flycheck-clang-analyzer-executable "")
- '(flycheck-clang-args (quote ("-Wno-pragma-once-outside-header -analyze")))
+ '(flycheck-clang-args (quote ("-Wno-pragma-once-outside-header")))
  '(flycheck-clang-include-path
    (quote
     ("D:\\Daten\\LaTeX\\__Bachelor\\C++\\irrlicht\\include\\" "D:\\Programme\\vs2017\\VC\\Tools\\MSVC\\14.11.25503\\include\\")))
@@ -65,6 +65,7 @@
  '(menu-bar-mode nil)
  '(nyan-animate-nyancat t)
  '(nyan-animation-frame-interval 0.1)
+ '(nyan-minimum-window-width 90)
  '(nyan-mode t)
  '(nyan-wavy-trail t)
  '(org-capture-templates
@@ -131,9 +132,7 @@
      ("" "capt-of" nil))))
  '(org-latex-hyperref-template nil)
  '(org-latex-listings (quote minted))
- '(org-latex-pdf-process
-   (quote
-    ("pdflatex -shell-escape -interaction=batchmode -output-directory %o %f" "bibtex %b" "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f" "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f")))
+ '(org-latex-pdf-process (quote ("latexmk -output-directory %o %f -pdf")))
  '(org-src-fontify-natively t)
  '(org-structure-template-alist
    (quote
@@ -177,7 +176,7 @@
      ("I" "#+include: %file ?"))))
  '(package-selected-packages
    (quote
-    (treemacs-evil company-childframe treemacs-projectile treemacs show-marks avy xterm-color wttrin company-jedi cmake-mode pretty-mode gitignore-mode org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent elpy flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
+    (flycheck company-lsp lsp-mode lsp-python dumb-jump workgroups erc-twitch treemacs-evil company-childframe treemacs-projectile treemacs show-marks avy xterm-color wttrin cmake-mode pretty-mode gitignore-mode org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -193,6 +192,7 @@
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(tramp-syntax (quote default) nil (tramp))
+ '(treemacs-filewatch-mode t)
  '(undo-tree-mode-lighter "")
  '(wttrin-default-cities (quote ("Munich" "Seoul" "구리시"))))
 
@@ -207,14 +207,15 @@
  '(diff-hl-change ((t (:background "#073642" :foreground "orange"))))
  '(diff-hl-delete ((t (:background "#073642" :foreground "orange red"))))
  '(diff-hl-insert ((t (:inherit diff-added :background "#073642" :foreground "green"))))
- '(font-lock-comment-delimiter-face ((t (:foreground "#d33682" :slant italic))))
- '(font-lock-comment-face ((t (:foreground "#d33682" :slant italic))))
+ '(font-lock-comment-delimiter-face ((t (:foreground "#49974A" :slant italic))))
+ '(font-lock-comment-face ((t (:foreground "#49974A" :slant italic))))
  '(mode-line ((t (:background "#073642" :box nil :weight normal :height 1.0))))
  '(mode-line-buffer-id-inactive ((t (:inherit mode-line-buffer-id :box nil))))
  '(mode-line-inactive ((t (:inherit mode-line :background "#073642" :foreground "#586e75" :box nil :weight normal :height 1.0))))
  '(org-level-1 ((t (:inherit outline-1 :height 1.8))))
  '(org-level-2 ((t (:inherit outline-2 :height 1.5))))
  '(org-level-3 ((t (:inherit outline-3 :height 1.3))))
+ '(org-meta-line ((t (:inherit mode-line-buffer-id))))
  '(package-name ((t (:foreground "SpringGreen3" :underline t))))
  '(powerline-active1 ((t (:background "#14282D" :foreground "#839496" :box nil))))
  '(powerline-active2 ((t (:background "#073642" :foreground "#839496" :box nil))))

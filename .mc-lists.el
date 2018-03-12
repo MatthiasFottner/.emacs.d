@@ -14,6 +14,8 @@
 	handle-switch-frame
 	indent-for-tab-command
 	kill-region
+	kmacro-end-or-call-macro
+	kmacro-start-macro-or-insert-counter
 	move-lines-up
 	org-beginning-of-line
 	org-cycle
@@ -29,6 +31,7 @@
 (setq mc/cmds-to-run-once
       '(
 	compile
+	dumb-jump-go-set-mark
 	eval-expression
 	ido-find-file-other-window
 	ido-switch-buffer
