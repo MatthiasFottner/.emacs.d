@@ -56,224 +56,22 @@
       (package-refresh-contents)
       (package-install 'use-package))
   #+end_src
-** dumb jump
+
+** academic phrases
 #+begin_src emacs-lisp
-    (use-package dumb-jump
-      :ensure t)
+  (use-package academic-phrases
+    :ensure t
+   )
 #+end_src
 
-#+RESULTS:
-
-** Org
-  #+begin_src emacs-lisp
-    (use-package org
-      :ensure t
-      :init
-      :config
-      (use-package org-bullets
-        :ensure t)
-      (require 'compile)
-      (add-to-list 'compilation-error-regexp-alist 'latex-warning)
-      (add-to-list 'compilation-error-regexp-alist-alist
-                   '(latex-warning
-                     "\\(LaTeX Warning:\\(.+\n\\)*\\)" 3 1))
-
-      (add-to-list 'compilation-error-regexp-alist 'latex-error)
-      (add-to-list 'compilation-error-regexp-alist-alist '(latex-error
-                                                           "\\(.*Error:\\(.+\n\\)*\\)" 1))
-
-      (add-hook 'org-mode-hook (lambda () (set-fill-column 100)))
-
-      ;; (add-to-list 'compilation-error-regexp-alist 'latex-error2)
-      ;; (add-to-list 'compilation-error-regexp-alist-alist '(latex-error2
-      ;;      "\\(!.*\n\\)" 1))
-
-      :custom
-      (org-latex-listings 'minted)
-      (org-default-notes-file "~/org/notes.org")
-      (org-latex-pdf-process "latexmk -pdf %f")
-      (org-log-done 'time)
-
-      ;; '("pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
-      ;;   "bibtex %b"
-      ;;   "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"
-      ;;   "pdflatex -shell-escape -interaction=batchmode -output-directory %o %f"))
-
-
-      :hook
-      ((org-mode . org-bullets-mode)
-      (org-mode . abbrev-mode)
-      (org-mode . auto-fill-mode))
-)
-
-    ;;(use-package ox
-    ;;  :ensure t)
-
-    ;;(use-package ox-reveal
-    ;;  :ensure t)
-
-    (use-package ox-twbs
-      :ensure t)
-
-    (use-package color-theme-sanityinc-solarized
-      :ensure t)
-#+end_src
-** Multiple cursors
-#+begin_src emacs-lisp
-    (use-package multiple-cursors
-      :ensure t)
-#+end_src
-** rjsx
-#+begin_src emacs-lisp
-
-    (use-package rjsx-mode
-      :ensure t
-      :config
-        (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode))
-        ;; Use space instead of tab
-        (setq indent-tabs-mode nil)
-        ;; disable the semicolon warning
-        (setq js2-strict-missing-semi-warning nil))
-#+end_src
-** flycheck
-#+begin_src emacs-lisp
-
-    (use-package flycheck
-      :ensure t)
-#+end_src
-** wolfram
-#+begin_src emacs-lisp
-    (use-package wolfram
-      :ensure t
-      :config
-        (setq wolfram-alpha-app-id "UX8T57-3WXAA24JHT"))
-#+end_src
 ** company-childframe
 #+begin_src emacs-lisp
-    (use-package company-childframe
-      :ensure t
-      :config
-        (setcar (cdr (assq 'company-childframe-mode minor-mode-alist)) "")
-        (company-childframe-mode 1))
+  (use-package company-childframe
+    :ensure t
+    :config
+      (setcar (cdr (assq 'company-childframe-mode minor-mode-alist)) "")
+       (company-childframe-mode 1))
 #+end_src
-** powerline
-#+begin_src emacs-lisp
-    (use-package powerline
-      :ensure t
-      :config
-        (powerline-default-theme))
-#+end_src
-** wttrin
-#+begin_src emacs-lisp
-    (use-package wttrin
-      :ensure t
-      :config
-      (setq wttrin-default-accept-language '("Accept-Language" . "de-DE")))
-#+end_src
-** projectile
-#+begin_src emacs-lisp
-    (use-package projectile
-      :ensure t)
-
-    (use-package projectile-ripgrep
-      :ensure t)
-#+end_src
-
-** diff-hl
-#+begin_src emacs-lisp
-    (use-package diff-hl
-      :ensure t
-      :config
-      (global-diff-hl-mode t)
-      (diff-hl-flydiff-mode t)
-
-      ;; Workaround for displaying correctly in other window
-      (use-package frame
-        :defer t
-        :config
-          (progn
-           (setq window-divider-default-places 'right-only) ;Default 'right-only
-             ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=27830#20
-             ;; Workaround on emacs 26+ to prevent fringe truncation. You need to use
-             ;; either scroll bars or window dividers to prevent that.
-             ;; I dislike the default face of `window-divider', so I customize that in my
-             ;; `smyx-theme`.
-             (setq window-divider-default-right-width 1) ;Default 6
-             (window-divider-mode 1))))
-
-#+end_src
-** hl-todo
-#+begin_src emacs-lisp
-    (use-package hl-todo
-      :ensure t
-      :config
-      (global-hl-todo-mode))
-#+end_src
-** ido-vertical-mode
-#+begin_src emacs-lisp
-    (use-package ido-vertical-mode
-      :ensure t
-      :config
-        (ido-mode 1)
-        (ido-vertical-mode 1))
-#+end_src
-** ivy
-#+begin_src emacs-lisp
-    (use-package ivy
-      :ensure t
-      :config (ivy-mode 1))
-#+end_src
-** diminish
-#+begin_src emacs-lisp
-    (use-package diminish
-      :ensure t)
-#+end_src
-** treemacs
-#+begin_src emacs-lisp
-    (use-package treemacs
-      :ensure t
-      :defer nil
-      :init
-      (with-eval-after-load 'winum
-        (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-      :config
-      (setq treemacs-change-root-without-asking nil
-            treemacs-collapse-dirs              (if (executable-find "python") 3 0)
-            treemacs-file-event-delay           100
-            treemacs-follow-after-init          t
-            treemacs-follow-recenter-distance   0.1
-            treemacs-goto-tag-strategy          'refetch-index
-            treemacs-indentation                2
-            treemacs-indentation-string         " "
-            treemacs-is-never-other-window      t
-            treemacs-never-persist              nil
-            treemacs-no-png-images              nil
-            treemacs-recenter-after-file-follow nil
-            treemacs-recenter-after-tag-follow  nil
-            treemacs-show-hidden-files          t
-            treemacs-silent-filewatch           nil
-            treemacs-silent-refresh             t
-            treemacs-sorting                    'alphabetic-desc
-            treemacs-tag-follow-cleanup         t
-            treemacs-tag-follow-delay           1.5
-            treemacs-width                      35)
-
-      ;; (treemacs-follow-mode t)
-      ;; (treemacs-filewatch-mode t)
-      ;; (treemacs-git-mode 'simple)
-
-      :bind
-      (:map global-map
-            ([f8]         . treemacs-toggle)
-            ("M-0"        . treemacs-select-window)
-            ("C-x 1"      . treemacs-delete-other-windows)))
-
-    (use-package treemacs-projectile
-      :defer t
-      :ensure t
-      :config
-      (setq treemacs-header-function #'treemacs-projectile-create-header))
-  #+end_src
 ** company-mode
 #+BEGIN_SRC emacs-lisp
   (use-package company :ensure t
@@ -287,13 +85,330 @@
     (setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
 #+END_SRC
 
+** diff-hl
+#+begin_src emacs-lisp
+ (use-package diff-hl
+   :ensure t
+   :config
+   (global-diff-hl-mode t)
+   (diff-hl-flydiff-mode t)
+   (diff-hl-margin-mode t)
+
+   ;; Workaround for displaying correctly in other window
+   (use-package frame
+     :defer t
+     :config
+       (progn
+        (setq window-divider-default-places 'right-only) ;Default 'right-only
+          ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=27830#20
+          ;; Workaround on emacs 26+ to prevent fringe truncation. You need to use
+          ;; either scroll bars or window dividers to prevent that.
+          ;; I dislike the default face of `window-divider', so I customize that in my
+          ;; `smyx-theme`.
+          (setq window-divider-default-right-width 1) ;Default 6
+          (window-divider-mode 1))))
+
+#+end_src
+
+** diminish
+#+begin_src emacs-lisp
+ (use-package diminish
+   :ensure t)
+#+end_src
+** dumb jump
+#+begin_src emacs-lisp
+ (use-package dumb-jump
+   :ensure t)
+#+end_src
+
+** flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t)
+#+end_src
+** hl-todo
+#+begin_src emacs-lisp
+  (use-package hl-todo
+    :ensure t
+    :config
+    (global-hl-todo-mode))
+#+end_src
+** ido-vertical-mode
+#+begin_src emacs-lisp
+  (use-package ido-vertical-mode
+    :ensure t
+    :config
+      (ido-mode 1)
+      (ido-vertical-mode 1))
+#+end_src
+** ivy
+#+begin_src emacs-lisp
+  (use-package ivy
+    :ensure t
+     :config (ivy-mode 1))
+#+end_src
+** magit
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t)
+#+end_src
+** Multiple cursors
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :ensure t)
+#+end_src
+** Org
+  #+begin_src emacs-lisp
+       (require 'org)
+       (require 'ox-latex)
+       (require 'compile)
+
+       (add-to-list 'compilation-error-regexp-alist 'latex-warning)
+       (add-to-list 'compilation-error-regexp-alist-alist
+                     '(latex-warning
+                       "\\(LaTeX Warning:\\(.+\n\\)*\\)" 3 1))
+
+       (add-to-list 'compilation-error-regexp-alist 'latex-error)
+       (add-to-list 'compilation-error-regexp-alist-alist
+                     '(latex-error
+                     "\\(.*Error:\\(.+\n\\)*\\)" 1))
+
+       (setq org-latex-listings 'minted)
+       (setq org-latex-pdf-process '("latexmk -pdf %f"))
+       (setq org-default-notes-file "~/org/notes.org")
+       (setq org-log-done 'time)
+       (setq org-capture-templates
+             (quote
+              (("t" "Task" entry
+                (file+headline "~/org/notes.org" "Tasks")
+                "* TODO %?
+      %i
+      %a")
+               ("s" "Schedule entry" entry
+                (file+headline "~/org/notes.org" "Schedule")
+                ""))))
+
+       (setq org-default-notes-file "~/org/notes.org")
+       (setq org-export-dispatch-use-expert-ui nil)
+       (setq org-highlight-latex-and-related (quote (latex script entities)))
+       (setq org-latex-caption-above nil)
+       (setq org-latex-classes
+             (quote
+              (("scrreprt" "\\documentclass{scrreprt}"
+                ("\\chapter{%s}"       . "\\chapter*{%s}")
+                ("\\section{%s}"       . "\\section*{%s}")
+                ("\\subsection{%s}"    . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                ("\\paragraph{%s}"     . "\\paragraph*{%s}")
+                ("\\subparagraph{%s}"  . "\\subparagraph*{%s}"))
+               ("sig" "\\documentclass{sig-alternate}"
+                ("\\section{%s}"       . "\\section*{%s}")
+                ("\\subsection{%s}"    . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                ("\\paragraph{%s}"     . "\\paragraph*{%s}")
+                ("\\subparagraph{%s}"  . "\\subparagraph*{%s}"))
+               ("article" "\\documentclass[11pt]{article}"
+                ("\\section{%s}"       . "\\section*{%s}")
+                ("\\subsection{%s}"    . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                ("\\paragraph{%s}"     . "\\paragraph*{%s}")
+                ("\\subparagraph{%s}"  . "\\subparagraph*{%s}"))
+               ("report" "\\documentclass[11pt]{report}"
+                ("\\part{%s}"          . "\\part*{%s}")
+                ("\\chapter{%s}"       . "\\chapter*{%s}")
+                ("\\section{%s}"       . "\\section*{%s}")
+                ("\\subsection{%s}"    . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+               ("book" "\\documentclass[11pt]{book}"
+                ("\\part{%s}"          . "\\part*{%s}")
+                ("\\chapter{%s}"       . "\\chapter*{%s}")
+                ("\\section{%s}"       . "\\section*{%s}")
+                ("\\subsection{%s}"    . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
+
+       (setq org-latex-default-packages-alist
+             (quote
+              (("AUTO" "inputenc" t)
+               ("T1" "fontenc" t)
+               ("" "fixltx2e" nil)
+               ("" "graphicx" t)
+               ("" "grffile" t)
+               ("" "longtable" nil)
+               ("" "wrapfig" nil)
+               ("" "rotating" nil)
+               ("normalem" "ulem" t)
+               ("" "amsmath" t)
+               ("" "textcomp" t)
+               ("" "amssymb" t)
+               ("" "capt-of" nil))))
+
+      (setq org-latex-hyperref-template nil)
+      (setq org-latex-listings (quote minted))
+      (setq org-src-fontify-natively t)
+      (setq org-structure-template-alist
+            (quote
+             (("n" "#+begin_notes
+    ?
+    ,#+end_notes")
+              ("s" "#+begin_src ?
+
+    ,#+end_src")
+              ("e" "#+begin_example
+    ?
+    ,#+end_example")
+              ("q" "#+begin_quote
+    ?
+    ,#+end_quote")
+              ("v" "#+begin_verse
+    ?
+    ,#+end_verse")
+              ("V" "#+begin_verbatim
+    ?
+    ,#+end_verbatim")
+              ("c" "#+begin_center
+    ?
+    ,#+end_center")
+              ("C" "#+begin_comment
+    ?
+    ,#+end_comment")
+              ("l" "#+begin_export latex
+    ?
+    ,#+end_export")
+              ("L" "#+latex: ")
+              ("h" "#+begin_export html
+    ?
+    ,#+end_export")
+              ("H" "#+html: ")
+              ("a" "#+begin_export ascii
+    ?
+    ,#+end_export")
+              ("A" "#+ascii: ")
+              ("i" "#+index: ?")
+              ("I" "#+include: %file ?"))))
+
+
+
+       (add-hook 'org-mode-hook (lambda ()
+              (set-fill-column 100)
+              (org-bullets-mode 1)
+              (abbrev-mode 1)
+              (auto-fill-mode 1)))
+
+       (use-package org-bullets
+         :ensure t)
+
+       (use-package ox-reveal
+         :ensure t)
+
+       (use-package ox-twbs
+         :ensure t)
+#+end_src
+
+#+RESULTS:
+
+** solarized dark
+#+begin_src emacs-lisp
+  (use-package color-theme-sanityinc-solarized
+      :ensure t)
+#+end_src
+** powerline
+#+begin_src emacs-lisp
+  (use-package powerline
+    :ensure t
+    :config
+      (powerline-default-theme))
+#+end_src
+** projectile
+#+begin_src emacs-lisp
+    (use-package projectile
+       :ensure t
+       :config
+       (projectile-global-mode)
+       (diminish 'projectile-mode))
+
+     (use-package projectile-ripgrep
+       :ensure t)
+#+end_src
+
+** rjsx
+#+begin_src emacs-lisp
+ (use-package rjsx-mode
+   :ensure t
+   :config
+     (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode))
+     ;; Use space instead of tab
+     (setq indent-tabs-mode nil)
+     ;; disable the semicolon warning
+     (setq js2-strict-missing-semi-warning nil))
+#+end_src
+** treemacs
+#+begin_src emacs-lisp
+ (use-package treemacs
+   :ensure t
+   :defer nil
+   :init
+   (with-eval-after-load 'winum
+     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+   :config
+   (setq treemacs-change-root-without-asking nil
+         treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+         treemacs-file-event-delay           100
+         treemacs-follow-after-init          t
+         treemacs-follow-recenter-distance   0.1
+         treemacs-goto-tag-strategy          'refetch-index
+         treemacs-indentation                2
+         treemacs-indentation-string         " "
+         treemacs-is-never-other-window      t
+         treemacs-never-persist              nil
+         treemacs-no-png-images              nil
+         treemacs-recenter-after-file-follow nil
+         treemacs-recenter-after-tag-follow  nil
+         treemacs-show-hidden-files          t
+         treemacs-silent-filewatch           nil
+         treemacs-silent-refresh             t
+         treemacs-sorting                    'alphabetic-desc
+         treemacs-tag-follow-cleanup         t
+         treemacs-tag-follow-delay           1.5
+         treemacs-width                      35)
+
+  ;;   ;; (treemacs-follow-mode t)
+  ;;   ;; (treemacs-filewatch-mode t)
+  ;;   ;; (treemacs-git-mode 'simple)
+
+   :bind
+   (:map global-map
+         ([f8]         . treemacs-toggle)
+         ("M-0"        . treemacs-select-window)
+         ("C-x 1"      . treemacs-delete-other-windows)))
+
+ (use-package treemacs-projectile
+   :defer t
+   :ensure t
+   :config
+   (setq treemacs-header-function #'treemacs-projectile-create-header))
+  #+end_src
+** wolfram
+#+begin_src emacs-lisp
+ (use-package wolfram
+   :ensure t
+   :config
+     (setq wolfram-alpha-app-id "UX8T57-3WXAA24JHT"))
+#+end_src
+** wttrin
+#+begin_src emacs-lisp
+ (use-package wttrin
+   :ensure t
+   :config
+   (setq wttrin-default-accept-language '("Accept-Language" . "de-DE")))
+#+end_src
 * UI customization
 ** Smoother scrolling
 #+BEGIN_SRC emacs-lisp
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; one line at a time
   (setq mouse-wheel-progressive-speed nil)            ;; don't accelerate scrolling
   (setq mouse-wheel-follow-mouse 't)                  ;; scroll window under mouse
-  (setq scroll-step 3)                                ;; keyboard scroll one line at a time
+  (setq scroll-step 1)                                ;; keyboard scroll one line at a time
+  (setq scroll-conservatively 101)
 #+END_SRC
 
 ** Long lines
@@ -306,12 +421,6 @@
   (setq initial-major-mode 'text-mode)
   (setq initial-scratch-message "\
   Unfortunately there is a radio connected to my brain.")
-
-  ;; (add-hook 'after-init-hook (lambda ()
-  ;;  (org-agenda-list)
-  ;;  (org-agenda-month-view)
-  ;;  (get-buffer "*Org Agenda*")))
-
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   (setq frame-title-format "%b - Emacs ")
 
@@ -364,34 +473,40 @@
 (transparency-toggle)
 #+END_SRC
 * Custom behavior
+** garbage collection
+#+begin_src emacs-lisp
+(setq gc-cons-threshold (eval-when-compile (* 1024 1024 1024)))
+(run-with-idle-timer 2 t (lambda () (garbage-collect)))
+#+end_src
+
 ** Backup files
 #+BEGIN_SRC emacs-lisp
   (setq backup-directory-alist `(("." . "~/.emacs-saves")))
 
   (setq delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t)
+        kept-new-versions 6
+        kept-old-versions 2
+        version-control t)
 #+END_SRC
 ** compiling
 #+BEGIN_SRC emacs-lisp
- (setq compilation-ask-about-save nil)
- (setq compilation-auto-jump-to-first-error nil)
- (setq compile-command "find_and_run.py build.bat")
- (setq compilation-read-command nil)
- (setq compilation-scroll-output t)
-;; compilation in new frame
- (setq special-display-buffer-names
-      `(("*compilation*" . ((name . "*compilation*")
-                            ,@default-frame-alist
-                            (left . (- 1))
-                            (top . 0)))))
+   (setq compilation-ask-about-save nil)
+   (setq compilation-auto-jump-to-first-error nil)
+   (setq compile-command "find_and_run.py build.bat")
+   (setq compilation-read-command nil)
+   (setq compilation-scroll-output t)
+  ;; compilation in new frame
+   (setq special-display-buffer-names
+        `(("*compilation*" . ((name . "*compilation*")
+                              ,@default-frame-alist
+                              (left . (- 1))
+                              (top . 0)))))
 
-  (setq special-display-buffer-names
-      `(("*Org PDF LaTeX Output*" . ((name . "*Org PDF LaTeX Output*")
-                            ,@default-frame-alist
-                            (left . (- 1))
-                            (top . 0)))))
+    ;; (setq special-display-buffer-names
+    ;;     `(("*Org PDF LaTeX Output*" . ((name . "*Org PDF LaTeX Output*")
+    ;;                           ,@default-frame-alist
+    ;;                           (left . (- 1))
+    ;;                           (top . 0)))))
 #+END_SRC
 
 ** format after yank
@@ -400,8 +515,7 @@
   "Indents after yanking."
   (let ((point-before (point)))
     ad-do-it
-    (when (eq major-mode 'html-mode) ;; check what mode we're in
-      (indent-region point-before (point)))))
+      (indent-region point-before (point))))
 (ad-activate 'yank)
 #+END_SRC
 
@@ -446,7 +560,7 @@
 #+BEGIN_SRC emacs-lisp
 (setq sentence-end-double-space nil)
 #+END_SRC
-** Org agneda files
+** Org agenda files
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-files '("~/org"))
 #+END_SRC
@@ -458,11 +572,6 @@
 ** Overwrtite marked texed
 #+BEGIN_SRC emacs-lisp
 (delete-selection-mode 1)
-#+END_SRC
-** Projectile
-#+BEGIN_SRC emacs-lisp
-(projectile-global-mode)
-(diminish 'projectile-mode)
 #+END_SRC
 ** Save hooks
 Remove trailing whitespace
@@ -508,7 +617,19 @@ Tabs to spaces
 * Own Shortcuts
 #+BEGIN_SRC emacs-lisp
 
+  (global-unset-key (kbd "ESC ESC ESC"))
+  (global-unset-key (kbd "<f2> <f2>"))
+
   (global-set-key (kbd "C-S-d") 'duplicate-line)
+
+  (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+  (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+
+
+  (with-eval-after-load 'doc-view
+    (define-key doc-view-mode-map (kbd "<C-wheel-up>") 'doc-view-enlarge)
+    (define-key doc-view-mode-map (kbd "<C-wheel-down>") 'doc-view-shrink))
+
 
   (global-set-key (kbd "M-.") 'dumb-jump-go-set-mark)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -556,9 +677,6 @@ Tabs to spaces
   (global-set-key (kbd "C-c c") 'org-capture)
 #+END_SRC
 
-#+RESULTS:
-: org-capture
-
 * Own functions
 ** duplicate lines
 #+begin_src emacs-lisp
@@ -588,13 +706,12 @@ Tabs to spaces
 : dumb-jump-go-set-mark
 
 ** Find TODOs in projectile
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
  (defun projectile-find-todos ()
     "find TODOS in the project."
     (interactive)
-
-    (projectile-ripgrep find-todo-regex))
-#+END_SRC
+    (ripgrep-regexp find-todo-regex (projectile-project-root)))
+#+end_src
 
 ** move lines and regions
 #+BEGIN_SRC emacs-lisp
@@ -751,6 +868,7 @@ Tabs to spaces
         (add-hook 'c++-mode-hook (
             lambda()
                (c-set-style "awk")
+               (c-set-offset 'inlambda 0)
                (abbrev-mode -1)
                (define-key c++-mode-map (kbd "C-d") nil)
                (flycheck-mode 1)
@@ -759,12 +877,16 @@ Tabs to spaces
         (add-hook 'c-mode-hook (
             lambda()
                (c-set-style "awk")
+               (c-set-offset 'inlambda 0)
                (abbrev-mode -1)
                (define-key c-mode-map (kbd "C-d") nil)
                (flycheck-mode 1)
         ))
 
    #+end_src
+
+   #+RESULTS:
+   | lambda | nil | (c-set-style awk) | (c-set-offset (quote inlambda) 0) | (abbrev-mode -1) | (define-key c-mode-map (kbd C-d) nil) | (flycheck-mode 1) |
 
 ** DocViewMode (PDF)
 #+BEGIN_SRC emacs-lisp
@@ -775,12 +897,70 @@ Tabs to spaces
   ))
 #+END_SRC
 
+* Text Snippets
+** cl build script
+#+begin_src emacs-lisp
+  (defun insert-build-script-cl()
+    (interactive)
+    (insert
+     "@echo off
+pushd %~dp0
+
+set exeName=main.exe
+set binDir=bin
+
+mkdir quickbuild
+pushd quickbuild
+
+cl^
+   ../src/*.cpp^
+   /Fe%exeName% /MP /openmp /W3 /std:c++latest^
+   /nologo /EHsc /Z7^
+   /link /incremental /debug:fastlink
+
+if %errorlevel% == 0 (
+   echo.
+   if not exist ..\\%binDir% mkdir ..\\%binDir%
+   move %exeName% ..\\%binDir%\\ > NUL
+   pushd ..\\%binDir%
+
+   echo ---------- Output start ----------
+   %exeName%
+   echo ---------- Output   end ----------
+   del %exeName% /S /Q > NUL
+   popd
+) else (
+  echo.
+  echo Fucki'n 'ell
+)
+
+popd
+rd quickbuild /S /Q
+popd"))
+#+end_src
+
+#+RESULTS:
+: insert-build-script-cl
+
+** build script skeleton
+#+begin_src emacs-lisp
+  (defun insert-build-script-skeleton()
+    (interactive)
+    (insert
+     "@echo off
+pushd %~dp0
+
+build
+run
+
+popd
+"))
+#+end_src
 
 * Delayed execution
 ** modeline cleanup
 #+begin_src emacs-lisp
   (setcar (cdr (assq 'ivy-mode minor-mode-alist)) "")
   (setcar (cdr (assq 'abbrev-mode minor-mode-alist)) "")
-  ;; (setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) "")
   (setcar (cdr (assq 'auto-fill-function minor-mode-alist)) "")
 #+end_src

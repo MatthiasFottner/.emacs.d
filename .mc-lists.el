@@ -3,46 +3,15 @@
 
 (setq mc/cmds-to-run-for-all
       '(
-	c-electric-brace
-	c-electric-colon
-	c-electric-lt-gt
-	c-electric-paren
-	c-electric-semi&comma
-	c-electric-slash
-	c-electric-star
-	c-indent-line-or-region
-	handle-switch-frame
-	indent-for-tab-command
-	kill-region
-	kmacro-end-or-call-macro
-	kmacro-start-macro-or-insert-counter
-	move-lines-up
 	org-beginning-of-line
 	org-cycle
 	org-end-of-line
+	org-kill-line
 	org-self-insert-command
-	org-shiftright
 	org-yank
-	rjsx-electric-gt
-	rjsx-electric-lt
-	yas-expand
 	))
 
 (setq mc/cmds-to-run-once
       '(
-	compile
-	dumb-jump-go-set-mark
-	eval-expression
-	ido-find-file-other-window
-	ido-switch-buffer
 	mark-word-or-next-word-like-this
-	mouse-save-then-kill
-	mouse-set-region
-	org-edit-src-save
-	projectile-ripgrep
-	projectile-switch-project
-	save-and-export-to-pdf
-	save-and-export-to-reavealjs
-	w32-drag-n-drop
-	winner-undo
 	))

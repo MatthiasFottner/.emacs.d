@@ -1,4 +1,3 @@
-
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -17,7 +16,17 @@
  '(custom-enabled-themes (quote (sanityinc-solarized-dark)))
  '(custom-safe-themes
    (quote
-    ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "5eeb99062a978f545705eb94a8c3af3039a298621cf152f8f81296b9e99d10fa" "0ee3fc6d2e0fc8715ff59aed2432510d98f7e76fe81d183a0eb96789f4d897ca" default)))
+    ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" default)))
+ '(diff-hl-draw-borders t)
+ '(diff-hl-flydiff-delay 0.1)
+ '(diff-hl-fringe-bmp-function (quote diff-hl-fringe-bmp-from-pos))
+ '(diff-hl-margin-symbols-alist
+   (quote
+    ((insert . "|")
+     (delete . "||")
+     (change . "|")
+     (unknown . "|")
+     (ignored . "|"))))
  '(doc-view-continuous t)
  '(elpy-mode-hook nil)
  '(elpy-modules
@@ -37,6 +46,8 @@
  '(global-diff-hl-mode t)
  '(global-hl-todo-mode t)
  '(grab-and-drag-button 2)
+ '(hide-ifdef-initially t)
+ '(hide-ifdef-shadow t)
  '(hl-todo-activate-in-modes (quote (emacs-lisp-mode c++-mode)))
  '(hl-todo-keyword-faces
    (quote
@@ -63,23 +74,18 @@
  '(inhibit-startup-screen t)
  '(jdee-server-dir "~/.emacs.d/jdee-server")
  '(menu-bar-mode nil)
- '(nyan-animate-nyancat t)
- '(nyan-animation-frame-interval 0.1)
- '(nyan-minimum-window-width 90)
- '(nyan-mode t)
- '(nyan-wavy-trail t)
  '(org-capture-templates
    (quote
     (("t" "Task" entry
       (file+headline "~/org/notes.org" "Tasks")
       "* TODO %?
-  %i
-  %a")
+   %i
+   %a")
      ("s" "Schedule entry" entry
       (file+headline "~/org/notes.org" "Schedule")
-      ""))))
+      ""))) t)
+ '(org-default-notes-file "~/org/notes.org")
  '(org-export-dispatch-use-expert-ui nil)
- '(org-export-in-background t)
  '(org-highlight-latex-and-related (quote (latex script entities)))
  '(org-latex-caption-above nil)
  '(org-latex-classes
@@ -132,51 +138,47 @@
      ("" "capt-of" nil))))
  '(org-latex-hyperref-template nil)
  '(org-latex-listings (quote minted))
- '(org-latex-pdf-process (quote ("latexmk -output-directory %o %f -pdf")))
  '(org-src-fontify-natively t)
  '(org-structure-template-alist
    (quote
     (("n" "#+begin_notes
-?
-#+end_notes")
+ ?
+ #+end_notes")
      ("s" "#+begin_src ?
 
-#+end_src")
+ #+end_src")
      ("e" "#+begin_example
-?
-#+end_example")
+ ?
+ #+end_example")
      ("q" "#+begin_quote
-?
-#+end_quote")
+ ?
+ #+end_quote")
      ("v" "#+begin_verse
-?
-#+end_verse")
+ ?
+ #+end_verse")
      ("V" "#+begin_verbatim
-?
-#+end_verbatim")
+ ?
+ #+end_verbatim")
      ("c" "#+begin_center
-?
-#+end_center")
+ ?
+ #+end_center")
      ("C" "#+begin_comment
-?
-#+end_comment")
+ ?
+ #+end_comment")
      ("l" "#+begin_export latex
-?
-#+end_export")
+ ?
+ #+end_export")
      ("L" "#+latex: ")
      ("h" "#+begin_export html
-?
-#+end_export")
+ ?
+ #+end_export")
      ("H" "#+html: ")
      ("a" "#+begin_export ascii
-?
-#+end_export")
+ ?
+ #+end_export")
      ("A" "#+ascii: ")
      ("i" "#+index: ?")
      ("I" "#+include: %file ?"))))
- '(package-selected-packages
-   (quote
-    (flycheck company-lsp lsp-mode lsp-python dumb-jump workgroups erc-twitch treemacs-evil company-childframe treemacs-projectile treemacs show-marks avy xterm-color wttrin cmake-mode pretty-mode gitignore-mode org ox-reveal projectile-ripgrep ag projectile-codesearch projectile company flycheck-clang-analyzer flycheck-clang-tidy flycheck-clangcheck company-c-headers company-irony irony ac-clang rjsx-mode js2-mode tern-auto-complete flymake-jshint company-tern tern tern-context-coloring dictcc nyan-mode yascroll ox-twbs ace-window move-text f org-ref use-package diff-hl focus-autosave-mode buffer-move weechat sublimity wolfram org-pdfview pdf-tools aggressive-indent flycheck-pyflakes fancy-battery multiple-cursors pabbrev htmlize o-blog ob-browser org-bullets helm highlight-current-line hl-todo powerline org2blog magithub)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -184,7 +186,7 @@
  '(powerline-gui-use-vcs-glyph nil)
  '(powerline-height 25)
  '(powerline-text-scale-factor nil)
- '(ripgrep-arguments nil)
+ '(ripgrep-arguments (quote ("")))
  '(save-place t)
  '(scroll-bar-mode nil)
  '(send-mail-function (quote mailclient-send-it))
@@ -229,6 +231,6 @@
  '(treemacs-git-untracked-face ((t (:inherit diff-hl-insert :background "#002B36"))))
  '(treemacs-tags-face ((t (:inherit file-name-shadow)))))
 
-(org-babel-load-file
- (expand-file-name "emacs-init.org"
-                   user-emacs-directory))
+ (org-babel-load-file
+  (expand-file-name "emacs-init.org"
+                    user-emacs-directory))
