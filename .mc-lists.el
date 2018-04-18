@@ -3,10 +3,15 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	c-electric-semi&comma
+	indent-for-tab-command
+	insert-char
+	kill-region
 	org-beginning-of-line
 	org-cycle
 	org-end-of-line
 	org-kill-line
+	org-return
 	org-self-insert-command
 	org-yank
 	))

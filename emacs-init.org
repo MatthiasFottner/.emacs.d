@@ -76,6 +76,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package company :ensure t
     :config
+    (setq company-dabbrev-downcase nil)
     (setq-default company-lighter-base "(C)")
     (setq-default company-show-numbers          1)
     (setq-default company-idle-delay            0) ; start completion immediately
@@ -84,6 +85,9 @@
     (global-company-mode 1))
     (setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
 #+END_SRC
+
+#+RESULTS:
+: c:/Languages/LLVM/bin/clang.exe
 
 ** diff-hl
 #+begin_src emacs-lisp
@@ -126,6 +130,15 @@
   (use-package flycheck
     :ensure t)
 #+end_src
+** go mode
+#+begin_src emacs-lisp
+ (use-package go-mode
+   :ensure t)
+
+ (use-package company-go
+   :ensure t)
+#+end_src
+
 ** hl-todo
 #+begin_src emacs-lisp
   (use-package hl-todo
@@ -166,12 +179,17 @@
        (add-to-list 'compilation-error-regexp-alist 'latex-warning)
        (add-to-list 'compilation-error-regexp-alist-alist
                      '(latex-warning
-                       "\\(LaTeX Warning:\\(.+\n\\)*\\)" 3 1))
+                       "\\(LaTeX.*? Warning:\\(.+\n\\)*\\)" 3 1))
 
        (add-to-list 'compilation-error-regexp-alist 'latex-error)
        (add-to-list 'compilation-error-regexp-alist-alist
                      '(latex-error
                      "\\(.*Error:\\(.+\n\\)*\\)" 1))
+
+       (add-to-list 'compilation-error-regexp-alist 'latex-error2)
+       (add-to-list 'compilation-error-regexp-alist-alist
+                     '(latex-error2
+                     "\\(^!\s.*\\)" 1))
 
        (setq org-latex-listings 'minted)
        (setq org-latex-pdf-process '("latexmk -pdf %f"))
@@ -192,6 +210,7 @@
        (setq org-export-dispatch-use-expert-ui nil)
        (setq org-highlight-latex-and-related (quote (latex script entities)))
        (setq org-latex-caption-above nil)
+       (setq org-latex-prefer-user-labels t)
        (setq org-latex-classes
              (quote
               (("scrreprt" "\\documentclass{scrreprt}"
@@ -495,18 +514,18 @@
    (setq compile-command "find_and_run.py build.bat")
    (setq compilation-read-command nil)
    (setq compilation-scroll-output t)
-  ;; compilation in new frame
-   (setq special-display-buffer-names
-        `(("*compilation*" . ((name . "*compilation*")
-                              ,@default-frame-alist
-                              (left . (- 1))
-                              (top . 0)))))
+   ;; compilation in new frame
+   ;; (setq special-display-buffer-names
+   ;;      `(("*compilation*" . ((name . "*compilation*")
+   ;;                            ,@default-frame-alist
+   ;;                            (left . (- 1))
+   ;;                            (top . 0)))))
 
-    ;; (setq special-display-buffer-names
-    ;;     `(("*Org PDF LaTeX Output*" . ((name . "*Org PDF LaTeX Output*")
-    ;;                           ,@default-frame-alist
-    ;;                           (left . (- 1))
-    ;;                           (top . 0)))))
+   ;; (setq special-display-buffer-names
+   ;;     `(("*Org PDF LaTeX Output*" . ((name . "*Org PDF LaTeX Output*")
+   ;;                           ,@default-frame-alist
+   ;;                           (left . (- 1))
+   ;;                           (top . 0)))))
 #+END_SRC
 
 ** format after yank
@@ -667,8 +686,8 @@ Tabs to spaces
 
 
   ;; org
-  (define-key org-mode-map (kbd "C-c e") 'save-and-export-to-pdf)
-  (define-key org-mode-map (kbd "C-c r") 'save-and-export-to-reavealjs)
+  ;; (define-key org-mode-map (kbd "C-c e") 'save-and-export-to-pdf)
+  ;; (define-key org-mode-map (kbd "C-c r") 'save-and-export-to-reavealjs)
   (define-key org-mode-map (kbd "C-#") 'comment-line)
   (define-key org-mode-map [M-up]   'move-lines-up)
   (define-key org-mode-map [M-down] 'move-lines-down)
@@ -793,26 +812,27 @@ Tabs to spaces
 #+END_SRC
 ** Save the file and org export
 #+BEGIN_SRC emacs-lisp
-  (defun save-and-export-to-pdf ()
-    "Save the buffer and then latex export to pdf."
-    (interactive)
-    (save-buffer)
-    (org-latex-export-to-pdf)
-    (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
-    (compilation-mode))
+    (defun save-and-export-to-pdf ()
+      "Save the buffer and then latex export to pdf."
+      (interactive)
+      (save-buffer)
+      (org-latex-export-to-pdf)
+      ;; (switch-to-buffer-other-window "*Org PDF LaTeX Output*")
+      ;; (compilation-mode)
+  )
 
-  (defun save-and-export-to-reavealjs ()
-    "Save the buffer and then latex export to reavealjs slides."
-    (interactive)
-    (save-buffer)
-    (org-reveal-export-to-html-and-browse))
+    (defun save-and-export-to-reavealjs ()
+      "Save the buffer and then latex export to reavealjs slides."
+      (interactive)
+      (save-buffer)
+      (org-reveal-export-to-html-and-browse))
 
 #+END_SRC
 
 #+RESULTS:
 : save-and-export-to-reavealjs
 
-** Mark cuirrent word
+** Mark current word
 #+BEGIN_SRC emacs-lisp
   (defun mark-current-word (&optional arg allow-extend)
     "Put point at beginning of current word, set mark at end."
@@ -860,6 +880,244 @@ Tabs to spaces
 : mark-word-or-next-word-like-this
 
 * Mode specifics
+** compilation
+only show compilatoin buffer on error
+#+begin_src emacs-lisp
+; called at end of compilation
+(defun my-compile-switch (buf s)
+(when (not (string= s "finished\n"))
+(display-buffer buf)))
+
+(add-to-list 'compilation-finish-functions 'my-compile-switch)
+
+; kill current process yes-or-no-p => t (always kill process)
+; commented display-buffer call & sexp using outwin var
+(defun compilation-start (command &optional mode name-function highlight-regexp)
+"Run compilation command COMMAND (low level interface).
+If COMMAND starts with a cd command, that becomes the `default-directory'.
+The rest of the arguments are optional; for them, nil means use the default.
+
+MODE is the major mode to set in the compilation buffer.  Mode
+may also be t meaning use `compilation-shell-minor-mode' under `comint-mode'.
+
+If NAME-FUNCTION is non-nil, call it with one argument (the mode name)
+to determine the buffer name.  Otherwise, the default is to
+reuses the current buffer if it has the proper major mode,
+else use or create a buffer with name based on the major mode.
+
+If HIGHLIGHT-REGEXP is non-nil, `next-error' will temporarily highlight
+the matching section of the visited source line; the default is to use the
+global value of `compilation-highlight-regexp'.
+
+Returns the compilation buffer created."
+(or mode (setq mode 'compilation-mode))
+(let* ((name-of-mode
+(if (eq mode t)
+"compilation"
+(replace-regexp-in-string "-mode$" "" (symbol-name mode))))
+(thisdir default-directory)
+outwin outbuf)
+(with-current-buffer
+(setq outbuf
+(get-buffer-create
+(compilation-buffer-name name-of-mode mode name-function)))
+(let ((comp-proc (get-buffer-process (current-buffer))))
+(if comp-proc
+(if (or (not (eq (process-status comp-proc) 'run))
+t)
+(condition-case ()
+(progn
+(interrupt-process comp-proc)
+(sit-for 1)
+(delete-process comp-proc))
+(error nil))
+(error "Cannot have two processes in `%s' at once"
+(buffer-name)))))
+;; first transfer directory from where M-x compile was called
+(setq default-directory thisdir)
+;; Make compilation buffer read-only.  The filter can still write it.
+;; Clear out the compilation buffer.
+(let ((inhibit-read-only t)
+(default-directory thisdir))
+;; Then evaluate a cd command if any, but don't perform it yet, else
+;; start-command would do it again through the shell: (cd "..") AND
+;; sh -c "cd ..; make"
+(cd (if (string-match "^\\s *cd\\(?:\\s +\\(\\S +?\\)\\)?\\s *[;&\n]"
+command)
+(if (match-end 1)
+(substitute-env-vars (match-string 1 command))
+"~")
+default-directory))
+(erase-buffer)
+;; Select the desired mode.
+(if (not (eq mode t))
+(progn
+(buffer-disable-undo)
+(funcall mode))
+(setq buffer-read-only nil)
+(with-no-warnings (comint-mode))
+(compilation-shell-minor-mode))
+;; Remember the original dir, so we can use it when we recompile.
+;; default-directory' can't be used reliably for that because it may be
+;; affected by the special handling of "cd ...;".
+;; NB: must be fone after (funcall mode) as that resets local variables
+(set (make-local-variable 'compilation-directory) thisdir)
+(if highlight-regexp
+(set (make-local-variable 'compilation-highlight-regexp)
+highlight-regexp))
+(if (or compilation-auto-jump-to-first-error
+(eq compilation-scroll-output 'first-error))
+(set (make-local-variable 'compilation-auto-jump-to-next) t))
+;; Output a mode setter, for saving and later reloading this buffer.
+(insert "-*- mode: " name-of-mode
+"; default-directory: " (prin1-to-string default-directory)
+" -*-\n"
+(format "%s started at %s\n\n"
+mode-name
+(substring (current-time-string) 0 19))
+command "\n")
+(setq thisdir default-directory))
+(set-buffer-modified-p nil))
+;; Pop up the compilation buffer.
+;; http://lists.gnu.org/archive/html/emacs-devel/2007-11/msg01638.html
+;   (setq outwin (display-buffer outbuf))
+(with-current-buffer outbuf
+(let ((process-environment
+(append
+compilation-environment
+(if (if (boundp 'system-uses-terminfo) ; `if' for compiler warning
+system-uses-terminfo)
+(list "TERM=dumb" "TERMCAP="
+(format "COLUMNS=%d" (window-width)))
+(list "TERM=emacs"
+(format "TERMCAP=emacs:co#%d:tc=unknown:"
+(window-width))))
+;; Set the EMACS variable, but
+;; don't override users' setting of $EMACS.
+(unless (getenv "EMACS")
+(list "EMACS=t"))
+(list "INSIDE_EMACS=t")
+(copy-sequence process-environment))))
+(set (make-local-variable 'compilation-arguments)
+(list command mode name-function highlight-regexp))
+(set (make-local-variable 'revert-buffer-function)
+'compilation-revert-buffer)
+;       (set-window-start outwin (point-min))
+
+;; Position point as the user will see it.
+(let ((desired-visible-point
+;; Put it at the end if `compilation-scroll-output' is set.
+(if compilation-scroll-output
+(point-max)
+;; Normally put it at the top.
+(point-min))))
+;         (if (eq outwin (selected-window))
+;             (goto-char desired-visible-point)
+;           (set-window-point outwin desired-visible-point))
+)
+
+;; The setup function is called before compilation-set-window-height
+;; so it can set the compilation-window-height buffer locally.
+(if compilation-process-setup-function
+(funcall compilation-process-setup-function))
+;       (compilation-set-window-height outwin)
+;; Start the compilation.
+(if (fboundp 'start-process)
+(let ((proc
+(if (eq mode t)
+;; comint uses `start-file-process'.
+(get-buffer-process
+(with-no-warnings
+(comint-exec
+outbuf (downcase mode-name)
+(if (file-remote-p default-directory)
+"/bin/sh"
+shell-file-name)
+nil `("-c" ,command))))
+(start-file-process-shell-command (downcase mode-name)
+outbuf command))))
+;; Make the buffer's mode line show process state.
+(setq mode-line-process
+(list (propertize ":%s" 'face 'compilation-warning)))
+(set-process-sentinel proc 'compilation-sentinel)
+(unless (eq mode t)
+;; Keep the comint filter, since it's needed for proper handling
+;; of the prompts.
+(set-process-filter proc 'compilation-filter))
+;; Use (point-max) here so that output comes in
+;; after the initial text,
+;; regardless of where the user sees point.
+(set-marker (process-mark proc) (point-max) outbuf)
+(when compilation-disable-input
+(condition-case nil
+(process-send-eof proc)
+;; The process may have exited already.
+(error nil)))
+(run-hook-with-args 'compilation-start-hook proc)
+(setq compilation-in-progress
+(cons proc compilation-in-progress)))
+;; No asynchronous processes available.
+(message "Executing `%s'..." command)
+;; Fake modeline display as if `start-process' were run.
+(setq mode-line-process
+(list (propertize ":run" 'face 'compilation-warning)))
+(force-mode-line-update)
+(sit-for 0)                   ; Force redisplay
+(save-excursion
+;; Insert the output at the end, after the initial text,
+;; regardless of where the user sees point.
+(goto-char (point-max))
+(let* ((buffer-read-only nil) ; call-process needs to modify outbuf
+(status (call-process shell-file-name nil outbuf nil "-c"
+command)))
+(cond ((numberp status)
+(compilation-handle-exit
+'exit status
+(if (zerop status)
+"finished\n"
+(format "exited abnormally with code %d\n" status))))
+((stringp status)
+(compilation-handle-exit 'signal status
+(concat status "\n")))
+(t
+(compilation-handle-exit 'bizarre status status)))))
+;; Without async subprocesses, the buffer is not yet
+;; fontified, so fontify it now.
+(let ((font-lock-verbose nil)) ; shut up font-lock messages
+(font-lock-fontify-buffer))
+(set-buffer-modified-p nil)
+(message "Executing `%s'...done" command)))
+;; Now finally cd to where the shell started make/grep/...
+(setq default-directory thisdir)
+;; The following form selected outwin ever since revision 1.183,
+;; so possibly messing up point in some other window (bug#1073).
+;; Moved into the scope of with-current-buffer, though still with
+;; complete disregard for the case when compilation-scroll-output
+;; equals 'first-error (martin 2008-10-04).
+(when compilation-scroll-output
+(goto-char (point-max))))
+
+;; Make it so the next C-x ` will use this buffer.
+(setq next-error-last-buffer outbuf)))
+#+end_src
+
+#+RESULTS:
+: compilation-start
+
+** go
+#+begin_src emacs-lisp
+   (add-hook 'go-mode-hook (lambda ()
+     (set (make-local-variable 'company-backends) '(company-go))
+     (company-mode)
+     (add-hook 'before-save-hook 'gofmt-before-save)
+     (setq tab-width 4)
+     (setq indent-tabs-mode 1)))
+#+end_src
+
+#+RESULTS:
+| lambda | nil | (set (make-local-variable (quote company-backends)) (quote (company-go))) | (company-mode) | (add-hook (quote before-save-hook) (quote gofmt-before-save)) | (setq tab-width 4) | (setq indent-tabs-mode 1) |
+| lambda | nil | (set (make-local-variable (quote company-backends)) (quote (company-go))) | (company-mode) |                                                               |                    |                           |
+
 ** C/C++
    #+begin_src emacs-lisp
 
@@ -898,12 +1156,15 @@ Tabs to spaces
 #+END_SRC
 
 * Text Snippets
-** cl build script
+** build scripts
 #+begin_src emacs-lisp
-  (defun insert-build-script-cl()
+  (require 'ido)
+
+  (defun insert-build-script()
+    "Prompt user to pick a build script to insert."
     (interactive)
-    (insert
-     "@echo off
+
+    (let ((choices-alist '(("cl.exe" . "@echo off
 pushd %~dp0
 
 set exeName=main.exe
@@ -923,8 +1184,7 @@ if %errorlevel% == 0 (
    if not exist ..\\%binDir% mkdir ..\\%binDir%
    move %exeName% ..\\%binDir%\\ > NUL
    pushd ..\\%binDir%
-
-   echo ---------- Output start ----------
+  echo ---------- Output start ----------
    %exeName%
    echo ---------- Output   end ----------
    del %exeName% /S /Q > NUL
@@ -936,26 +1196,117 @@ if %errorlevel% == 0 (
 
 popd
 rd quickbuild /S /Q
-popd"))
-#+end_src
-
-#+RESULTS:
-: insert-build-script-cl
-
-** build script skeleton
-#+begin_src emacs-lisp
-  (defun insert-build-script-skeleton()
-    (interactive)
-    (insert
-     "@echo off
+popd") ("generic" . "@echo off
 pushd %~dp0
 
 build
 run
 
+popd") ("python" . "@echo off
+pushd %~dp0
+
+python filename.py
+
+popd") ("go" . "@echo off
+
+set mainFileName=main
+
+pushd %~dp0
+
+go build %mainFileName%.go
+
+if %errorlevel% == 0 (
+   echo.
+
+   echo ---------- Output start ----------
+   %mainFileName%
+   echo ---------- Output   end ----------
+
+) else (
+  echo.
+  echo Fucki'n 'ell
+)
+
+popd") ("org-mode" . "@echo off
+pushd %~dp0
+
+set fileName=\"Ausarbeitung\"
+set pdfTempDir=\"temp_pdf\"
+
+emacsclient -c ^
+ -e \"(progn (require 'org) (find-file-other-window \\\"%fileName%.org\\\") (org-latex-export-to-latex) (save-buffers-kill-terminal))\"
+
+echo.
+echo ================================================
+echo               Tex Export Finished
+echo ================================================
+echo.
+
+if %errorlevel% == 0 (
+    if not exist %pdfTempDir% (
+        mkdir %pdfTempDir%
+    ) else (
+        call :copyfilesin
+    )
+
+    latexmk -Werror -pdf -shell-escape %fileName%.tex && (
+        call :cleanup
+        goto :success
+    ) || (
+        echo Errors converting to pdf ㅠㅠ
+        call :cleanup
+        goto :fail
+    )
+) else (
+    echo Errors converting to tex ㅠㅠ
+    goto:fail
+)
+
+:copyfilesin
+for /f \"usebackq\" %%m in (`dir /b %pdfTempDir%\\*minted*`) do (
+    move \"%pdfTempDir%\\%%m\" \"%%m\" > NUL
+)
+move %pdfTempDir%\\*.aux .\\ > NUL
+move %pdfTempDir%\\*.bbl .\\ > NUL
+move %pdfTempDir%\\*.blg .\\ > NUL
+move %pdfTempDir%\\*.fdb_latexmk .\\ > NUL
+move %pdfTempDir%\\*.fls .\\ > NUL
+move %pdfTempDir%\\*.log .\\ > NUL
+move %pdfTempDir%\\*.out .\\ > NUL
+move %pdfTempDir%\\*.toc .\\ > NUL
+goto :eof
+
+:cleanup
+for /f \"usebackq\" %%m in (`dir /b *minted*`) do (
+    move \"%%m\" \"%pdfTempDir%\\%%m\" > NUL
+)
+move *.aux %pdfTempDir%\\ > NUL
+move *.bbl %pdfTempDir%\\ > NUL
+move *.blg %pdfTempDir%\\ > NUL
+move *.fdb_latexmk %pdfTempDir%\\ > NUL
+move *.fls %pdfTempDir%\\ > NUL
+move *.log %pdfTempDir%\\ > NUL
+move *.out %pdfTempDir%\\ > NUL
+move *.toc %pdfTempDir%\\ > NUL
+goto :eof
+
+:success
 popd
-"))
+echo yey
+exit 0
+
+:fail
+popd
+exit 1")
+
+)))
+
+      (let ((choice (ido-completing-read "Insert build script for:" choices-alist)))
+        (insert (alist-get choice choices-alist)))))
 #+end_src
+
+#+RESULTS:
+: insert-build-script
 
 * Delayed execution
 ** modeline cleanup
