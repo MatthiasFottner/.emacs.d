@@ -74,6 +74,15 @@
  '(inhibit-startup-screen t)
  '(jdee-server-dir "~/.emacs.d/jdee-server")
  '(menu-bar-mode nil)
+ '(minimap-always-recenter nil)
+ '(minimap-hide-fringes t)
+ '(minimap-highlight-line nil)
+ '(minimap-major-modes (quote (prog-mode org-mode)))
+ '(minimap-mode t)
+ '(minimap-sync-overlay-properties (quote (face invisible)))
+ '(minimap-update-delay 0.01)
+ '(minimap-width-fraction 0.1)
+ '(minimap-window-location (quote right))
  '(org-capture-templates
    (quote
     (("t" "Task" entry
@@ -181,7 +190,7 @@
      ("I" "#+include: %file ?"))))
  '(package-selected-packages
    (quote
-    (company-go go-mode atom-dark-theme darkroom wttrin wolfram use-package treemacs-projectile rjsx-mode projectile-ripgrep powerline ox-twbs ox-reveal org-bullets multiple-cursors magit ivy ido-vertical-mode hl-todo flycheck dumb-jump diminish diff-hl company-childframe color-theme-sanityinc-solarized academic-phrases)))
+    (htmlize counsel flycheck-clang-analyzer company-go go-mode atom-dark-theme darkroom wttrin wolfram use-package treemacs-projectile rjsx-mode projectile-ripgrep powerline ox-twbs ox-reveal org-bullets multiple-cursors magit ivy ido-vertical-mode hl-todo flycheck dumb-jump diminish diff-hl company-childframe color-theme-sanityinc-solarized academic-phrases)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -199,6 +208,9 @@
  '(tramp-syntax (quote default) nil (tramp))
  '(treemacs-filewatch-mode t)
  '(undo-tree-mode-lighter "")
+ '(window-divider-default-places (quote right-only))
+ '(window-divider-default-right-width 3)
+ '(window-divider-mode t)
  '(wttrin-default-cities (quote ("Munich" "Seoul" "구리시"))))
 
 (custom-set-faces
@@ -209,11 +221,12 @@
  '(default ((t (:family "Cousine" :foundry "outline" :slant normal :weight normal :height 113 :width normal))))
  '(company-preview ((t (:background "#657b83" :foreground "#eee8d5"))))
  '(company-scrollbar-fg ((t (:background "#002B36"))))
- '(diff-hl-change ((t (:background "#073642" :foreground "orange"))))
- '(diff-hl-delete ((t (:background "#073642" :foreground "orange red"))))
- '(diff-hl-insert ((t (:inherit diff-added :background "#073642" :foreground "green"))))
+ '(diff-hl-change ((t (:background "#002B36y" :foreground "orange"))))
+ '(diff-hl-delete ((t (:background "#002B36" :foreground "orange red"))))
+ '(diff-hl-insert ((t (:inherit diff-added :background "#002B36" :foreground "green"))))
  '(font-lock-comment-delimiter-face ((t (:foreground "#49974A" :slant italic))))
  '(font-lock-comment-face ((t (:foreground "#49974A" :slant italic))))
+ '(minimap-active-region-background ((t (:background "#001E26"))))
  '(mode-line ((t (:background "#073642" :box nil :weight normal :height 1.0))))
  '(mode-line-buffer-id-inactive ((t (:inherit mode-line-buffer-id :box nil))))
  '(mode-line-inactive ((t (:inherit mode-line :background "#073642" :foreground "#586e75" :box nil :weight normal :height 1.0))))
@@ -232,7 +245,10 @@
  '(treemacs-git-ignored-face ((t (:inherit file-name-shadow))))
  '(treemacs-git-modified-face ((t (:inherit diff-hl-change :background "#002B36"))))
  '(treemacs-git-untracked-face ((t (:inherit diff-hl-insert :background "#002B36"))))
- '(treemacs-tags-face ((t (:inherit file-name-shadow)))))
+ '(treemacs-tags-face ((t (:inherit file-name-shadow))))
+ '(window-divider ((t (:foreground "#14282D"))))
+ '(window-divider-first-pixel ((t (:foreground "#14282D"))))
+ '(window-divider-last-pixel ((t (:foreground "#14282D")))))
 
  (org-babel-load-file
   (expand-file-name "emacs-init.org"
