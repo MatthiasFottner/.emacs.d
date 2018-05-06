@@ -25,5 +25,6 @@
 (setq mc/cmds-to-run-once
       '(
 	mark-word-or-next-word-like-this
+	org-fill-paragraph
 	save-and-find-build-script-and-compile
 	))
