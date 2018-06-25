@@ -84,7 +84,7 @@
        (company-childframe-mode 1))
 #+end_src
 ** company-mode
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (use-package company :ensure t
     :config
     (setq company-dabbrev-downcase nil)
@@ -95,10 +95,26 @@
     (setq-default company-tooltip-align-annotations t)
     (global-company-mode 1))
     (setq company-clang-executable "c:/Languages/LLVM/bin/clang.exe")
+
+#+END_SRC
+no number completion in org mode
+#+BEGIN_SRC emacs-lisp
+(push (apply-partially #'cl-remove-if
+                       (lambda (c)
+                         (or (string-match-p "[^\x00-\x7F]+" c)
+                             (string-match-p "[0-9]+" c)
+                             (if (equal major-mode "org")
+                                 (>= (length c) 15)))))
+      company-transformers)
 #+END_SRC
 
-#+RESULTS:
-: c:/Languages/LLVM/bin/clang.exe
+** popup killring
+#+begin_src emacs-lisp
+   (use-package browse-kill-ring
+     :ensure t
+     :config (browse-kill-ring-default-keybindings)
+   )
+#+end_src
 
 ** diff-hl
 #+begin_src emacs-lisp
@@ -182,6 +198,51 @@
     :ensure t)
 #+end_src
 ** Org
+*** color link
+#+begin_src emacs-lisp
+(require 's)
+
+(defun color-comp (&optional arg)
+  "Completion function for color links."
+  (let ((color-data (prog2
+                        (save-selected-window
+                          (list-colors-display))
+                        (with-current-buffer (get-buffer "*Colors*")
+                          (mapcar (lambda (line)
+                                    (append (list line)
+                                            (s-split " " line t)))
+                                  (s-split "\n" (buffer-string))))
+                      (kill-buffer "*Colors*"))))
+    (format "color:%s"
+            (s-trim (cadr (assoc (completing-read "Color: " color-data) color-data))))))
+
+
+(defun color-link-face (path)
+  "Face function for color links."
+  (or (cdr (assoc path org-link-colors))
+      `(:foreground ,path)))
+
+
+(defun color-link-export (path description backend)
+  "Export function for color links."
+  (cond
+   ((eq backend 'html)
+    (let ((rgb (assoc (downcase path) color-name-rgb-alist))
+          r g b)
+      (setq r (* 255 (/ (nth 1 rgb) 65535.0))
+            g (* 255 (/ (nth 2 rgb) 65535.0))
+            b (* 255 (/ (nth 3 rgb) 65535.0)))
+      (format "<span style=\"color: rgb(%s,%s,%s)\">%s</span>"
+              (truncate r) (truncate g) (truncate b)
+              (or description path))))))
+
+(org-link-set-parameters "color"
+                         :face 'color-link-face
+                         :complete 'color-comp
+                         :export 'color-link-export)
+
+#+end_src
+*** normal
   #+begin_src emacs-lisp
        (require 'org)
        (require 'ox-latex)
@@ -220,7 +281,7 @@
        (setq org-default-notes-file "~/org/notes.org")
        (setq org-export-dispatch-use-expert-ui nil)
        (setq org-highlight-latex-and-related (quote (latex script entities)))
-       (setq org-latex-caption-above nil)
+       ; (setq org-latex-caption-above nil)
        (setq org-latex-prefer-user-labels t)
        (setq org-latex-classes
              (quote
@@ -332,9 +393,17 @@
 
        (use-package ox-twbs
          :ensure t)
-#+end_src
 
-#+RESULTS:
+
+       ; gnu plot
+       (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((gnuplot . t)))
+
+       (setq org-babel-default-header-args:gnuplot
+              '((:results . "file")
+                (:exports . "results")))
+#+end_src
 
 ** solarized dark
 #+begin_src emacs-lisp
@@ -424,6 +493,11 @@
    :config
      (setq wolfram-alpha-app-id "UX8T57-3WXAA24JHT"))
 #+end_src
+** which key
+#+begin_src emacs-lisp
+ (use-package which-key
+   :ensure t)
+#+end_src
 ** wttrin
 #+begin_src emacs-lisp
  (use-package wttrin
@@ -503,6 +577,14 @@
 (transparency-toggle)
 #+END_SRC
 * Custom behavior
+** fix flyspell after add to dict
+#+begin_src emacs-lisp
+(defun flyspell-buffer-after-pdict-save (&rest _)
+  (flyspell-buffer))
+
+(advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save)
+#+end_src
+
 ** garbage collection
 #+begin_src emacs-lisp
 (setq gc-cons-threshold (eval-when-compile (* 1024 1024 1024)))
@@ -660,6 +742,8 @@ Tabs to spaces
     (define-key doc-view-mode-map (kbd "<C-wheel-up>") 'doc-view-enlarge)
     (define-key doc-view-mode-map (kbd "<C-wheel-down>") 'doc-view-shrink))
 
+
+  (global-set-key (kbd "C-S-g") 'abort-recursive-edit)
 
   (global-set-key (kbd "M-.") 'dumb-jump-go-set-mark)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -916,7 +1000,7 @@ Tabs to spaces
 #+begin_src emacs-lisp
   (setq compilation-finish-functions
      (lambda (buf str)
-        (if (string= "finished\n" str)
+        (if (and (string= "finished\n" str))
            (progn
               (run-at-time "0.2 sec" nil
                  (lambda ()
@@ -932,7 +1016,7 @@ Tabs to spaces
 #+end_src
 
 #+RESULTS:
-| lambda | (buf str) | (if (string= finished |
+| lambda | (buf str) | (if (and (string= finished |
 
 only show compilatoin buffer on error
 #+begin_src
@@ -1153,9 +1237,6 @@ command)))
 ;; Make it so the next C-x ` will use this buffer.
 (setq next-error-last-buffer outbuf)))
 #+end_src
-
-#+RESULTS:
-: compilation-start
 
 ** go
 #+begin_src emacs-lisp

@@ -72,6 +72,7 @@
  '(ido-vertical-define-keys (quote C-n-C-p-up-and-down))
  '(ido-vertical-mode t)
  '(inhibit-startup-screen t)
+ '(isearch-allow-scroll t)
  '(jdee-server-dir "~/.emacs.d/jdee-server")
  '(menu-bar-mode nil)
  '(minimap-always-recenter nil)
@@ -96,7 +97,7 @@
  '(org-default-notes-file "~/org/notes.org")
  '(org-export-dispatch-use-expert-ui nil)
  '(org-highlight-latex-and-related (quote (latex script entities)))
- '(org-latex-caption-above nil)
+ '(org-latex-caption-above (quote (table src-block)))
  '(org-latex-classes
    (quote
     (("scrreprt" "\\documentclass{scrreprt}"
@@ -190,7 +191,7 @@
      ("I" "#+include: %file ?"))))
  '(package-selected-packages
    (quote
-    (frames-only-mode htmlize counsel flycheck-clang-analyzer company-go go-mode atom-dark-theme darkroom wttrin wolfram use-package treemacs-projectile rjsx-mode projectile-ripgrep powerline ox-twbs ox-reveal org-bullets multiple-cursors magit ivy ido-vertical-mode hl-todo flycheck dumb-jump diminish diff-hl company-childframe color-theme-sanityinc-solarized academic-phrases)))
+    (tide ahk-mode kite-mini jss tabbar which-key gnuplot browse-kill-ring popup-kill-ring company-auctex auctex frames-only-mode htmlize counsel flycheck-clang-analyzer company-go go-mode atom-dark-theme darkroom wttrin wolfram use-package treemacs-projectile rjsx-mode projectile-ripgrep powerline ox-twbs ox-reveal org-bullets multiple-cursors magit ivy ido-vertical-mode hl-todo flycheck dumb-jump diminish diff-hl company-childframe color-theme-sanityinc-solarized academic-phrases)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -208,6 +209,10 @@
  '(tramp-syntax (quote default) nil (tramp))
  '(treemacs-filewatch-mode t)
  '(undo-tree-mode-lighter "")
+ '(which-key-idle-delay 0.2)
+ '(which-key-lighter "")
+ '(which-key-mode t)
+ '(which-key-sort-order (quote which-key-prefix-then-key-order))
  '(window-divider-default-places (quote right-only))
  '(window-divider-default-right-width 3)
  '(window-divider-mode t)
@@ -253,3 +258,4 @@
  (org-babel-load-file
   (expand-file-name "emacs-init.org"
                     user-emacs-directory))
+(put 'scroll-left 'disabled nil)

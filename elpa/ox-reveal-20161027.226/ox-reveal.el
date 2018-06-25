@@ -382,7 +382,7 @@ If the block type is 'NOTES', transcode the block into a
 Reveal.js slide note. Otherwise, export the block as by the HTML
 exporter."
   (let ((block-type (org-element-property :type special-block)))
-    (if (string= block-type "NOTES")
+    (if (or (string= block-type "NOTES") (string= block-type "notes"))
         (format "<aside class=\"notes\">\n%s\n</aside>\n" contents)
       (org-html-special-block special-block contents info))))
 
@@ -398,16 +398,16 @@ holding contextual information."
         (org-html-headline headline contents info)
       ;; Standard headline.  Export it as a slide
       (let* ((level (org-export-get-relative-level headline info))
-	     (preferred-id (or (org-element-property :CUSTOM_ID headline)
-			       (org-export-get-reference headline info)
-			       (org-element-property :ID headline)))
-	     (hlevel (org-reveal--get-hlevel info))
-	     (header (plist-get info :reveal-slide-header))
-	     (header-div (when header (format "<div class=\"slide-header\">%s</div>\n" header)))
-	     (footer (plist-get info :reveal-slide-footer))
-	     (footer-div (when footer (format "<div class=\"slide-footer\">%s</div>\n" footer)))
-	     (first-sibling (org-export-first-sibling-p headline info))
-	     (last-sibling (org-export-last-sibling-p headline info))
+             (preferred-id (or (org-element-property :CUSTOM_ID headline)
+                               (org-export-get-reference headline info)
+                               (org-element-property :ID headline)))
+             (hlevel (org-reveal--get-hlevel info))
+             (header (plist-get info :reveal-slide-header))
+             (header-div (when header (format "<div class=\"slide-header\">%s</div>\n" header)))
+             (footer (plist-get info :reveal-slide-footer))
+             (footer-div (when footer (format "<div class=\"slide-footer\">%s</div>\n" footer)))
+             (first-sibling (org-export-first-sibling-p headline info))
+             (last-sibling (org-export-last-sibling-p headline info))
              (default-slide-background (plist-get info :reveal-default-slide-background))
              (default-slide-background-size (plist-get info :reveal-default-slide-background-size))
              (default-slide-background-position (plist-get info :reveal-default-slide-background-position))
@@ -541,7 +541,7 @@ using custom variable `org-reveal-root'."
 
      ;; Include CSS for highlight.js if necessary
      (if (org-reveal--using-highlight.js info)
-         (format "<link rel=\"stylesheet\" href=\"%s\"/>" 
+         (format "<link rel=\"stylesheet\" href=\"%s\"/>"
                  (format-spec (plist-get info :reveal-highlight-css)
                               `((?r . ,(directory-file-name root-path))))))
      ;; print-pdf
@@ -757,36 +757,36 @@ Use the previous section tag as the tag of the split section. "
 ;; Copied from org-html-format-list-item. Overwrite HTML class
 ;; attribute when there is attr_html attributes.
 (defun org-reveal-format-list-item (contents type checkbox attributes info
-					     &optional term-counter-id
-					     headline)
+                                             &optional term-counter-id
+                                             headline)
   "Format a list item into HTML."
   (let ((attr-html (cond (attributes (format " %s" (org-html--make-attribute-string attributes)))
                          (checkbox (format " class=\"%s\"" (symbol-name checkbox)))
                          (t "")))
-	(checkbox (concat (org-html-checkbox checkbox info)
-			  (and checkbox " ")))
-	(br (org-html-close-tag "br" nil info)))
+        (checkbox (concat (org-html-checkbox checkbox info)
+                          (and checkbox " ")))
+        (br (org-html-close-tag "br" nil info)))
     (concat
      (case type
        (ordered
-	(let* ((counter term-counter-id)
-	       (extra (if counter (format " value=\"%s\"" counter) "")))
-	  (concat
-	   (format "<li%s%s>" attr-html extra)
-	   (when headline (concat headline br)))))
+        (let* ((counter term-counter-id)
+               (extra (if counter (format " value=\"%s\"" counter) "")))
+          (concat
+           (format "<li%s%s>" attr-html extra)
+           (when headline (concat headline br)))))
        (unordered
-	(let* ((id term-counter-id)
-	       (extra (if id (format " id=\"%s\"" id) "")))
-	  (concat
-	   (format "<li%s%s>" attr-html extra)
-	   (when headline (concat headline br)))))
+        (let* ((id term-counter-id)
+               (extra (if id (format " id=\"%s\"" id) "")))
+          (concat
+           (format "<li%s%s>" attr-html extra)
+           (when headline (concat headline br)))))
        (descriptive
-	(let* ((term term-counter-id))
-	  (setq term (or term "(no term)"))
-	  ;; Check-boxes in descriptive lists are associated to tag.
-	  (concat (format "<dt%s>%s</dt>"
-			  attr-html (concat checkbox term))
-		 (format "<dd%s>" attr-html)))))
+        (let* ((term term-counter-id))
+          (setq term (or term "(no term)"))
+          ;; Check-boxes in descriptive lists are associated to tag.
+          (concat (format "<dt%s>%s</dt>"
+                          attr-html (concat checkbox term))
+                 (format "<dd%s>" attr-html)))))
      (unless (eq type 'descriptive) checkbox)
      (and contents (org-trim contents))
      (case type
@@ -801,13 +801,13 @@ Use the previous section tag as the tag of the split section. "
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
   (let* ((plain-list (org-export-get-parent item))
-	 (type (org-element-property :type plain-list))
-	 (counter (org-element-property :counter item))
+         (type (org-element-property :type plain-list))
+         (counter (org-element-property :counter item))
          (attributes (org-export-read-attribute :attr_html item))
          ; (attributes (org-html--make-attribute-string (org-export-read-attribute :attr_html item)))
-	 (checkbox (org-element-property :checkbox item))
-	 (tag (let ((tag (org-element-property :tag item)))
-		(and tag (org-export-data tag info)))))
+         (checkbox (org-element-property :checkbox item))
+         (tag (let ((tag (org-element-property :tag item)))
+                (and tag (org-export-data tag info)))))
     (org-reveal-format-list-item
      contents type checkbox attributes info (or tag counter))))
 
@@ -955,8 +955,8 @@ contextual information."
                               #'buffer-substring))
                      (org-html-format-code src-block info))))
            (frag (org-export-read-attribute :attr_reveal src-block :frag))
-	   (code-attribs (or (org-export-read-attribute
-			 :attr_reveal src-block :code_attribs) ""))
+           (code-attribs (or (org-export-read-attribute
+                         :attr_reveal src-block :code_attribs) ""))
            (label (let ((lbl (org-element-property :name src-block)))
                     (if (not lbl) ""
                       (format " id=\"%s\"" lbl)))))

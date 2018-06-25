@@ -3,11 +3,14 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	c-electric-brace
 	c-electric-colon
 	c-electric-lt-gt
 	c-electric-paren
 	c-electric-semi&comma
 	c-electric-slash
+	comment-line
+	comment-region
 	duplicate-line
 	indent-for-tab-command
 	insert-char
@@ -24,6 +27,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+	handle-switch-frame
 	mark-word-or-next-word-like-this
 	org-fill-paragraph
 	save-and-find-build-script-and-compile
