@@ -1,0 +1,1 @@
+("~/Arbeit/park-here-dashboard/" "~/.emacs.d/" "~/my-app/" "~/studium/ba-brendel_felix/" "~/studium/RN_mat/" "~/studium/RN_ha/" "~/studium/Theo/2/src/")

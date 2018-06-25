@@ -1,0 +1,11 @@
+(emacs-major-version)
+emacs-major-version
+(if (version< emacs-version "24.4")    (message "is before 24.4")  (message "is 24.4 or after"))
+(if (version< emacs-version "26.0")    (message "is before 26.0")  (message "is 26.0 or after"))
+cd ..
+cd ..
+cd ..
+cd ..
+ng g c navigaion-view main-view
+cd src/app/main-view/
+ng g c users-view

@@ -1,0 +1,122 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/ph/react-app/" . "src/")
+ ("/home/ph/my-app/src/" . "app/")
+ ("/home/ph/my-app/" . "src/")
+ ("/home/ph/" . "Arbeit/")
+ ("/home/yunrow/studium/ba-brendel_felix/Ausarbeitung/" . "references/")
+ ("/home/yunrow/studium/Theo/2/src/" . "build/")
+ ("/home/yunrow/studium/Theo/2/" . "src/")
+ ("/home/yunrow/studium/Theo/" . "2/")
+ ("/home/yunrow/studium/RN_ha/result/" . "assignment1/")
+ ("/home/yunrow/studium/RN_ha/assignment1/" . "src/")
+ ("/home/yunrow/studium/RN_ha/" . "assignment1/")
+ ("/home/yunrow/.config/" . "polybar/")
+ ("/home/yunrow/studium/" . "RN_mat/")
+ ("/home/yunrow/studium/ba-brendel_felix/Code/ProcGen/" . "src/")
+ ("/home/yunrow/studium/ba-brendel_felix/Code/" . "ProcGen/")
+ ("/home/yunrow/studium/ba-brendel_felix/" . "Ausarbeitung/")
+ ("/home/" . "yunrow/")
+ ("/home/yunrow/" . "studium/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/ph/react-app/"
+ "/home/ph/Arbeit/"
+ "/home/ph/react-app/src/"
+ "/home/ph/my-app/src/app/"
+ "/home/ph/my-app/src/"
+ "/home/yunrow/studium/ba-brendel_felix/Ausarbeitung/"
+ "/home/yunrow/studium/ba-brendel_felix/Ausarbeitung/references/"
+ "/home/yunrow/studium/RN_mat/"
+ "/home/yunrow/"
+ "/home/yunrow/studium/Theo/2/src/"
+ "/home/yunrow/studium/Theo/2/"
+ "/home/yunrow/studium/RN_ha/assignment1/src/"
+ "/home/yunrow/studium/RN_ha/result/assignment1/"
+ "/home/yunrow/studium/RN_ha/assignment1/"
+ "/home/yunrow/.config/polybar/"
+ "/home/yunrow/.config/i3/"
+ "/home/yunrow/studium/ba-brendel_felix/Code/ProcGen/src/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "jsconfig.json"
+ "stunden.org"
+ "App.js"
+ "app.component.ts"
+ "tsconfig.app.json"
+ "app.component.html"
+ "app.component.css"
+ "app.module.ts"
+ "Ausarbeitung.tex"
+ "bib.bib"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/ph/react-app/" (23297 41129 749996 901000) "../" "README.md" "./" ".gitignore" "package-lock.json" "jsconfig.json" "src/" "public/" "node_modules/" "package.json")
+
+ ("/home/yunrow/" (23297 30430 166636 74000))
+
+ ("/home/ph/my-app/src/app/" (23293 38545 729869 382000) "app.component.html" "../" "./" "app.component.spec.ts" "app.component.css" "app.module.ts" "app.component.ts")
+
+ ("/home/ph/Arbeit/" (23297 40625 942948 705000) "../" "./" "stunden.org")
+
+ ("/home/ph/react-app/src/" (23297 40443 992956 565000) "../" "./" "App.js" "logo.svg" "registerServiceWorker.js" "App.css" "App.test.js" "index.js" "index.css")
+
+ ("/home/ph/" (23297 40431 476290 438000) "Arbeit/" "../" ".Xmodmap" "./" "dmenu" "Downloads/" ".xsession-errors" ".emacs.d/" ".Xauthority" ".fehbg" ".npm/" ".esd_auth" ".Xauthority-l" "react-app/" "music/" "grep" ".config/" ".dmenu_cache" ".cache/" ".bash_logout" ".local/" ".pki/" ".xsession-errors.old" "Desktop/" ".gnome/" ".bash_history" ".qmmp/" ".bash_profile" ".bashrc" ".xinitrc" "Wallpapers/" ".Xdefaults" ".gnupg/" "t.py" "scripts/" ".gitconfig" "my-app/" ".dmrc" ".mozilla/" ".Xauthority-c" ".ssh/" ".emacs-saves/" "org/")
+
+ ("/home/ph/my-app/src/" (23292 6817 976761 732000) "assets/" "../" "main.ts" "./" "app/" "browserslist" "test.ts" "polyfills.ts" "karma.conf.js" "favicon.ico" "tslint.json" "styles.css" "tsconfig.app.json" "index.html" "environments/" "tsconfig.spec.json")
+
+ ("/home/ph/my-app/" (23292 6843 126760 645000) "../" "README.md" ".editorconfig" "./" ".gitignore" ".git/" "package-lock.json" "tsconfig.json" "src/" "e2e/" "tslint.json" "node_modules/" "package.json" "angular.json")
+
+ ("/home/yunrow/studium/ba-brendel_felix/Ausarbeitung/" (23289 35247 140015 464000) "Ausarbeitung.out" "Ausarbeitung.pdf" "../" "abstract.org" "./" "Ausarbeitung.blg" "korean_grammar.org" "bib.bib" "Ausarbeitung.tex" "_minted-Ausarbeitung/" "build.sh" "Ausarbeitung.aux" "preamble.org" "Ausarbeitung.org" "todo.org" "Ausarbeitung.fls" "Ausarbeitung.fdb_latexmk" "Ausarbeitung.bbl" "build.bat" "Ausarbeitung.toc" "references/" "Ausarbeitung.log" "figures/")
+
+ ("/home/yunrow/studium/ba-brendel_felix/Ausarbeitung/references/" (23289 32549 613333 775000) "Oceanic Institute.html" "MA_Beyer.pdf" "../" "Bush! _ Apavlov's Weblog.html" "./" ".gitignore" "Oceanic Institute_files/" "Bush! _ Apavlov's Weblog_files/" "The Word of Notch — Terrain generation, Part 1.html" "The Word of Notch — Terrain generation, Part 1_files/" "PlantsFractalsandFormalLanguages.pdf" "BachelorThesisGottwald.pdf" "Inigo Quilez __ fractals, computer graphics, mathematics, demoscene and more.html" "Have the developers gone into detail on the technical side of planet generation_ _ Astroneer.html" "procPlanets/" "Voxels are in vogue among indie developers _ TechCrunch_files/" "golden.html" "The Word of Notch — Hrmpth. Trade-offs..html" "quincuncial.pdf" "Have the developers gone into detail on the technical side of planet generation_ _ Astroneer_files/" "Inigo Quilez __ fractals, computer graphics, mathematics, demoscene and more_files/" "mti-01-00027-v2.pdf" "Seashells09.pdf" "Voxels are in vogue among indie developers _ TechCrunch.html" "10.1.1.430.2660 (1).pdf" "The Word of Notch — Hrmpth. Trade-offs._files/" "Map_Projections_a_Working_Manual.pdf" "golden_files/")
+
+ ("/home/yunrow/studium/RN_mat/" (23278 56337 420187 477000) "tutorial04.pdf" "../" "./" "slides_chap1.pdf" "altklausuren/" "assignment0-git.pdf" ".git/" "slides_chap0.pdf" "quiz1_solution.pdf" "tutorgruppen.txt" "assignments/" "quiz2_solution.pdf" "tutorial02-solution.pdf" "tutorial01.pdf" "vm.pdf" "tutorial02.pdf" "cheatsheet.pdf" "tutorial03-solution.pdf" "assignment1.pdf" "tutorial01-solution.pdf" "tutorial03.pdf" "quiz2.pdf" "quiz1.pdf" "slides_chap2.pdf")
+
+ ("/home/yunrow/studium/Theo/2/" (23279 24737 370379 271000) "../" "./" "build.sh" "src/" "inputpowerset.txt" "input2.txt" "inputdfa.txt" "java")
+
+ ("/home/yunrow/studium/Theo/2/src/" (23279 24709 573712 351000) "../" "Transition.java" "./" "Parser.class" "NFA.java" "State.class" "Transition.class" "AcceptNFA.java" "DFA.java" "EpsilonNFA.class" "AcceptDFA.java" "NFA.class" "DFA.class" "Parser.java" "EpsilonNFA.java" "Powerset.java" "build/" "Makefile" "State.java")
+
+ ("/home/yunrow/studium/Theo/2/src/build/" (23278 64751 623597 347000) "../" "./" "Parser.class" "State.class" "Transition.class" "AcceptNFA.class" "AcceptDFA.class" "EpsilonNFA.class" "NFA.class" "DFA.class")
+
+ ("/home/yunrow/studium/Theo/" (23278 61756 826903 439000) "../" "./" "2/")
+
+ ("/home/yunrow/studium/" (23278 61755 26903 423000) "../" "RN_ha/" "./" "RN_mat/" "ba-brendel_felix/" "Theo/" "ba-brendel_felix (copy)/")
+
+ ("/home/yunrow/studium/RN_ha/" (23278 60185 453555 811000) "../" "./" ".git/" "assignment1/")
+
+ ("/home/yunrow/studium/RN_ha/result/assignment1/" (23278 60133 326888 671000) "../" "output.log" "./" "test.log" "make.log")
+
+ ("/home/yunrow/studium/RN_ha/result/" (23278 60133 326888 671000) "../" "./" "assignment1/")
+
+ ("/home/yunrow/studium/RN_ha/assignment1/" (23278 58968 630211 410000) "../" "./" ".gitignore" "fizzbuzz" "src/" "build/" "Makefile")
+
+ ("/home/yunrow/studium/RN_ha/assignment1/src/" (23278 59027 120211 942000) "../" "./" "arguments.h" "arguments.c" "assignment1.c")
+
+ ("/home/yunrow/.config/i3/" (23277 41196 426689 484000) "../" "./" "config" "config~")
+
+ ("/home/yunrow/.config/polybar/" (23277 41066 630021 637000) "../" "./" "config" "launchPolybar.sh")
+
+ ("/home/yunrow/.config/" (23277 40273 63347 740000) "../" "procps/" "./" "chromium/" "i3/" "polybar/" "libaccounts-glib/" "pulse/" "gconf/" "mimeapps.list" "nemo/" "gtk-3.0/" "dconf/" "dunstrc" "volumeicon/" "marlin/" "konsolerc")
+
+ ("/home/yunrow/studium/ba-brendel_felix/Code/ProcGen/src/" (23267 9993 566803 490000) "ico.cpp" "../" "settings.cpp" "types.h" "./" "leakdetection" "meta/" "noiseManager.h" "elevationInfo.cpp" "gradient.h" "noiseManager.cpp" "ico.h" "terrainGenerationThread.cpp" "mesh.cpp" "planet.h" "indexTree.h" "mesh.h" "FastNoise/" "math.cpp" "hooks.cpp" "render.cpp" "render.h" "elevationInfo.h" "settings.h" "generationTypes.h" "subdivide.h" "math.h" "main.cpp" "planet.cpp" "gradient.cpp" "hooks.h" "indexTree.cpp" "tupleHash.h" "subdivide.cpp" "terrainGenerationThread.h")
+
+ ("/home/yunrow/studium/ba-brendel_felix/Code/ProcGen/" (23267 9993 566803 490000) "../" "./" ".gitignore" "irrlicht/" "src/" "vs/" "bin/" "build.bat")
+
+ ("/home/yunrow/studium/ba-brendel_felix/Code/" (23267 9993 573470 156000) "../" "./" "ProcGen/" "Normal Distribution/" "Cell Noise/" "vecToRnd/" "normalize perlin/" "GetElevationData/")
+
+ ("/home/yunrow/studium/ba-brendel_felix/" (23267 9993 613470 155000) "../" "Blender/" "./" ".gitignore" ".gitmodules" "Elevation Archive/" ".git/" "Code/" "Ausarbeitung/" ".projectile" "windowconfig" "brainstorm.org" ".rgignore" "Presentations/")
+
+ ("/home/" (23265 57561 850174 939000) "../" "./" "yunrow/")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

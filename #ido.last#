@@ -1,0 +1,44 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/yunrow/studium/ba-brendel_felix/Code/ProcGen/" . "src/")
+ ("/home/yunrow/studium/ba-brendel_felix/Code/" . "ProcGen/")
+ ("/home/yunrow/studium/ba-brendel_felix/" . "Code/")
+ ("/home/" . "yunrow/")
+ ("/home/yunrow/" . ".config/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/yunrow/studium/ba-brendel_felix/Code/ProcGen/src/"
+ "/home/yunrow/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ ".xinitrc"
+ ".Xdefaults"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/yunrow/studium/ba-brendel_felix/Code/ProcGen/src/" (23267 9993 566803 490000) "ico.cpp" "../" "settings.cpp" "types.h" "./" "leakdetection" "meta/" "noiseManager.h" "elevationInfo.cpp" "gradient.h" "noiseManager.cpp" "ico.h" "terrainGenerationThread.cpp" "mesh.cpp" "planet.h" "indexTree.h" "mesh.h" "FastNoise/" "math.cpp" "hooks.cpp" "render.cpp" "render.h" "elevationInfo.h" "settings.h" "generationTypes.h" "subdivide.h" "math.h" "main.cpp" "planet.cpp" "gradient.cpp" "hooks.h" "indexTree.cpp" "tupleHash.h" "subdivide.cpp" "terrainGenerationThread.h")
+
+ ("/home/yunrow/studium/ba-brendel_felix/Code/ProcGen/" (23267 9993 566803 490000) "../" "./" ".gitignore" "irrlicht/" "src/" "vs/" "bin/" "build.bat")
+
+ ("/home/yunrow/studium/ba-brendel_felix/Code/" (23267 9993 573470 156000) "../" "./" "ProcGen/" "Normal Distribution/" "Cell Noise/" "vecToRnd/" "normalize perlin/" "GetElevationData/")
+
+ ("/home/yunrow/studium/ba-brendel_felix/" (23267 9993 613470 155000) "../" "Blender/" "./" ".gitignore" ".gitmodules" "Elevation Archive/" ".git/" "Code/" "Ausarbeitung/" ".projectile" "windowconfig" "brainstorm.org" ".rgignore" "Presentations/")
+
+ ("/home/yunrow/studium/ba-brendel_felix/Ausarbeitung/" (23268 28115 120160 581000) "Ausarbeitung.pdf" "../" "./" "korean_grammar.org" "bib.bib" "build.sh" "preamble.org" "Ausarbeitung.org" "build.bat" "references/" "figures/")
+
+ ("/home/yunrow/" (23266 59260 630052 36000) "../" "./" "Downloads/" ".emacs.d/" ".Xauthority" ".fehbg" ".esd_auth" "grep" ".config/" ".cache/" ".bash_logout" ".local/" ".pki/" "i3-volume/" "Desktop/" ".bash_history" ".bash_profile" ".bashrc" ".xinitrc" "Wallpapers/" ".Xdefaults" ".gnupg/" ".emacs-saves/")
+
+ ("/home/" (23265 57561 850174 939000) "../" "./" "yunrow/")
+
+ ("/home/yunrow/.config/" (23266 55387 736725 118000) "../" "procps/" "./" "chromium/" "i3/" "pulse/" "gconf/" "nemo/" "gtk-3.0/" "dconf/" "dunstrc" "volumeicon/" "konsolerc")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

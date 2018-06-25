@@ -20,6 +20,8 @@
 	org-return
 	org-self-insert-command
 	org-yank
+	typescript-insert-and-autoconvert-to-template
+	typescript-insert-and-indent
 	))
 
 (setq mc/cmds-to-run-once
@@ -27,4 +29,5 @@
 	mark-word-or-next-word-like-this
 	org-fill-paragraph
 	save-and-find-build-script-and-compile
+	treemacs-delete-other-windows
 	))

@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "academic-phrases" "academic-phrases.el" (23234
-;;;;;;  3412 0 0))
+;;;### (autoloads nil "academic-phrases" "academic-phrases.el" (23278
+;;;;;;  62989 220247 981000))
 ;;; Generated autoloads from academic-phrases.el
 
 (autoload 'academic-phrases "academic-phrases" "\
