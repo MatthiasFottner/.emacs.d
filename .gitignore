@@ -1,0 +1,11 @@
+./.cache
+./auto-save-list
+./elpa
+./server
+
+./emacs-init.el
+
+./ido.last
+
+./projectile-bookmarks.eld
+./projectile.cache

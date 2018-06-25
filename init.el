@@ -12,7 +12,6 @@
  '(TeX-show-compilation t)
  '(ansi-color-names-vector
    ["#3C3836" "#FB4933" "#86C9D3" "#8DD1CA" "#419BB0" "#A59FC0" "#3FD7E5" "#EBDBB2"])
- '(blink-cursor-mode t)
  '(custom-enabled-themes (quote (sanityinc-solarized-dark)))
  '(custom-safe-themes
    (quote
@@ -28,10 +27,13 @@
      (unknown . "|")
      (ignored . "|"))))
  '(doc-view-continuous t)
+ '(eldoc-idle-delay 0.1)
  '(elpy-mode-hook nil)
  '(elpy-modules
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(fast-but-imprecise-scrolling t)
+ '(flycheck-check-syntax-automatically (quote (save idle-change mode-enabled)))
  '(flycheck-clang-analyzer-executable "")
  '(flycheck-clang-args (quote ("-Wno-pragma-once-outside-header")))
  '(flycheck-clang-include-path
@@ -41,6 +43,9 @@
  '(flycheck-clang-ms-extensions t)
  '(flycheck-clang-warnings nil)
  '(flycheck-gcc-language-standard "c++11")
+ '(flymake-cursor-error-display-delay 0.01)
+ '(flymake-gui-warnings-enabled nil)
+ '(flymake-log-level 1)
  '(flyspell-default-dictionary "deutsch8")
  '(focus-follows-mouse nil)
  '(global-diff-hl-mode t)
@@ -48,7 +53,7 @@
  '(grab-and-drag-button 2)
  '(hide-ifdef-initially t)
  '(hide-ifdef-shadow t)
- '(hl-todo-activate-in-modes (quote (emacs-lisp-mode c++-mode)))
+ '(hl-todo-activate-in-modes (quote (emacs-lisp-mode c++-mode ng2-ts-mode)))
  '(hl-todo-keyword-faces
    (quote
     (("HOLD" . "#d0bf8f")
@@ -191,7 +196,7 @@
      ("I" "#+include: %file ?"))))
  '(package-selected-packages
    (quote
-    (tide ahk-mode kite-mini jss tabbar which-key gnuplot browse-kill-ring popup-kill-ring company-auctex auctex frames-only-mode htmlize counsel flycheck-clang-analyzer company-go go-mode atom-dark-theme darkroom wttrin wolfram use-package treemacs-projectile rjsx-mode projectile-ripgrep powerline ox-twbs ox-reveal org-bullets multiple-cursors magit ivy ido-vertical-mode hl-todo flycheck dumb-jump diminish diff-hl company-childframe color-theme-sanityinc-solarized academic-phrases)))
+    (which-key browse-kill-ring rainbow-mode emmet-mode ng2-mode tide pdf-tools flymake-cursor treemacs projectile company frames-only-mode htmlize counsel flycheck-clang-analyzer company-go go-mode atom-dark-theme darkroom wttrin wolfram use-package treemacs-projectile rjsx-mode projectile-ripgrep powerline ox-twbs ox-reveal org-bullets multiple-cursors magit ivy ido-vertical-mode hl-todo flycheck dumb-jump diminish diff-hl company-childframe color-theme-sanityinc-solarized academic-phrases)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -204,6 +209,7 @@
  '(scroll-bar-mode nil)
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
+ '(tide-completion-detailed t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(tramp-syntax (quote default) nil (tramp))
