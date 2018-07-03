@@ -158,7 +158,12 @@ no number completion in org mode
 #+begin_src emacs-lisp
   (use-package flycheck
     :ensure t)
+  (use-package flycheck-popup-tip-mode
+    :ensure t)
+
+(add-hook 'flycheck-mode-hook 'flycheck-popup-tip-mode)
 #+end_src
+
 ** go mode
 #+begin_src emacs-lisp
  (use-package go-mode
@@ -245,7 +250,7 @@ no number completion in org mode
 
 #+end_src
 *** normal
-  #+begin_src emacs-lisp
+    #+begin_src emacs-lisp
        (require 'org)
        (require 'ox-latex)
        (require 'compile)
@@ -425,6 +430,7 @@ no number completion in org mode
       :ensure t)
 
 (flycheck-add-mode 'typescript-tide 'ng2-ts-mode)
+(flycheck-add-mode 'typescript-tslint 'ng2-ts-mode)
 
 (defun setup-tide-mode ()
   (interactive)
@@ -451,6 +457,10 @@ no number completion in org mode
 
 (add-hook 'ng2-html-mode-hook 'emmet-mode)
 #+end_src
+
+#+RESULTS:
+| emmet-mode |
+
 ** powerline
 #+begin_src emacs-lisp
   (use-package powerline
@@ -469,6 +479,13 @@ no number completion in org mode
      (use-package projectile-ripgrep
        :ensure t)
 #+end_src
+
+** rainbow-mode
+   #+begin_src emacs-lisp
+   (use-package rainbow-mode
+   :ensure t)
+   (add-hook 'rjsx-mode-hook 'rainbow-mode)
+   #+end_src
 
 ** rjsx
 #+begin_src emacs-lisp
@@ -517,7 +534,7 @@ no number completion in org mode
 
    :bind
    (:map global-map
-         ([f8]         . treemacs-toggle)
+         ([f8]         . treemacs)
          ("M-0"        . treemacs-select-window)
          ("C-x 1"      . treemacs-delete-other-windows)))
 
@@ -527,6 +544,10 @@ no number completion in org mode
    :config
    (setq treemacs-header-function #'treemacs-projectile-create-header))
   #+end_src
+
+  #+RESULTS:
+  : t
+
 ** wolfram
 #+begin_src emacs-lisp
  (use-package wolfram
@@ -645,7 +666,6 @@ no number completion in org mode
 #+BEGIN_SRC emacs-lisp
    (setq compilation-ask-about-save nil)
    (setq compilation-auto-jump-to-first-error nil)
-   (setq compile-command "find_and_run.py build.bat")
    (setq compilation-read-command nil)
    (setq compilation-scroll-output t)
    ;; compilation in new frame
@@ -661,6 +681,9 @@ no number completion in org mode
    ;;                           (left . (- 1))
    ;;                           (top . 0)))))
 #+END_SRC
+
+#+RESULTS:
+: t
 
 ** format after yank
 #+BEGIN_SRC emacs-lisp
@@ -1037,26 +1060,23 @@ Tabs to spaces
 
 * Mode specifics
 ** compilation
-#+begin_src emacs-lisp
-  (setq compilation-finish-functions
-     (lambda (buf str)
-        (if (and (string= "finished\n" str))
-           (progn
-              (run-at-time "0.2 sec" nil
-                 (lambda ()
-                    (setq inhibit-message 1)
-                    (winner-undo)
-                    (setq inhibit-message nil)
-                 )
-              )
-           )
-        )
-     )
-  )
+#+begin_src
+    (setq compilation-finish-functions
+       (lambda (buf str)
+          (if (and (string= "finished\n" str))
+             (progn
+                (run-at-time "0.2 sec" nil
+                   (lambda ()
+                      (setq inhibit-message 1)
+                      (winner-undo)
+                      (setq inhibit-message nil)
+                   )
+                )
+             )
+          )
+       )
+    )
 #+end_src
-
-#+RESULTS:
-| lambda | (buf str) | (if (string= finished |
 
 only show compilatoin buffer on error
 #+begin_src

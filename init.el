@@ -196,7 +196,7 @@
      ("I" "#+include: %file ?"))))
  '(package-selected-packages
    (quote
-    (which-key browse-kill-ring rainbow-mode emmet-mode ng2-mode tide pdf-tools flymake-cursor treemacs projectile company frames-only-mode htmlize counsel flycheck-clang-analyzer company-go go-mode atom-dark-theme darkroom wttrin wolfram use-package treemacs-projectile rjsx-mode projectile-ripgrep powerline ox-twbs ox-reveal org-bullets multiple-cursors magit ivy ido-vertical-mode hl-todo flycheck dumb-jump diminish diff-hl company-childframe color-theme-sanityinc-solarized academic-phrases)))
+    (evil flycheck-popup-tip-mode flycheck-popup-tip treemacs-projectile treemacs which-key browse-kill-ring rainbow-mode emmet-mode ng2-mode tide pdf-tools flymake-cursor projectile company frames-only-mode htmlize counsel flycheck-clang-analyzer company-go go-mode atom-dark-theme darkroom wttrin wolfram use-package rjsx-mode projectile-ripgrep powerline ox-twbs ox-reveal org-bullets multiple-cursors magit ivy ido-vertical-mode hl-todo flycheck dumb-jump diminish diff-hl company-childframe color-theme-sanityinc-solarized academic-phrases)))
  '(pos-tip-background-color "#1A3734")
  '(pos-tip-foreground-color "#FFFFC8")
  '(powerline-default-separator (quote wave))
@@ -209,7 +209,9 @@
  '(scroll-bar-mode nil)
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
+ '(tide-allow-popup-select (quote (code-fix jump-to-implementation refactor)))
  '(tide-completion-detailed t)
+ '(tide-default-mode "JSX")
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(tramp-syntax (quote default) nil (tramp))

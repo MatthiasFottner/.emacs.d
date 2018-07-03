@@ -12,6 +12,7 @@
 	comment-line
 	comment-region
 	duplicate-line
+	ignore
 	indent-for-tab-command
 	insert-char
 	kill-region
