@@ -6,3 +6,5 @@ emacs-init.el
 ido.last
 projectile-bookmarks.eld
 projectile.cache
+/eshell/history
+/eshell/lastdir

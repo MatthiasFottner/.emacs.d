@@ -1,8 +1,24 @@
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
+;; utf-8
+(setq locale-coding-system 'utf-8) ; pretty
+(set-terminal-coding-system 'utf-8) ; pretty
+(set-keyboard-coding-system 'utf-8) ; pretty
+(set-selection-coding-system 'utf-8) ; please
+(prefer-coding-system 'utf-8) ; with sugar on top
+
+(require 'package)
+(load-library "url-handlers")
+
+(add-to-list
+ 'package-archives
+ '("melpa" . "http://melpa.org/packages/"))
+
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
 (package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -266,4 +282,3 @@
  (org-babel-load-file
   (expand-file-name "emacs-init.org"
                     user-emacs-directory))
-(put 'scroll-left 'disabled nil)
