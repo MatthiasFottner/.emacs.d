@@ -24,6 +24,7 @@
 	org-return
 	org-self-insert-command
 	org-yank
+	rjsx-electric-gt
 	typescript-insert-and-autoconvert-to-template
 	typescript-insert-and-indent
 	))
@@ -32,6 +33,7 @@
       '(
 	handle-switch-frame
 	mark-word-or-next-word-like-this
+	mouse-set-region
 	org-fill-paragraph
 	save-and-find-build-script-and-compile
 	treemacs-delete-other-windows

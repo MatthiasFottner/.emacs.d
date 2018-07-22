@@ -1,0 +1,6 @@
+(add-hook 'go-mode-hook (lambda ()
+                          (set (make-local-variable 'company-backends) '(company-go))
+                          (company-mode)
+                          (add-hook 'before-save-hook 'gofmt-before-save)
+                          (setq tab-width 4)
+                          (setq indent-tabs-mode nil)))
