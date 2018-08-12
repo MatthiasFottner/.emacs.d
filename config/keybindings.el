@@ -20,11 +20,9 @@
 (with-eval-after-load 'java
   (define-key java-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this))
 
-(with-eval-after-load 'c
-  (define-key java-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this))
+;; (define-key c-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this)
 
-(with-eval-after-load 'c++
-  (define-key java-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this))
+(with-eval-after-load 'cc-mode(define-key c++-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this))
 
 (with-eval-after-load 'doc-view
   (define-key doc-view-mode-map (kbd "<C-wheel-up>") 'doc-view-enlarge)

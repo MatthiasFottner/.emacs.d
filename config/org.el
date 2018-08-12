@@ -168,8 +168,8 @@
                            (abbrev-mode 1)
                            (auto-fill-mode 1)))
 
-(add-hook 'text-mode-hook #'turn-on-orgtbl)
-(add-hook 'prog-mode-hook #'turn-on-orgtbl)
+;; (add-hook 'text-mode-hook #'turn-on-orgtbl)
+;; (add-hook 'prog-mode-hook #'turn-on-orgtbl)
 
 (use-package org-bullets
   :ensure t)

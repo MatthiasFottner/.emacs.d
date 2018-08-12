@@ -9,6 +9,7 @@
 	c-electric-paren
 	c-electric-semi&comma
 	c-electric-slash
+	c-indent-line-or-region
 	comment-line
 	comment-region
 	duplicate-line
@@ -24,6 +25,7 @@
 	org-return
 	org-self-insert-command
 	org-yank
+	orgtbl-self-insert-command
 	rjsx-electric-gt
 	typescript-insert-and-autoconvert-to-template
 	typescript-insert-and-indent
@@ -31,10 +33,14 @@
 
 (setq mc/cmds-to-run-once
       '(
+	counsel-M-x
+	describe-key
+	emmet-expand-line
 	handle-switch-frame
 	mark-word-or-next-word-like-this
 	mouse-set-region
 	org-fill-paragraph
+	orgtbl-hijacker-command-109
 	save-and-find-build-script-and-compile
 	treemacs-delete-other-windows
 	))

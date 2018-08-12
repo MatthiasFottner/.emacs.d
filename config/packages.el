@@ -5,6 +5,7 @@
     (message "is before 26.0 - skipping company-childframe")
   (use-package company-posframe
     :ensure t
+    :diminish
     :config
     (company-posframe-mode 1)))
 
@@ -28,6 +29,9 @@
                              (if (equal major-mode "org")
                                  (>= (length c) 20)))))
       company-transformers)
+
+(use-package wrap-region
+  :ensure t)
 
 (use-package browse-kill-ring
   :ensure t
@@ -63,6 +67,8 @@
       ;; `smyx-theme`.
       (setq window-divider-default-right-width 1) ;Default 6
       (window-divider-mode 1))))
+
+(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
 (use-package diminish
   :ensure t)
@@ -111,10 +117,38 @@
 
 (use-package ivy
   :ensure t
+  :diminish
+  :bind (("C-c C-r" . ivy-resume)
+         ("C-x B" . ivy-switch-buffer-other-window))
+  :custom
+  (ivy-count-format "(%d/%d) ")
+  (ivy-display-style 'fancy)
+  (ivy-use-virtual-buffers t)
   :config
-  (ivy-mode 1)
-  (setq projectile-completion-system 'ivy)
-  (setq ivy-on-del-error-function #'ignore))
+    (setq projectile-completion-system 'ivy)
+    (setq ivy-on-del-error-function #'ignore)
+    (ivy-mode))
+
+(use-package ivy-rich
+  :ensure t
+  :custom
+  (ivy-virtual-abbreviate 'full
+                          ivy-rich-switch-buffer-align-virtual-buffer t
+                          ivy-rich-path-style 'abbrev)
+  :config
+  (ivy-set-display-transformer 'ivy-switch-buffer
+                               'ivy-rich-switch-buffer-transformer))
+
+(use-package counsel
+  :ensure t
+  :diminish
+  :config (counsel-mode))
+
+(use-package swiper
+  :ensure t
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper)))
+
 
 (use-package magit
   :ensure t)
@@ -146,6 +180,7 @@
 
 (use-package rainbow-mode
   :ensure t
+  :diminish
   :hook (prog-mode))
 
 (use-package treemacs
@@ -189,7 +224,6 @@
 
 (use-package treemacs-projectile
   :defer t
-  :ensure t
   :config
   (setq treemacs-header-function #'treemacs-projectile-create-header))
 

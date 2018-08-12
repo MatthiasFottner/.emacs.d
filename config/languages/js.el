@@ -3,13 +3,14 @@
 
 (use-package tide
   :ensure t
+  :diminish
   :config
   (setq tide-allow-popup-select (quote (code-fix jump-to-implementation refactor)))
   (setq tide-completion-detailed t)
   (setq tide-default-mode "JSX"))
 
-(use-package emmet-mode
-  :ensure t)
+;; (use-package emmet-mode
+  ;; :ensure t)
 
 
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
@@ -38,9 +39,9 @@
 
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 (add-hook 'rjsx-mode-hook #'setup-tide-mode)
-(add-hook 'rjsx-mode-hook #'emmet-mode)
+;; (add-hook 'rjsx-mode-hook #'emmet-mode)
 
-(add-hook 'ng2-html-mode-hook 'emmet-mode)
+;; (add-hook 'ng2-html-mode-hook 'emmet-mode)
 
 (use-package rjsx-mode
   :ensure t

@@ -46,11 +46,17 @@
  '(flycheck-gcc-language-standard "c++11")
  '(flyspell-default-dictionary "deutsch8")
  '(isearch-allow-scroll t)
+ '(ivy-count-format "(%d/%d) ")
+ '(ivy-display-style (quote fancy))
+ '(ivy-use-virtual-buffers t)
+ '(ivy-virtual-abbreviate (quote full))
  '(package-selected-packages
    (quote
-    (lsp-javascript-flow company-lsp lsp-javascript-typescript ivy-todo rjsx-mode emmet-mode tide ng2-mode color-theme-sanityinc-solarized ox-twbs ox-reveal org-bullets wttrin which-key wolfram treemacs-projectile treemacs rainbow-mode projectile-ripgrep projectile powerline multiple-cursors magit ivy hl-todo company-go go-mode flycheck-popup-tip flycheck dumb-jump diminish diff-hl browse-kill-ring company-posframe academic-phrases use-package)))
+    (hy-mode ranger dired-ranger c-eldoc eglot lsp-clangd lsp-mode lsp-ui web-mode wrap-region pdf-tools octicons major-mode-icons mode-icons ivy-gitlab all-the-icons-ivy rjsx-mode emmet-mode tide ng2-mode color-theme-sanityinc-solarized ox-twbs ox-reveal org-bullets wttrin which-key wolfram treemacs-projectile treemacs rainbow-mode projectile-ripgrep projectile powerline multiple-cursors magit ivy hl-todo company-go go-mode flycheck-popup-tip flycheck dumb-jump diminish diff-hl browse-kill-ring company-posframe academic-phrases use-package)))
  '(pos-tip-background-color "#1A3734")
- '(pos-tip-foreground-color "#FFFFC8"))
+ '(pos-tip-foreground-color "#FFFFC8")
+ '(tide-format-options (quote (indentSize 4)))
+ '(web-mode-markup-indent-offset 2))
 
 
 (custom-set-faces
