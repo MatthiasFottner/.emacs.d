@@ -67,6 +67,7 @@
 ;; Open specific files / buffers
 (global-set-key (kbd "C-c t") 'find-org-capture-file)
 (global-set-key (kbd "C-c T") 'projectile-find-todos)
+(global-set-key (kbd "C-c p p") 'projectile-switch-project)
 (global-set-key (kbd "C-#") 'comment-line)
 
 ;; Move lines

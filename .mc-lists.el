@@ -27,6 +27,7 @@
 	org-yank
 	orgtbl-self-insert-command
 	rjsx-electric-gt
+	rjsx-electric-lt
 	typescript-insert-and-autoconvert-to-template
 	typescript-insert-and-indent
 	))

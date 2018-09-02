@@ -12,7 +12,6 @@
 ;; (use-package emmet-mode
   ;; :ensure t)
 
-
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 
 (flycheck-add-mode 'typescript-tide   'ng2-ts-mode)
@@ -51,3 +50,8 @@
   (setq indent-tabs-mode nil)
   ;; disable the semicolon warning
   (setq js2-strict-missing-semi-warning nil))
+
+;; (require 'lsp-javascript-flow)
+;; (add-hook 'js-mode-hook #'lsp-javascript-flow-enable)
+;; (add-hook 'js2-mode-hook #'lsp-javascript-flow-enable) ;; for js2-mode support
+;; (add-hook 'rjsx-mode #'lsp-javascript-flow-enable) ;; for rjsx-mode support

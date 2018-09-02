@@ -1,4 +1,19 @@
 
+(defun npm-start ()
+  "Run npm start"
+  (interactive)
+  (shell-command "npm start &")
+  (other-window 1)
+  (rename-buffer "npm start"))
+
+
+(defun eshell-other-window ()
+  "Open a `eshell' in a new window."
+  (interactive)
+  (let ((buf (eshell)))
+    (switch-to-buffer (other-buffer buf))
+    (switch-to-buffer-other-window buf)))
+
 (defun org-agenda-show-agenda-and-todo (&optional arg)
   (interactive "P")
   (org-agenda arg "n" "buffer"))
@@ -9,8 +24,7 @@
   (kill-line 1)
   (yank)
   (yank)
-  (forward-line -1)
-  )
+  (forward-line -1))
 
 (defun dumb-jump-go-set-mark ()
   "Sets a mark and dumb jumps."
