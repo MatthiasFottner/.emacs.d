@@ -7,6 +7,7 @@
 	c-electric-colon
 	c-electric-lt-gt
 	c-electric-paren
+	c-electric-pound
 	c-electric-semi&comma
 	c-electric-slash
 	c-indent-line-or-region
@@ -35,13 +36,16 @@
 (setq mc/cmds-to-run-once
       '(
 	counsel-M-x
+	counsel-find-file
 	describe-key
 	emmet-expand-line
 	handle-switch-frame
+	ivy-switch-buffer
 	mark-word-or-next-word-like-this
 	mouse-set-region
 	org-fill-paragraph
 	orgtbl-hijacker-command-109
+	projectile-ripgrep
 	save-and-find-build-script-and-compile
 	treemacs-delete-other-windows
 	))

@@ -62,6 +62,12 @@
 (setq compilation-auto-jump-to-first-error nil)
 (setq compilation-read-command nil)
 (setq compilation-scroll-output t)
+(require 'ansi-color)
+(defun colorize-compilation-buffer ()
+  (toggle-read-only)
+  (ansi-color-apply-on-region compilation-filter-start (point))
+  (toggle-read-only))
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
 
 ;; (defadvice yank (around html-yank-indent)
@@ -103,4 +109,3 @@
    (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
  (defadvice other-window (before other-window-now activate)
 (when (and buffer-file-name (buffer-modified-p)) (save-buffer)))
-

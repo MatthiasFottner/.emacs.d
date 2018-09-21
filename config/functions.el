@@ -18,13 +18,35 @@
   (interactive "P")
   (org-agenda arg "n" "buffer"))
 
+
+(defalias 'raw-yank (symbol-function 'yank))
+
+(dolist (command '(yank yank-pop))
+  (eval `(defadvice ,command (after indent-region activate)
+           (and (not current-prefix-arg)
+                (member major-mode '(emacs-lisp-mode lisp-mode
+                                                     clojure-mode    scheme-mode
+                                                     haskell-mode    ruby-mode
+                                                     rspec-mode      python-mode
+                                                     c-mode          c++-mode
+                                                     objc-mode       latex-mode
+                                                     plain-tex-mode))
+                (let ((mark-even-if-inactive transient-mark-mode))
+                  (indent-region (region-beginning) (region-end) nil))))))
+
 (defun duplicate-line()
   (interactive)
-  (move-beginning-of-line 1)
-  (kill-line 1)
-  (yank)
-  (yank)
-  (forward-line -1))
+  (let ((inhibit-message 1))
+  (save-excursion
+    (move-beginning-of-line 1)
+    (set-mark (point-marker))
+    (move-end-of-line 1)
+    (copy-region-as-kill (region-beginning) (region-end))
+    (deactivate-mark)
+    (insert "\n")
+    (raw-yank)
+    (pop kill-ring))
+  (call-interactively 'next-line)))
 
 (defun dumb-jump-go-set-mark ()
   "Sets a mark and dumb jumps."
@@ -40,15 +62,12 @@
 (defun save-and-find-build-script-and-compile ()
   "Walks upward the directory tree until a buildscript is found"
   (interactive)
-  (save-buffer)
+  (when (and buffer-file-name (buffer-modified-p)) (save-buffer))
   (let* ((build-script-path (locate-dominating-file (expand-file-name default-directory) build-script-name)))
     (if build-script-path (progn
                             (setq compile-command (concat build-script-path build-script-name))
                             (compile compile-command))
-      (error (concat "The default buildscript '" build-script-name "' cannot be found"))
-      )
-    )
-  )
+      (error (concat "The default buildscript '" build-script-name "' cannot be found")))))
 
 (defun move-lines (n)
   (let ((beg) (end) (keep))
@@ -63,11 +82,16 @@
           (setq end (line-beginning-position 2)))
       (setq beg (line-beginning-position)
             end (line-beginning-position 2)))
-    (let ((offset (if (and (mark t)
+    (let (
+          (offset (if (and (mark t)
                            (and (>= (mark t) beg)
                                 (< (mark t) end)))
                       (- (point) (mark t))))
+          (marked-lines (if (region-active-p)
+                            (count-lines (region-beginning) (region-end))
+                          1))
           (rewind (- end (point))))
+
       (goto-char (if (< n 0) beg end))
       (forward-line n)
       (insert (delete-and-extract-region beg end))
@@ -80,12 +104,12 @@
 (defun move-lines-up (n)
   "move the line(s) spanned by the active region up by N lines."
   (interactive "*p")
-  (move-lines (- (or n 1))))
+  (move-lines -1))
 
 (defun move-lines-down (n)
   "move the line(s) spanned by the active region down by N lines."
   (interactive "*p")
-  (move-lines (or n 1)))
+  (move-lines 1))
 
 (defun find-user-init-file ()
   "Edit the `init.org', in another window."

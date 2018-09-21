@@ -249,3 +249,5 @@
 
 (require 'winner)
 (winner-mode 1)
+
+(add-hook 'prog-mode-hook #'hs-minor-mode)
