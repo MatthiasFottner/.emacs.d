@@ -17,6 +17,9 @@
 (with-eval-after-load 'rjsx-mode
   (define-key rjsx-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this))
 
+(with-eval-after-load 'dart-mode
+  (define-key dart-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this))
+
 (with-eval-after-load 'java
   (define-key java-mode-map (kbd "C-d") 'mark-word-or-next-word-like-this))
 
@@ -42,6 +45,7 @@
 (global-unset-key (kbd "C-<down-mouse-1>"))
 (global-unset-key "\C-d")
 
+(global-set-key (kbd "<f2>") 'open-context-hydra)
 (global-set-key (kbd "C-S-d") 'duplicate-line)
 
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
@@ -79,3 +83,4 @@
 
 ;; projectile
 (global-set-key (kbd "C-c p s r") 'projectile-ripgrep)
+(global-set-key (kbd "C-c p f") 'projectile--find-file)

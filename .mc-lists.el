@@ -10,6 +10,7 @@
 	c-electric-pound
 	c-electric-semi&comma
 	c-electric-slash
+	c-electric-star
 	c-indent-line-or-region
 	comment-line
 	comment-region
@@ -18,6 +19,7 @@
 	indent-for-tab-command
 	insert-char
 	kill-region
+	markdown-outdent-or-delete
 	move-lines-down
 	org-beginning-of-line
 	org-cycle
@@ -47,5 +49,6 @@
 	orgtbl-hijacker-command-109
 	projectile-ripgrep
 	save-and-find-build-script-and-compile
+	swiper
 	treemacs-delete-other-windows
 	))

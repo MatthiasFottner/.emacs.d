@@ -1,11 +1,9 @@
-
-(defun npm-start ()
-  "Run npm start"
+(defun open-context-hydra ()
   (interactive)
-  (shell-command "npm start &")
-  (other-window 1)
-  (rename-buffer "npm start"))
-
+  (cond
+   ((member major-mode '(dart-mode)) (hydra-dart/body))
+   ((member major-mode '(rjsx-mode)) (hydra-yarn/body))
+   (t (error "There is no hydra defined for the current major mode"))))
 
 (defun eshell-other-window ()
   "Open a `eshell' in a new window."

@@ -33,6 +33,24 @@
 (use-package wrap-region
   :ensure t)
 
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (setq
+   rainbow-delimiters-depth-1-face '(:foreground "dark orange")
+   rainbow-delimiters-depth-2-face '(:foreground "deep pink")
+   rainbow-delimiters-depth-3-face '(:foreground "chartreuse")
+   rainbow-delimiters-depth-4-face '(:foreground "deep sky blue")
+   rainbow-delimiters-depth-5-face '(:foreground "yellow")
+   rainbow-delimiters-depth-6-face '(:foreground "orchid")
+   rainbow-delimiters-depth-7-face '(:foreground "spring green")
+   rainbow-delimiters-depth-8-face '(:foreground "sienna1"))
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+
+(use-package hydra
+  :ensure t)
+
 (use-package browse-kill-ring
   :ensure t
   :config (browse-kill-ring-default-keybindings))
@@ -93,7 +111,7 @@
   :ensure t
   :config
   (global-hl-todo-mode)
-  (setq hl-todo-activate-in-modes (quote (emacs-lisp-mode c++-mode ng2-ts-mode)))
+  (setq hl-todo-activate-in-modes (quote (prog-mode)))
   (setq hl-todo-keyword-faces
     (quote
      (("HOLD" . "#d0bf8f")
@@ -155,6 +173,10 @@
   :ensure t)
 (setenv "GIT_ASKPASS" "git-gui--askpass")
 (setenv "SSH_ASKPASS" "git-gui--askpass")
+
+(use-package magit-org-todos
+  :config
+  (magit-org-todos-autoinsert))
 
 (use-package multiple-cursors
   :ensure t)

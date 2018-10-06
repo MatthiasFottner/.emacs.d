@@ -52,8 +52,8 @@
 (setq delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
-      version-control t)
-
+      version-control t
+      create-lockfiles nil)
 
 ;;
 ;; Compilation
@@ -61,7 +61,7 @@
 (setq compilation-ask-about-save nil)
 (setq compilation-auto-jump-to-first-error nil)
 (setq compilation-read-command nil)
-(setq compilation-scroll-output t)
+(setq compilation-srscroll-output t)
 (require 'ansi-color)
 (defun colorize-compilation-buffer ()
   (toggle-read-only)
