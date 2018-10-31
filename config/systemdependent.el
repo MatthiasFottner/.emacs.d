@@ -3,8 +3,7 @@
 
 (if (string= system-type "windows-nt")
     (setq build-script-name "build.bat")
-  (setq build-script-name "build.sh")
-  )
+  (setq build-script-name "build.sh"))
 
 (setq doc-view-ghostscript-program "/usr/bin/gs")
 

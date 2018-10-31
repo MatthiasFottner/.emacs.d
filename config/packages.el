@@ -1,6 +1,10 @@
 (use-package academic-phrases
   :ensure t)
 
+(use-package htmlize
+  :ensure t)
+
+
 (if (version< emacs-version "26.0")
     (message "is before 26.0 - skipping company-childframe")
   (use-package company-posframe
@@ -55,38 +59,38 @@
   :ensure t
   :config (browse-kill-ring-default-keybindings))
 
-(use-package diff-hl
-  :ensure t
-  :config
-  (global-diff-hl-mode t)
-  (diff-hl-flydiff-mode t)
-  (diff-hl-margin-mode t)
-  (setq diff-hl-draw-borders t)
-  (setq diff-hl-flydiff-delay 0.1)
-  (setq diff-hl-fringe-bmp-function (quote diff-hl-fringe-bmp-from-pos))
-  (setq diff-hl-margin-symbols-alist
-    (quote
-     ((insert . "|")
-      (delete . "|")
-      (change . "|")
-      (unknown . "|")
-      (ignored . "|"))))
+;; (use-package diff-hl
+;;   :ensure t
+;;   :config
+;;   (global-diff-hl-mode t)
+;;   (diff-hl-flydiff-mode -1)
+;;   (diff-hl-margin-mode -1)
+;;   (setq diff-hl-draw-borders t)
+;;   (setq diff-hl-flydiff-delay 1)
+;;   (setq diff-hl-fringe-bmp-function (quote diff-hl-fringe-bmp-from-pos))
+;;   (setq diff-hl-margin-symbols-alist
+;;     (quote
+;;      ((insert . "|")
+;;       (delete . "|")
+;;       (change . "|")
+;;       (unknown . "|")
+;;       (ignored . "|"))))
 
-  ;; Workaround for displaying correctly in other window
-  (use-package frame
-    :defer t
-    :config
-    (progn
-      (setq window-divider-default-places 'right-only) ;Default 'right-only
-      ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=27830#20
-      ;; Workaround on emacs 26+ to prevent fringe truncation. You need to use
-      ;; either scroll bars or window dividers to prevent that.
-      ;; I dislike the default face of `window-divider', so I customize that in my
-      ;; `smyx-theme`.
-      (setq window-divider-default-right-width 1) ;Default 6
-      (window-divider-mode 1))))
+;;   ;; Workaround for displaying correctly in other window
+;;   (use-package frame
+;;     :defer t
+;;     :config
+;;     (progn
+;;       (setq window-divider-default-places 'right-only) ;Default 'right-only
+;;       ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=27830#20
+;;       ;; Workaround on emacs 26+ to prevent fringe truncation. You need to use
+;;       ;; either scroll bars or window dividers to prevent that.
+;;       ;; I dislike the default face of `window-divider', so I customize that in my
+;;       ;; `smyx-theme`.
+;;       (setq window-divider-default-right-width 1) ;Default 6
+;;       (window-divider-mode 1))))
 
-(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+;; (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
 (use-package diminish
   :ensure t)
@@ -173,6 +177,7 @@
   :ensure t)
 (setenv "GIT_ASKPASS" "git-gui--askpass")
 (setenv "SSH_ASKPASS" "git-gui--askpass")
+(setq auto-revert-check-vc-info t)
 
 (use-package magit-org-todos
   :config

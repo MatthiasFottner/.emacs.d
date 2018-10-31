@@ -24,6 +24,7 @@
 	org-beginning-of-line
 	org-cycle
 	org-end-of-line
+	org-force-self-insert
 	org-kill-line
 	org-return
 	org-self-insert-command
@@ -37,6 +38,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+	change-lang
 	counsel-M-x
 	counsel-find-file
 	describe-key
@@ -44,6 +46,7 @@
 	handle-switch-frame
 	ivy-switch-buffer
 	mark-word-or-next-word-like-this
+	markdown-cycle
 	mouse-set-region
 	org-fill-paragraph
 	orgtbl-hijacker-command-109

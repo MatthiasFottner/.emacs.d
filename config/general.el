@@ -94,12 +94,18 @@
 ;;
 ;; Save Hooks
 ;;
-(defun untabify-except-makefiles ()
-"Replace tabs with spaces except in makefiles."
-(unless (derived-mode-p 'makefile-mode)
-  (untabify (point-min) (point-max))))
+;; (defun untabify-except-makefiles ()
+;;   "Replace tabs with spaces except in makefiles."
+;;   (unless (derived-mode-p 'makefile-mode)
+;;     (untabify (point-min) (point-max))))
 
-(add-hook 'before-save-hook 'untabify-except-makefiles)
+(setq-default indent-tabs-mode nil)
+(defun fix-tabification ()
+  (if indent-tabs-mode
+      (tabify (point-min) (point-max))
+    (untabify (point-min) (point-max))))
+
+(add-hook 'before-save-hook 'fix-tabification)
 (add-hook 'before-save-hook 'delete-trailing-whitespace-except-current-line)
 
 (add-hook 'focus-out-hook          (lambda () (when (and buffer-file-name (buffer-modified-p)) (save-buffer))))

@@ -84,3 +84,4 @@
 ;; projectile
 (global-set-key (kbd "C-c p s r") 'projectile-ripgrep)
 (global-set-key (kbd "C-c p f") 'projectile--find-file)
+

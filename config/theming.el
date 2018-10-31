@@ -13,7 +13,10 @@
 
 (setq initial-major-mode 'text-mode)
 (setq initial-scratch-message "\
-Unfortunately there is a radio connected to my brain.")
+Love's a game
+They all say it, they mean it
+Might as well have fun
+Play every single one")
                                         ; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (setq frame-title-format "%b - Emacs ")
 (setq inhibit-startup-screen t)
