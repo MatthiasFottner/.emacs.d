@@ -199,9 +199,11 @@
 
 (use-package projectile
   :ensure t
+  :diminish projectile-mode
+  :init
+  (setq projectile-keymap-prefix (kbd "C-c p"))
   :config
-  (projectile-global-mode)
-  (diminish 'projectile-mode))
+  (projectile-global-mode))
 
 (use-package projectile-ripgrep
   :ensure t)

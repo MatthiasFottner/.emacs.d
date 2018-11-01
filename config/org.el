@@ -180,7 +180,8 @@
 (use-package ox-twbs
   :ensure t)
 
-
+(use-package ox-hugo
+  :ensure t)
 
 (add-hook 'calendar-load-hook
           (lambda ()
