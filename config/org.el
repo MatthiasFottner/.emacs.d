@@ -24,7 +24,9 @@
 (defun color-link-export (path description backend)
   "Export function for color links."
   (cond
-   ((eq backend 'html)
+   ((eq backend 'latex)                         ; added by TL
+    (format "{\\color{%s}%s}" path description)) ; added by TL
+   ((or (eq backend 'html) (eq backend 'md) (eq backend 'hugo))
     (let ((rgb (assoc (downcase path) color-name-rgb-alist))
           r g b)
       (setq r (* 255 (/ (nth 1 rgb) 65535.0))
@@ -115,7 +117,7 @@
 
   (setq org-latex-default-packages-alist
         (quote
-         (("AUTO" "inputenc" t)
+         (("utf8" "inputenc" t)
           ("T1" "fontenc" t)
           ("" "fixltx2e" nil)
           ("" "graphicx" t)

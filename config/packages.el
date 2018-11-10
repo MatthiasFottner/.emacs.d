@@ -4,7 +4,6 @@
 (use-package htmlize
   :ensure t)
 
-
 (if (version< emacs-version "26.0")
     (message "is before 26.0 - skipping company-childframe")
   (use-package company-posframe
@@ -179,7 +178,9 @@
 (setenv "SSH_ASKPASS" "git-gui--askpass")
 (setq auto-revert-check-vc-info t)
 
+
 (use-package magit-org-todos
+  :ensure t
   :config
   (magit-org-todos-autoinsert))
 

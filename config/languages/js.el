@@ -106,12 +106,7 @@
 
 
 (defhydra hydra-yarn (:color pink :hint nil)
-  "
-^yarn^
-------
-_s_tart
-_k_ill
-"
-  ("s" yarn-run-start       :color blue)
-  ("k" yarn-run-kill        :color blue)
-  ("q" quit-window "quit"   :color blue))
+  "Context Actions:"
+  ("s" yarn-run-start "yarn start" :color blue)
+  ("k" yarn-run-kill  "kill yarn"  :color blue)
+  ("q" quit-window    "quit"       :color blue))

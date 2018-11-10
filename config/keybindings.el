@@ -1,5 +1,5 @@
 (with-eval-after-load 'org
-  (define-key org-mode-map (kbd "<f2>") 'org-agenda-show-agenda-and-todo)
+  ;; (define-key org-mode-map (kbd "<f2>") 'org-agenda-show-agenda-and-todo)
   (define-key org-mode-map (kbd "C-#") 'comment-line)
   (define-key org-mode-map [M-up]   'move-lines-up)
   (define-key org-mode-map [M-down] 'move-lines-down)
