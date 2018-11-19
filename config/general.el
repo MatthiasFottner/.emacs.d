@@ -28,6 +28,21 @@
 ;; to remove the first character that fails a search
 (define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
 
+;; some performance improvements
+;; https://github.com/sabof/org-bullets/issues/11#issuecomment-439228372
+(setq inhibit-compacting-font-caches t)
+
+;; the Minibuffer should inherit the active input method.
+;; https://emacs.stackexchange.com/questions/38310/how-to-make-minibuffer-always-use-the-input-method-of-the-main-buffer
+(defun my-inherit-input-method ()
+  "Inherit input method from `minibuffer-selected-window'."
+  (let* ((win (minibuffer-selected-window))
+         (buf (and win (window-buffer win))))
+    (when buf
+      (activate-input-method (buffer-local-value 'current-input-method buf)))))
+
+(add-hook 'minibuffer-setup-hook #'my-inherit-input-method)
+
 ;; search for highlighted if exist
 (defun jrh-isearch-with-region ()
   "Use region as the isearch text."
@@ -43,7 +58,6 @@
 ;;
 (setq gc-cons-threshold (eval-when-compile (* 1024 1024 1024)))
 (run-with-idle-timer 2 t (lambda () (garbage-collect)))
-
 
 ;;
 ;; Backups
@@ -76,7 +90,6 @@
 ;;     ad-do-it
 ;;       (indent-region point-before (point))))
 ;; (ad-activate 'yank)
-
 
 ;;
 ;; Quality of Life; small settings
