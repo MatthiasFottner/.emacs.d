@@ -1,7 +1,7 @@
 (defun open-context-hydra ()
   (interactive)
   (cond
-   ((member major-mode '(dart-mode)) (hydra-dart/body))
+   ((member major-mode '(lawndart-mode)) (hydra-dart/body))
    ((member major-mode '(rjsx-mode)) (hydra-yarn/body))
    (t (error "There is no hydra defined for the current major mode"))))
 
