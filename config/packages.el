@@ -114,7 +114,7 @@
   :ensure t
   :config
   (global-hl-todo-mode)
-  (setq hl-todo-activate-in-modes (quote (prog-mode)))
+  (setq hl-todo-activate-in-modes '(prog-mode org-mode))
   (setq hl-todo-keyword-faces
     (quote
      (("HOLD" . "#d0bf8f")
