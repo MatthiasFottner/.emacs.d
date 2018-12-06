@@ -1,5 +1,5 @@
-(setq user-full-name    "Felix Brendel"
-      user-mail-address "felix@brendel.engineering")
+(setq user-full-name    "Matthias Fottner"
+      user-mail-address "matthiasfottner97@gmail.com")
 
 (if (string= system-type "windows-nt")
     (setq build-script-name "build.bat")
