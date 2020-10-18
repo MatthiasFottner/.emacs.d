@@ -1,8 +1,8 @@
 (with-eval-after-load 'org
   ;; (define-key org-mode-map (kbd "<f2>") 'org-agenda-show-agenda-and-todo)
   (define-key org-mode-map (kbd "C-#") 'comment-line)
-  (define-key org-mode-map [M-up]   'move-lines-up)
-  (define-key org-mode-map [M-down] 'move-lines-down)
+  ;; (define-key org-mode-map [M-up]   'move-lines-up)
+  ;; (define-key org-mode-map [M-down] 'move-lines-down)
   (define-key org-mode-map (kbd "C-j") 'join-line)
 
   (global-set-key (kbd "C-c a") 'org-agenda)
@@ -63,6 +63,7 @@
 (global-set-key (kbd "C-z") 'winner-undo)
 (global-set-key (kbd "C-j") 'join-line)
 
+
 (global-set-key (kbd "C-d") 'mark-word-or-next-word-like-this)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
@@ -73,14 +74,14 @@
 (global-set-key (kbd "C-#") 'comment-line)
 
 ;; Move lines
-(global-set-key [M-up]   'move-lines-up)
-(global-set-key [M-down] 'move-lines-down)
+;; (global-set-key [M-up]   'move-lines-up)
+;; (global-set-key [M-down] 'move-lines-down)
 
 ;; folding
 (global-set-key [?\C-\t] 'hs-toggle-hiding)
 
 ;; ;; projectile
-(global-set-key (kbd "C-c T") 'projectile-find-todos)
+(global-set-key (kbd "C-c T") 'ripgrep-find-todos)
 ;; (global-set-key (kbd "C-c p p") 'projectile-switch-project)
 ;; (global-set-key (kbd "C-c p s r") 'projectile-ripgrep)
 ;; (global-set-key (kbd "C-c p f") 'projectile--find-file)

@@ -1,0 +1,40 @@
+% Created 2020-04-07 Di 14:26
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Matthias Fottner}
+\date{\today}
+\title{}
+\begin{document}
+
+\tableofcontents
+
+\section{Überschrift}
+\label{sec:orgea250dd}
+\subsection{subsec}
+\label{sec:org1b5ae16}
+\(\int_1^2\)
+
+%% \begin{minted}[]{python}
+%% myvec = [1, 2, 3]
+%% \end{minted}
+
+
+
+\section{Page 1}
+\label{sec:org3067e96}
+
+I got number \texttt{2}
+\end{document}

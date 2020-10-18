@@ -3,6 +3,7 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        TeX-insert-backslash
         backward-sexp
         c-electric-brace
         c-electric-colon
@@ -15,6 +16,8 @@
         c-indent-line-or-region
         comment-line
         comment-region
+        doc-view-shrink
+        down-list
         duplicate-line
         forward-sexp
         ignore
@@ -36,6 +39,7 @@
         rjsx-electric-lt
         typescript-insert-and-autoconvert-to-template
         typescript-insert-and-indent
+        wdired-finish-edit
         ))
 
 (setq mc/cmds-to-run-once
@@ -44,7 +48,9 @@
         counsel-M-x
         counsel-find-file
         describe-key
+        elpy-nav-backward-indent
         emmet-expand-line
+        eval-last-sexp
         find-file-other-window
         handle-switch-frame
         help-for-help
@@ -52,6 +58,7 @@
         mark-word-or-next-word-like-this
         markdown-cycle
         mouse-set-region
+        org-agenda
         org-fill-paragraph
         orgtbl-hijacker-command-109
         projectile-ripgrep

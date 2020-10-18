@@ -22,6 +22,10 @@
   (setq-default company-tooltip-align-annotations t)
   (global-company-mode 1))
 
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
 
 ;; filter companys suggestions, to not contaion numbers, or non ANSII
 ;; characters or if it is too long
@@ -50,6 +54,25 @@
    rainbow-delimiters-depth-8-face '(:foreground "sienna1"))
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
+
+(use-package drag-stuff
+  :diminish
+  :defer t
+  :ensure t
+  :bind (("<M-up>" . drag-stuff-up)
+         ("<M-down>" . drag-stuff-down)
+         ("<M-left>" . drag-stuff-left)
+         ("<M-right>" . drag-stuff-right))
+  :config
+  (drag-stuff-global-mode 1)
+  (with-eval-after-load 'org
+    (define-key org-mode-map (kbd "<M-up>")
+      (lambda () (interactive)
+        (call-interactively (if (org-at-heading-p) 'org-metaup 'drag-stuff-up))))
+
+    (define-key org-mode-map (kbd "<M-down>")
+      (lambda () (interactive)
+        (call-interactively (if (org-at-heading-p) 'org-metadown 'drag-stuff-down))))))
 
 (use-package hydra
   :ensure t)

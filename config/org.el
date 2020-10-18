@@ -62,8 +62,8 @@
 
 (with-eval-after-load 'org
   (require 'ox-latex)
-  (setq org-latex-listings 'minted)
-  (setq org-latex-pdf-process '("latexmk -pdf %f"))
+  ;; (setq org-latex-listings 'minted)
+  (setq org-latex-pdf-process '("latexmk --shell-escape -pdf %f"))
   (setq org-default-notes-file "~/org/notes.org")
   (setq org-log-done 'time)
   (setq org-capture-templates
@@ -102,6 +102,12 @@
            ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
            ("\\paragraph{%s}"     . "\\paragraph*{%s}")
            ("\\subparagraph{%s}"  . "\\subparagraph*{%s}"))
+          ("scrartcl" "\\documentclass[11pt]{scrartcl}"
+           ("\\section{%s}"       . "\\section*{%s}")
+           ("\\subsection{%s}"    . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+           ("\\paragraph{%s}"     . "\\paragraph*{%s}")
+           ("\\subparagraph{%s}"  . "\\subparagraph*{%s}"))
           ("report" "\\documentclass[11pt]{report}"
            ("\\part{%s}"          . "\\part*{%s}")
            ("\\chapter{%s}"       . "\\chapter*{%s}")
@@ -129,6 +135,7 @@
           ("" "amsmath" t)
           ("" "textcomp" t)
           ("" "amssymb" t)
+          ("" "minted" nil)
           ("" "capt-of" nil))))
 
   (setq org-latex-hyperref-template nil)
